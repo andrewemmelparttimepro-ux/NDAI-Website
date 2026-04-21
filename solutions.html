@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Our Solutions — NDAI</title>
+<meta name="description" content="Custom business automation, AI consulting, staff training, and The Vault — one subscription. NDAI."/>
+<link rel="icon" type="image/png" href="logo-favicon.png"/>
+<meta property="og:title" content="Our Solutions — NDAI"/>
+<meta property="og:description" content="Custom software, AI consulting, staff training, and VAULT — all under one subscription. Built from scratch for your business."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://ndai.pro/solutions.html"/>
+<meta property="og:image" content="https://ndai.pro/logo-main-web.png"/>
+<meta property="og:image:width" content="600"/>
+<meta property="og:image:height" content="400"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Our Solutions — NDAI"/>
+<meta name="twitter:description" content="Custom software, AI consulting, staff training, and VAULT under one subscription."/>
+<meta name="twitter:image" content="https://ndai.pro/logo-main-web.png"/>
+<link rel="canonical" href="https://ndai.pro/solutions.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ─── RESET & ROOT ─── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080808;
+  --surface:#0f0f0f;
+  --card:#141414;
+  --gold:#B8AA96;
+  --gold-bright:#D4C8B0;
+  --white:#FFFFFF;
+  --muted:rgba(255,255,255,0.48);
+  --muted-low:rgba(255,255,255,0.24);
+  --border:rgba(255,255,255,0.065);
+  --border-strong:rgba(255,255,255,0.12);
+  --vault-purple:#c8a8ff;
+  --vault-glow:rgba(160,100,255,0.18);
+}
+/* ─── LIGHT MODE ─── */
+/* ═══════════════════════════════════════════
+   LIGHT MODE — full ground-up treatment
+   ═══════════════════════════════════════════ */
+html.light-mode{
+  --bg:#f4f1ec;
+  --surface:#eae6df;
+  --card:#e2ddd6;
+  --gold:#7a6448;
+  --gold-bright:#5e4d38;
+  --white:#1a1612;
+  --muted:rgba(26,22,18,0.58);
+  --muted-low:rgba(26,22,18,0.35);
+  --border:rgba(26,22,18,0.1);
+  --border-strong:rgba(26,22,18,0.2);
+  --vault-purple:#6030b0;
+  --vault-glow:rgba(96,48,176,0.1);
+}
+
+/* Base */
+html.light-mode body{background:var(--bg);color:var(--white)}
+
+/* Header */
+html.light-mode header{
+  background:rgba(244,241,236,0.94);
+  border-bottom-color:rgba(26,22,18,0.1);
+}
+html.light-mode nav a{color:rgba(26,22,18,0.5)}
+html.light-mode nav a:hover{color:var(--white)}
+html.light-mode nav a.active{color:var(--white)}
+html.light-mode nav a.active::after{background:var(--gold)}
+html.light-mode .header-cta{background:var(--gold);color:#f4f1ec}
+html.light-mode .header-cta:hover{background:var(--gold-bright)}
+html.light-mode .hamburger span{background:var(--white)}
+html.light-mode .mobile-nav{background:var(--bg);border-bottom-color:var(--border)}
+html.light-mode .mobile-nav a{color:var(--muted);border-bottom-color:var(--border)}
+html.light-mode .mobile-nav a:hover{color:var(--white)}
+html.light-mode .mobile-nav-cta{background:var(--gold)!important;color:#f4f1ec!important}
+
+/* Float CTA */
+html.light-mode .float-cta{background:var(--gold);color:#f4f1ec;box-shadow:0 8px 32px rgba(0,0,0,0.15)}
+html.light-mode .float-cta:hover{background:var(--gold-bright)}
+
+/* ── HERO: kill the dark blob, use clean light treatment ── */
+html.light-mode .hero{background:var(--bg)}
+html.light-mode .hero-software-bloom{
+  opacity:0.06;
+  filter:grayscale(80%) sepia(20%);
+  mix-blend-mode:multiply;
+}
+/* Kill the dark glow and replace with light-appropriate vignette */
+html.light-mode .hero-glow{
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 85%, rgba(122,100,72,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 30% at 50% 100%, rgba(244,241,236,1) 0%, transparent 100%);
+}
+html.light-mode .hero-glow{
+  background:radial-gradient(ellipse 70% 50% at 50% 85%, rgba(122,100,72,0.08) 0%, transparent 60%),
+             radial-gradient(ellipse 100% 40% at 50% 100%, rgba(244,241,236,0.95) 0%, transparent 100%);
+}
+html.light-mode .hero-vignette{
+  background:
+    linear-gradient(to bottom, rgba(244,241,236,0.6) 0%, rgba(244,241,236,0) 20%, rgba(244,241,236,0) 60%, rgba(244,241,236,1) 100%),
+    linear-gradient(to right, rgba(244,241,236,0.5) 0%, rgba(244,241,236,0) 15%, rgba(244,241,236,0) 85%, rgba(244,241,236,0.5) 100%);
+}
+html.light-mode .hero-title{color:#1a1612}
+html.light-mode .hero-title em{color:var(--gold)}
+html.light-mode .hero-tagline{color:rgba(26,22,18,0.55)}
+html.light-mode .hero-eyebrow{color:var(--gold);border-color:rgba(122,100,72,0.3)}
+html.light-mode .hero-eyebrow::before,html.light-mode .hero-eyebrow::after{background:rgba(122,100,72,0.35)}
+html.light-mode .btn-primary{background:var(--gold);color:#f4f1ec}
+html.light-mode .btn-primary:hover{background:var(--gold-bright)}
+html.light-mode .btn-ghost{border-color:rgba(26,22,18,0.25);color:rgba(26,22,18,0.55)}
+html.light-mode .btn-ghost:hover{color:var(--white);border-color:rgba(26,22,18,0.6)}
+html.light-mode .hero-scroll{color:rgba(26,22,18,0.3)}
+html.light-mode .scroll-bar::after{background:var(--gold)}
+
+/* Pillars */
+html.light-mode .pillars{background:var(--surface);border-color:var(--border)}
+html.light-mode .pillar{border-right-color:var(--border)}
+html.light-mode .pillar-num{color:rgba(122,100,72,0.15)}
+html.light-mode .pillar-head{color:var(--white)}
+html.light-mode .pillar-body{color:var(--muted)}
+html.light-mode .pillar-consulting{background:rgba(184,170,150,0.06);border-left-color:rgba(122,100,72,0.15)!important}
+
+/* Software section */
+html.light-mode .software-section{background:var(--card)}
+html.light-mode .software-ambient{
+  background:radial-gradient(ellipse 60% 60% at 20% 50%, rgba(122,100,72,0.08) 0%, transparent 70%);
+}
+html.light-mode .software-img{
+  mix-blend-mode:multiply;
+  filter:contrast(1.1) brightness(0.9) saturate(0.4) sepia(15%);
+  opacity:0.95;
+  -webkit-mask-image:radial-gradient(ellipse 80% 82% at 50% 50%, black 35%, transparent 75%);
+  mask-image:radial-gradient(ellipse 80% 82% at 50% 50%, black 35%, transparent 75%);
+}
+html.light-mode .software-glow-halo{
+  background:radial-gradient(ellipse 55% 55% at 50% 50%, rgba(122,100,72,0.12) 0%, transparent 65%);
+}
+html.light-mode .software-badge{background:rgba(244,241,236,0.9);color:var(--gold);border-color:rgba(122,100,72,0.25)}
+html.light-mode .prod-label{color:var(--gold)}
+html.light-mode .prod-name{color:var(--white)}
+html.light-mode .prod-desc{color:var(--muted)}
+html.light-mode .prod-desc strong{color:var(--white)}
+html.light-mode .feat-marker{background:linear-gradient(to bottom,var(--gold),transparent)}
+html.light-mode .feat-body{color:var(--muted)}
+html.light-mode .feat-body strong{color:var(--white)}
+
+/* VAULT section */
+html.light-mode .vault-section{background:var(--bg)}
+html.light-mode .vault-ambient{
+  background:radial-gradient(ellipse 55% 60% at 80% 50%, rgba(96,48,176,0.07) 0%, transparent 65%);
+}
+html.light-mode .vault-img{
+  mix-blend-mode:multiply;
+  filter:contrast(1.15) brightness(0.75) saturate(0.5);
+  opacity:0.85;
+  -webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, black 45%, transparent 72%);
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, black 45%, transparent 72%);
+}
+html.light-mode .vault-glow-halo{
+  background:radial-gradient(ellipse 50% 50% at 50% 50%, rgba(96,48,176,0.1) 0%, transparent 65%);
+}
+html.light-mode .vault-badge{background:rgba(244,241,236,0.9);color:var(--vault-purple);border-color:rgba(96,48,176,0.2)}
+html.light-mode .prod-label.vault-label{color:var(--vault-purple)}
+html.light-mode .vault-marker{background:linear-gradient(to bottom,var(--vault-purple),transparent)}
+html.light-mode .vault-feat-text{color:var(--muted)}
+html.light-mode .vault-feat-text strong{color:var(--white)}
+html.light-mode [style*="background:var(--vault-purple)"]{background:var(--vault-purple)!important;color:#f4f1ec!important}
+
+/* No Hypotheticals */
+html.light-mode .no-hypo{background:var(--surface);border-color:var(--border)}
+html.light-mode .no-hypo-label{color:var(--gold)}
+html.light-mode .no-hypo-title{color:var(--white)}
+html.light-mode .no-hypo-body{color:var(--muted)}
+html.light-mode .no-hypo-icon{color:var(--gold)}
+html.light-mode .no-hypo-item-head{color:var(--white)}
+html.light-mode .no-hypo-item-body{color:var(--muted)}
+
+/* Mid CTA */
+html.light-mode .mid-cta{background:var(--gold)}
+html.light-mode .mid-cta-text{color:#f4f1ec}
+html.light-mode .mid-cta-text span{color:rgba(244,241,236,0.7)}
+html.light-mode .btn-dark{background:#f4f1ec;color:var(--gold)}
+html.light-mode .btn-dark:hover{background:var(--bg);color:var(--gold-bright)}
+
+/* Promo */
+html.light-mode .promo{background:var(--surface);border-color:var(--border)}
+html.light-mode .promo-ghost{color:rgba(26,22,18,0.04)}
+html.light-mode .promo-eyebrow{color:var(--gold)}
+html.light-mode .promo-title{color:var(--white)}
+html.light-mode .promo-title em{color:var(--gold)}
+html.light-mode .promo-body{color:var(--muted)}
+html.light-mode .stats-row{background:var(--border)}
+html.light-mode .stat-box{background:var(--card)}
+html.light-mode .stat-num{color:var(--gold)}
+html.light-mode .stat-lbl{color:var(--muted)}
+html.light-mode .btn-primary.reveal{background:var(--gold);color:#f4f1ec}
+
+/* Contact */
+html.light-mode .contact{border-top-color:var(--border)}
+html.light-mode .contact-label{color:var(--gold)}
+html.light-mode .contact-title{color:var(--white)}
+html.light-mode .contact-body{color:var(--muted)}
+html.light-mode .c-icon{border-color:var(--border-strong);color:var(--gold)}
+html.light-mode .c-label{color:var(--muted)}
+html.light-mode .c-label strong{color:var(--white)}
+html.light-mode .field label{color:var(--muted-low)}
+html.light-mode input[type="text"],
+html.light-mode input[type="email"],
+html.light-mode input[type="tel"],
+html.light-mode select,
+html.light-mode textarea{
+  background:#fff;
+  border-color:rgba(26,22,18,0.22);
+  color:#1a1612;
+}
+html.light-mode input:focus,html.light-mode select:focus,html.light-mode textarea:focus{
+  border-color:rgba(122,100,72,0.5);
+  background:#fff;
+}
+html.light-mode input::placeholder,html.light-mode textarea::placeholder{color:rgba(26,22,18,0.28)}
+html.light-mode select option{background:#f4f1ec;color:#1a1612}
+html.light-mode .form-submit{background:var(--gold);color:#f4f1ec}
+html.light-mode .form-submit:hover{background:var(--gold-bright)}
+html.light-mode .form-note{color:var(--muted-low)}
+
+/* Footer */
+html.light-mode footer{border-top-color:var(--border);background:var(--surface)}
+html.light-mode .footer-copy{color:var(--muted-low)}
+html.light-mode .footer-links a{color:var(--muted)}
+html.light-mode .footer-links a:hover{color:var(--white)}
+html.light-mode .logo img{content:url('logo-mark-dark.png')}
+html.light-mode .footer-logo img{content:url('logo-mark-dark.png');opacity:0.55}
+:root{
+  --software-glow:rgba(140,30,30,0.22);
+}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:'Inter',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  line-height:1.6;
+}
+
+/* ─── HEADER ─── */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  padding:0 48px;
+  height:72px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(8,8,8,0.88);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  transition:background 0.3s;
+}
+.logo{display:inline-flex;align-items:center;text-decoration:none;height:36px}
+.logo img{height:36px;width:auto;display:block}
+nav{display:flex;align-items:center;gap:0}
+nav a{
+  font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;
+  padding:8px 18px;
+  transition:color 0.2s;
+  position:relative;
+}
+nav a:hover{color:var(--white)}
+nav a.active{color:var(--white)}
+nav a.active::after{
+  content:'';position:absolute;bottom:-1px;left:18px;right:18px;
+  height:1px;background:var(--gold);
+}
+.header-cta{
+  background:var(--gold);color:#080808;
+  border:none;padding:10px 22px;
+  font-family:'Inter',sans-serif;font-weight:700;
+  font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;
+  cursor:pointer;text-decoration:none;
+  transition:background 0.2s,transform 0.15s;
+  display:inline-block;
+}
+.header-cta:hover{background:var(--gold-bright);transform:translateY(-1px)}
+
+/* ─── FLOATING CTA ─── */
+.float-cta{
+  position:fixed;bottom:32px;right:32px;z-index:300;
+  background:var(--gold);color:#080808;
+  border:none;padding:14px 24px;
+  font-family:'Inter',sans-serif;font-weight:700;
+  font-size:0.8rem;letter-spacing:0.08em;text-transform:uppercase;
+  cursor:pointer;text-decoration:none;
+  display:flex;align-items:center;gap:8px;
+  box-shadow:0 8px 40px rgba(0,0,0,0.6),0 0 0 1px rgba(184,170,150,0.15);
+  opacity:0;transform:translateY(20px);
+  transition:opacity 0.35s,transform 0.35s,background 0.2s;
+  pointer-events:none;
+}
+.float-cta.visible{opacity:1;transform:translateY(0);pointer-events:auto}
+.float-cta:hover{background:var(--gold-bright)}
+.float-cta-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:#080808;flex-shrink:0;
+  animation:pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.7)}}
+
+/* ─── HERO ─── */
+.hero{
+  min-height:100vh;
+  position:relative;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:72px 48px 80px;
+  overflow:hidden;
+  isolation:isolate;
+}
+/* Software image blooms up from below — masked so it fades to bg */
+.hero-software-bloom{
+  position:absolute;
+  bottom:-8%;left:50%;
+  transform:translateX(-50%);
+  width:min(900px,110vw);
+  aspect-ratio:1.6;
+  background:url('software-hero.jpg') center bottom/contain no-repeat;
+  /* fade top and sides into darkness */
+  -webkit-mask-image:
+    radial-gradient(ellipse 55% 60% at 50% 80%, black 0%, black 30%, transparent 70%);
+  mask-image:
+    radial-gradient(ellipse 55% 60% at 50% 80%, black 0%, black 30%, transparent 70%);
+  opacity:0.28;
+  mix-blend-mode:luminosity;
+  filter:contrast(0.85) brightness(0.7);
+  pointer-events:none;
+}
+.hero-glow{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 85%, var(--software-glow) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 40% at 50% 100%, rgba(8,8,8,0.9) 0%, transparent 100%);
+  pointer-events:none;
+}
+.hero-vignette{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(to bottom, rgba(8,8,8,0.5) 0%, rgba(8,8,8,0) 25%, rgba(8,8,8,0) 55%, rgba(8,8,8,0.95) 100%),
+    linear-gradient(to right, rgba(8,8,8,0.7) 0%, rgba(8,8,8,0) 20%, rgba(8,8,8,0) 80%, rgba(8,8,8,0.7) 100%);
+  pointer-events:none;
+}
+.hero-content{
+  position:relative;z-index:2;
+  max-width:900px;
+  opacity:0;transform:translateY(24px);
+  animation:heroIn 0.9s 0.2s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+@keyframes heroIn{to{opacity:1;transform:translateY(0)}}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:0.7rem;letter-spacing:0.28em;text-transform:uppercase;
+  color:var(--gold);
+  border:1px solid rgba(184,170,150,0.25);
+  padding:8px 18px;
+  margin-bottom:44px;
+}
+.hero-eyebrow::before,.hero-eyebrow::after{
+  content:'';display:block;width:20px;height:1px;
+  background:rgba(184,170,150,0.4);flex-shrink:0;
+}
+.hero-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;
+  font-size:clamp(60px,10vw,120px);
+  line-height:0.9;
+  letter-spacing:-0.025em;
+  text-transform:uppercase;
+  margin-bottom:32px;
+}
+.hero-title em{
+  color:var(--gold);font-style:italic;
+  display:block;
+}
+.hero-tagline{
+  font-size:clamp(1rem,2vw,1.2rem);
+  color:var(--muted);
+  letter-spacing:0.01em;
+  margin-bottom:52px;
+  font-weight:300;
+}
+.hero-cta-row{
+  display:flex;align-items:center;justify-content:center;
+  gap:16px;flex-wrap:wrap;
+}
+.btn-primary{
+  background:var(--gold);color:#080808;
+  border:none;padding:16px 36px;
+  font-family:'Inter',sans-serif;font-weight:700;
+  font-size:0.88rem;letter-spacing:0.08em;text-transform:uppercase;
+  cursor:pointer;text-decoration:none;display:inline-block;
+  transition:background 0.2s,transform 0.15s;
+}
+.btn-primary:hover{background:var(--gold-bright);transform:translateY(-2px)}
+.btn-ghost{
+  background:transparent;color:var(--muted);
+  border:1px solid var(--border-strong);padding:15px 36px;
+  font-family:'Inter',sans-serif;font-weight:500;
+  font-size:0.88rem;letter-spacing:0.06em;text-transform:uppercase;
+  cursor:pointer;text-decoration:none;display:inline-block;
+  transition:color 0.2s,border-color 0.2s;
+}
+.btn-ghost:hover{color:var(--white);border-color:rgba(255,255,255,0.4)}
+.hero-scroll{
+  position:absolute;bottom:32px;
+  left:0;right:0;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  color:var(--muted-low);font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;
+  opacity:0;animation:heroIn 0.6s 1.1s forwards;
+}
+.scroll-bar{width:1px;height:40px;overflow:hidden;position:relative}
+.scroll-bar::after{
+  content:'';position:absolute;
+  top:-40px;left:0;width:1px;height:40px;
+  background:var(--gold);opacity:0.5;
+  animation:scrollBar 1.8s ease-in-out infinite;
+}
+@keyframes scrollBar{0%{top:-40px}100%{top:40px}}
+
+/* ─── PILLARS ─── */
+.pillars{
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  background:var(--surface);
+}
+.pillars-inner{
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(3,1fr);
+}
+.pillar{
+  padding:56px 48px;
+  border-right:1px solid var(--border);
+  opacity:0;transform:translateY(20px);
+  transition:opacity 0.5s,transform 0.5s;
+}
+.pillar:last-child{border-right:none}
+.pillar-consulting{background:rgba(184,170,150,0.04);border-left:1px solid rgba(184,170,150,0.12)!important}
+.pillar.revealed{opacity:1;transform:translateY(0)}
+.pillar-num{
+  font-size:2rem;
+  color:rgba(184,170,150,0.22);
+  line-height:1;margin-bottom:24px;
+}
+.pillar-head{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;font-size:1.5rem;
+  text-transform:uppercase;letter-spacing:0.04em;
+  margin-bottom:12px;
+  color:var(--white);
+}
+.pillar-body{
+  font-size:0.92rem;color:var(--muted);line-height:1.7;
+}
+
+/* ─── PRODUCT SECTIONS SHARED ─── */
+.product-section{
+  position:relative;overflow:hidden;
+  isolation:isolate;
+}
+.product-inner{
+  max-width:1240px;margin:0 auto;
+  padding:120px 48px;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:80px;align-items:center;
+}
+
+/* ─── SOFTWARE SECTION ─── */
+.software-section{
+  background:#181818;
+  border-top:1px solid var(--border);
+}
+.software-ambient{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 60% at 20% 50%, rgba(120,25,25,0.14) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 10% 80%, rgba(100,20,20,0.08) 0%, transparent 60%);
+  pointer-events:none;
+}
+/* Software image: light gray bg — blend it into darkness */
+.software-img-wrap{
+  position:relative;
+  opacity:0;transform:translateX(-30px);
+  transition:opacity 0.8s,transform 0.8s;
+}
+.software-img-wrap.revealed{opacity:1;transform:translateX(0)}
+.auto-img-wrap.revealed{opacity:1!important;transform:translateX(0)!important}
+.software-img{
+  width:100%;
+  display:block;
+  -webkit-mask-image:
+    radial-gradient(ellipse 80% 82% at 50% 50%, black 20%, black 38%, transparent 68%);
+  mask-image:
+    radial-gradient(ellipse 80% 82% at 50% 50%, black 20%, black 38%, transparent 68%);
+  mix-blend-mode:screen;
+  filter:contrast(1.08) brightness(1.15) saturate(0.5);
+  opacity:0.92;
+}
+.software-glow-halo{
+  position:absolute;inset:-30%;
+  background:radial-gradient(ellipse 60% 60% at 50% 50%, rgba(160,30,30,0.45) 0%, transparent 62%);
+  pointer-events:none;z-index:-1;
+}
+.software-badge{
+  position:absolute;top:0;left:0;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;font-size:0.68rem;
+  letter-spacing:0.28em;text-transform:uppercase;
+  color:var(--gold);background:rgba(8,8,8,0.9);
+  padding:6px 14px;border:1px solid rgba(184,170,150,0.2);
+  border-radius:2px;
+}
+
+/* ─── VAULT SECTION ─── */
+.vault-section{
+  background:var(--bg);
+  border-top:1px solid var(--border);
+}
+.vault-ambient{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 55% 60% at 80% 50%, rgba(160,100,255,0.12) 0%, transparent 65%),
+    radial-gradient(ellipse 35% 35% at 85% 80%, rgba(130,70,220,0.07) 0%, transparent 60%);
+  pointer-events:none;
+}
+/* VAULT image: dark bg — blend the fiber optic glow into the page */
+.vault-img-wrap{
+  position:relative;
+  opacity:0;transform:translateX(30px);
+  transition:opacity 0.8s,transform 0.8s;
+}
+.vault-img-wrap.revealed{opacity:1;transform:translateX(0)}
+.vault-img{
+  width:100%;
+  display:block;
+  -webkit-mask-image:
+    radial-gradient(ellipse 78% 78% at 50% 50%, black 22%, black 40%, transparent 68%);
+  mask-image:
+    radial-gradient(ellipse 78% 78% at 50% 50%, black 22%, black 40%, transparent 68%);
+  mix-blend-mode:screen;
+  filter:contrast(1.08) brightness(0.9) saturate(0.85);
+  opacity:0.92;
+}
+.vault-glow-halo{
+  position:absolute;inset:-30%;
+  background:radial-gradient(ellipse 55% 55% at 50% 50%, rgba(160,80,255,0.32) 0%, transparent 62%);
+  pointer-events:none;z-index:-1;
+}
+.vault-badge{
+  position:absolute;top:0;right:0;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;font-size:0.68rem;
+  letter-spacing:0.28em;text-transform:uppercase;
+  color:var(--vault-purple);background:rgba(8,8,8,0.9);
+  padding:6px 14px;border:1px solid rgba(160,100,255,0.2);
+  border-radius:2px;
+}
+.vault-inner{grid-template-columns:1fr 1fr}
+.vault-img-col{order:2}
+.vault-text-col{order:1}
+
+/* ─── PRODUCT TEXT SHARED ─── */
+.prod-text{
+  opacity:0;transform:translateY(20px);
+  transition:opacity 0.7s 0.15s,transform 0.7s 0.15s;
+}
+.prod-text.revealed{opacity:1;transform:translateY(0)}
+.prod-label{
+  font-size:0.68rem;letter-spacing:0.28em;text-transform:uppercase;
+  color:rgba(184,170,150,0.75);margin-bottom:12px;
+  display:flex;align-items:center;gap:12px;
+}
+.prod-label.vault-label{color:var(--vault-purple)}
+.prod-label::after{
+  content:'';display:block;height:1px;width:32px;
+  background:currentColor;opacity:0.4;
+}
+.prod-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;font-size:clamp(52px,6vw,80px);
+  text-transform:uppercase;
+  letter-spacing:-0.02em;
+  line-height:0.9;
+  margin-bottom:24px;
+}
+.prod-desc{
+  font-size:1rem;color:var(--muted);line-height:1.75;
+  margin-bottom:36px;
+}
+.prod-desc strong{color:var(--white)}
+.prod-features{
+  display:flex;flex-direction:column;gap:20px;
+  margin-bottom:40px;
+}
+.prod-feat{
+  display:grid;grid-template-columns:auto 1fr;
+  gap:14px;align-items:start;
+  opacity:0;transform:translateX(-12px);
+  transition:opacity 0.4s,transform 0.4s;
+}
+.prod-feat.revealed{opacity:1;transform:translateX(0)}
+.feat-marker{
+  width:3px;height:100%;min-height:36px;
+  background:linear-gradient(to bottom, rgba(184,170,150,0.8), rgba(184,170,150,0.1));
+  flex-shrink:0;margin-top:2px;
+}
+.vault-marker{background:linear-gradient(to bottom, rgba(200,168,255,0.8), rgba(200,168,255,0.1))}
+.feat-body{font-size:0.88rem;color:var(--muted);line-height:1.65}
+.feat-body strong{color:var(--white);font-weight:600}
+
+/* ─── NO HYPOTHETICALS BAND ─── */
+.no-hypo{
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.no-hypo-inner{
+  max-width:1240px;margin:0 auto;
+  padding:96px 48px;
+  display:grid;grid-template-columns:1fr 1.4fr;gap:80px;
+  align-items:start;
+}
+.no-hypo-label{
+  font-size:0.68rem;letter-spacing:0.28em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:14px;
+}
+.no-hypo-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;font-size:clamp(32px,4vw,52px);
+  text-transform:uppercase;line-height:0.95;
+  letter-spacing:-0.02em;margin-bottom:20px;
+}
+.no-hypo-body{
+  font-size:0.95rem;color:var(--muted);line-height:1.75;
+}
+.no-hypo-right{
+  display:flex;flex-direction:column;gap:32px;
+  padding-top:8px;
+}
+.no-hypo-item{
+  display:grid;grid-template-columns:28px 1fr;gap:16px;
+  align-items:start;
+  opacity:0;transform:translateX(16px);
+  transition:opacity 0.5s,transform 0.5s;
+}
+.no-hypo-item.revealed{opacity:1;transform:translateX(0)}
+.no-hypo-icon{
+  font-size:1.1rem;color:var(--gold);
+  line-height:1.5;flex-shrink:0;
+}
+.no-hypo-item-head{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;font-size:1.15rem;
+  text-transform:uppercase;letter-spacing:0.03em;
+  margin-bottom:6px;
+}
+.no-hypo-item-body{
+  font-size:0.88rem;color:var(--muted);line-height:1.65;
+}
+@media(max-width:960px){
+  .no-hypo-inner{grid-template-columns:1fr;padding:56px 20px;gap:36px}
+  .no-hypo-title{font-size:clamp(28px,8vw,42px)}
+  .no-hypo-right{gap:24px}
+  .no-hypo-item{gap:12px}
+  .no-hypo-item-head{font-size:1rem}
+  .no-hypo-item-body{font-size:0.87rem}
+  .pillar-body{font-size:0.9rem}
+}
+
+/* ─── BETWEEN-PRODUCTS CTA BAND ─── */
+.mid-cta{
+  background:var(--gold);
+  padding:40px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:24px;flex-wrap:wrap;
+}
+.mid-cta-text{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;font-size:clamp(22px,3vw,32px);
+  text-transform:uppercase;letter-spacing:0.02em;
+  color:#080808;line-height:1.1;
+}
+.mid-cta-text span{opacity:0.55}
+.btn-dark{
+  background:#080808;color:var(--gold);
+  border:none;padding:14px 30px;
+  font-family:'Inter',sans-serif;font-weight:700;
+  font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;
+  cursor:pointer;text-decoration:none;display:inline-block;
+  white-space:nowrap;
+  transition:background 0.2s,color 0.2s;
+}
+.btn-dark:hover{background:#0f0f0f;color:var(--gold-bright)}
+
+/* ─── PROMO SECTION ─── */
+.promo{
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:120px 48px;
+  text-align:center;
+  overflow:hidden;position:relative;
+}
+.promo-ghost{
+  position:absolute;
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;font-size:clamp(80px,14vw,200px);
+  text-transform:uppercase;letter-spacing:-0.04em;
+  color:rgba(255,255,255,0.025);
+  white-space:nowrap;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  pointer-events:none;user-select:none;
+  line-height:1;
+}
+.promo-inner{position:relative;z-index:1;max-width:780px;margin:0 auto}
+.promo-eyebrow{
+  font-size:0.68rem;letter-spacing:0.28em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:24px;
+}
+.promo-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;font-size:clamp(44px,7vw,88px);
+  text-transform:uppercase;line-height:0.93;
+  margin-bottom:28px;letter-spacing:-0.02em;
+}
+.promo-title em{color:var(--gold);font-style:italic}
+.promo-body{
+  font-size:1rem;color:var(--muted);line-height:1.75;
+  max-width:540px;margin:0 auto 48px;
+}
+.stats-row{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);
+  margin-bottom:48px;
+}
+.stat-box{
+  background:var(--card);padding:40px 24px;text-align:center;
+  border-radius:4px;
+}
+.stat-num{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;font-size:clamp(44px,5vw,64px);
+  color:var(--gold);letter-spacing:-0.03em;line-height:1;
+}
+.stat-lbl{
+  font-size:0.72rem;color:var(--muted);
+  letter-spacing:0.14em;text-transform:uppercase;
+  margin-top:8px;line-height:1.5;
+}
+.stat-sub{
+  font-size:0.65rem;color:var(--muted-low);
+  letter-spacing:0.06em;margin-top:6px;
+  font-style:italic;line-height:1.4;
+}
+
+/* ─── CONTACT ─── */
+.contact{
+  border-top:1px solid var(--border);
+}
+.contact-inner{
+  max-width:1200px;margin:0 auto;
+  padding:120px 48px;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:96px;align-items:start;
+}
+.contact-label{
+  font-size:0.68rem;letter-spacing:0.28em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:16px;
+}
+.contact-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;font-size:clamp(36px,5vw,60px);
+  text-transform:uppercase;line-height:0.95;
+  margin-bottom:24px;letter-spacing:-0.02em;
+}
+.contact-body{
+  font-size:0.95rem;color:var(--muted);line-height:1.75;
+  margin-bottom:40px;
+}
+.contact-lines{display:flex;flex-direction:column;gap:16px}
+.contact-line{
+  display:flex;align-items:center;gap:14px;
+  font-size:0.88rem;
+}
+.c-icon{
+  width:38px;height:38px;
+  border:1px solid var(--border-strong);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;color:var(--gold);
+  font-size:0.9rem;
+  border-radius:6px;
+}
+.c-label{color:var(--muted)}
+.c-label strong{color:var(--white)}
+/* Form */
+.form{display:flex;flex-direction:column;gap:16px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{
+  font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--muted-low);
+}
+input[type="text"],input[type="email"],input[type="tel"],select,textarea{
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--border-strong);
+  color:var(--white);
+  padding:13px 16px;
+  font-family:'Inter',sans-serif;font-size:0.88rem;
+  width:100%;outline:none;
+  transition:border-color 0.2s,background 0.2s;
+  appearance:none;-webkit-appearance:none;
+}
+input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.2)}
+input:focus,select:focus,textarea:focus{
+  border-color:rgba(184,170,150,0.45);
+  background:rgba(255,255,255,0.06);
+}
+select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(184,170,150,0.6)' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:40px}
+select option{background:#141414;color:#fff}
+textarea{resize:vertical;min-height:110px}
+.form-submit{
+  background:var(--gold);color:#080808;
+  border:none;padding:15px 32px;
+  font-family:'Inter',sans-serif;font-weight:700;
+  font-size:0.88rem;letter-spacing:0.08em;text-transform:uppercase;
+  cursor:pointer;align-self:flex-start;
+  transition:background 0.2s,transform 0.15s;
+}
+.form-submit:hover{background:var(--gold-bright);transform:translateY(-2px)}
+.form-note{
+  font-size:0.75rem;color:var(--muted-low);
+  letter-spacing:0.04em;
+}
+
+/* ─── FOOTER ─── */
+footer{
+  border-top:1px solid var(--border);
+  padding:36px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.footer-logo img{height:32px;width:auto;opacity:0.65}
+.footer-copy{font-size:0.72rem;color:var(--muted-low);letter-spacing:0.06em}
+.footer-links{display:flex;gap:24px}
+.footer-links a{
+  font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;
+  transition:color 0.2s;
+}
+.footer-links a:hover{color:var(--white)}
+
+/* ─── SCROLL REVEAL ─── */
+.reveal{
+  opacity:0;transform:translateY(24px);
+  transition:opacity 0.65s,transform 0.65s;
+}
+.reveal.revealed{opacity:1;transform:translateY(0)}
+
+/* ─── RESPONSIVE ─── */
+/* ─── HAMBURGER ─── */
+.hamburger{
+  display:none;
+  flex-direction:column;justify-content:center;align-items:center;
+  gap:5px;width:44px;height:44px;
+  background:none;border:none;cursor:pointer;padding:8px;
+  flex-shrink:0;
+}
+.hamburger span{
+  display:block;width:22px;height:2px;
+  background:var(--white);
+  transition:transform 0.25s,opacity 0.25s;
+  transform-origin:center;
+}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* Mobile nav drawer */
+.mobile-nav{
+  display:none;
+  position:fixed;top:72px;left:0;right:0;
+  background:var(--bg);
+  border-bottom:1px solid var(--border);
+  z-index:199;
+  flex-direction:column;
+  padding:8px 0 16px;
+  transform:translateY(-8px);opacity:0;
+  transition:opacity 0.2s,transform 0.2s;
+  pointer-events:none;
+}
+.mobile-nav.open{
+  opacity:1;transform:translateY(0);pointer-events:auto;
+}
+.mobile-nav a{
+  display:block;padding:14px 24px;
+  font-size:0.88rem;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;
+  border-bottom:1px solid var(--border);
+  transition:color 0.2s;
+  min-height:48px;display:flex;align-items:center;
+}
+.mobile-nav a:last-child{border-bottom:none}
+.mobile-nav a:hover{color:var(--white)}
+.mobile-nav-cta{
+  background:var(--gold)!important;color:#080808!important;
+  font-weight:700!important;margin:12px 24px 0;
+  justify-content:center!important;
+  min-height:48px;
+}
+
+@media(max-width:960px){
+  header{padding:0 24px}
+  nav{display:none}
+  .hamburger{display:flex}
+  .mobile-nav{display:flex}
+  .header-cta{display:none}
+
+  /* Hero */
+  .hero{padding:80px 20px 60px;min-height:90vh}
+  .hero-software-bloom{opacity:0.16;width:140vw}
+  .hero-eyebrow{font-size:0.64rem;padding:6px 14px;margin-bottom:32px}
+
+  /* Pillars */
+  .pillars-inner{grid-template-columns:1fr}
+  .pillar{border-right:none;border-bottom:1px solid var(--border);padding:36px 20px}
+  .pillar:last-child{border-bottom:none}
+  .pillar-num{font-size:3.5rem;margin-bottom:16px}
+
+  /* Product sections */
+  .product-inner{grid-template-columns:1fr;padding:64px 20px;gap:28px}
+  .vault-img-col{order:1}
+  .vault-text-col{order:2}
+  /* Images: on mobile boost visibility — the blend/mask is too aggressive at small sizes */
+  .software-img{
+    max-height:240px;object-fit:cover;width:100%;
+    mix-blend-mode:normal;
+    -webkit-mask-image:radial-gradient(ellipse 90% 85% at 50% 50%, black 35%, transparent 75%);
+    mask-image:radial-gradient(ellipse 90% 85% at 50% 50%, black 35%, transparent 75%);
+    filter:contrast(1.05) brightness(0.88) saturate(0.55);
+    opacity:0.90;
+  }
+  .vault-img{
+    max-height:240px;object-fit:cover;width:100%;
+    mix-blend-mode:normal;
+    -webkit-mask-image:radial-gradient(ellipse 90% 85% at 50% 50%, black 35%, transparent 75%);
+    mask-image:radial-gradient(ellipse 90% 85% at 50% 50%, black 35%, transparent 75%);
+    filter:contrast(1.05) brightness(0.88) saturate(0.82);
+    opacity:0.88;
+  }
+  .software-img-wrap,.vault-img-wrap{max-width:100%;margin:0 auto}
+  .software-badge{font-size:0.6rem;padding:5px 10px;top:12px;left:12px}
+  .vault-badge{font-size:0.6rem;padding:5px 10px;top:12px;right:12px}
+  .prod-name{font-size:clamp(44px,12vw,64px)}
+  .prod-desc{font-size:0.9rem}
+
+  /* Mid CTA */
+  .mid-cta{padding:28px 20px;flex-direction:column;align-items:flex-start;gap:16px}
+  .mid-cta-text{font-size:clamp(18px,5vw,26px)}
+
+  /* Promo */
+  .promo{padding:72px 20px}
+  .promo-ghost{font-size:clamp(60px,18vw,140px)}
+  .stats-row{grid-template-columns:1fr}
+  .stat-box{padding:32px 20px}
+
+  /* Contact */
+  .contact-inner{grid-template-columns:1fr;padding:64px 20px;gap:48px}
+  .form-row{grid-template-columns:1fr}
+  input[type="text"],input[type="email"],input[type="tel"],select,textarea{
+    padding:15px 16px;font-size:16px;/* prevent iOS zoom */
+  }
+  .form-submit{width:100%;justify-content:center;padding:16px}
+
+  /* Footer */
+  footer{flex-direction:column;gap:16px;text-align:center;padding:28px 20px}
+  .footer-links{flex-wrap:wrap;justify-content:center;gap:16px}
+
+  /* Float CTA */
+  .float-cta{bottom:16px;right:16px;padding:12px 18px;font-size:0.75rem}
+}
+@media(max-width:480px){
+  .hero-title{font-size:clamp(40px,13vw,64px)}
+  .hero-tagline{font-size:0.95rem}
+  .hero-cta-row{flex-direction:column;align-items:stretch;gap:12px}
+  .btn-primary,.btn-ghost{text-align:center;padding:16px 24px;font-size:0.85rem}
+  .prod-features{gap:16px}
+  .feat-body,.vault-feat-text{font-size:0.88rem}
+  .feat-marker,.vault-marker{width:3px}
+  .contact-title{font-size:clamp(32px,10vw,48px)}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a class="logo" href="index.html"><img src="logo-mark.png" alt="NDAI"/></a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="solutions.html" class="active">Our Solutions</a>
+    <a href="#consulting">CONSULTING</a>
+    <a href="#vault">VAULT</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <a class="header-cta" href="#contact">Get Started</a>
+  <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html">Home</a>
+  <a href="#consulting">CONSULTING</a>
+  <a href="#vault">VAULT</a>
+  <a href="#contact" class="mobile-nav-cta">Get Started</a>
+</div>
+
+<!-- FLOATING CTA -->
+<a class="float-cta" id="floatCta" href="#contact">
+  <div class="float-cta-dot"></div>
+  Talk to Us
+</a>
+
+<!-- HERO -->
+<section class="hero" id="hero-top">
+  <div class="hero-software-bloom"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-vignette"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Powered by NDAI</div>
+    <h1 class="hero-title">CUSTOM SOFTWARE.<br/>AI CONSULTING.<br/><em>ONE SUBSCRIPTION.</em></h1>
+    <p class="hero-tagline">Bespoke business automation, built from scratch for your operation.</p>
+    <div class="hero-cta-row">
+      <a class="btn-primary" href="#contact">Start a Conversation</a>
+      <a class="btn-ghost" href="#services">See What We Build ↓</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-bar"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- PILLARS -->
+<div class="pillars">
+  <div class="pillars-inner">
+    <div class="pillar" data-reveal>
+      <div class="pillar-num">◇</div>
+      <div class="pillar-head">100% Custom</div>
+      <p class="pillar-body">Every tool we build is engineered from scratch for your business. No templates. No clones. Your workflow, your logic, your competitive advantage.</p>
+    </div>
+    <div class="pillar" data-reveal data-delay="100">
+      <div class="pillar-num">◇</div>
+      <div class="pillar-head">One Subscription</div>
+      <p class="pillar-body">Design, development, deployment, and maintenance — all under one flat subscription. No per-seat fees. No surprise invoices. Everything included.</p>
+    </div>
+    <div class="pillar pillar-consulting" data-reveal data-delay="200">
+      <div class="pillar-num" style="color:var(--gold)">◈</div>
+      <div class="pillar-head">Free Consultation</div>
+      <p class="pillar-body">Not ready to commit? Start with a free consultation. We audit your workflows, train your team, and show you exactly where automation hits hardest. When you're ready, we build it.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CUSTOM SOFTWARE SECTION -->
+<section class="product-section software-section" id="services">
+  <div class="software-ambient"></div>
+  <div class="product-inner">
+    <div class="software-img-wrap" data-reveal-img>
+      <div class="software-glow-halo"></div>
+      <img loading="lazy" src="software-hero.jpg" alt="Custom Software" class="software-img"/>
+    </div>
+    <div class="prod-text" data-reveal>
+      <div class="prod-label">Bespoke Software</div>
+      <h2 class="prod-name">Custom-Built.<br/>Not Borrowed.</h2>
+      <p class="prod-desc">
+        Every tool we build is engineered from scratch for your business.
+        <strong>No templates. No cookie-cutter dashboards. No cloned interfaces.</strong>
+        Your workflow, your logic, your competitive advantage — coded from the ground up
+        and maintained under one subscription.
+      </p>
+      <div class="prod-features">
+        <div class="prod-feat" data-feat>
+          <div class="feat-marker"></div>
+          <p class="feat-body"><strong>Designed around your operation.</strong> We study how your team actually works, then build software that fits like it was always there.</p>
+        </div>
+        <div class="prod-feat" data-feat data-delay="80">
+          <div class="feat-marker"></div>
+          <p class="feat-body"><strong>One subscription. Everything included.</strong> Design, development, deployment, and ongoing maintenance. No per-seat fees. No surprise invoices.</p>
+        </div>
+        <div class="prod-feat" data-feat data-delay="160">
+          <div class="feat-marker"></div>
+          <p class="feat-body"><strong>Built and maintained by us.</strong> Updates, bugs, feature requests — all handled. You run your business, we run the software.</p>
+        </div>
+        <div class="prod-feat" data-feat data-delay="240">
+          <div class="feat-marker"></div>
+          <p class="feat-body"><strong>Your IP. Your advantage.</strong> What we build is yours. Not a license. Not a seat rental. Custom software that becomes part of your business.</p>
+        </div>
+      </div>
+      <a class="btn-primary" href="#contact" style="background:var(--gold);color:#080808">Talk to Us About Your Build</a>
+    </div>
+  </div>
+</section>
+
+<!-- AI CONSULTING & STAFF TRAINING SECTION -->
+<section class="product-section software-section" id="consulting" style="background:var(--surface);border-top:1px solid var(--border)">
+  <div class="software-ambient" style="background:radial-gradient(ellipse 60% 60% at 80% 50%, rgba(184,170,150,0.08) 0%, transparent 70%)"></div>
+  <div class="product-inner" style="grid-template-columns:1fr 1fr">
+    <div class="software-img-wrap" data-reveal-img style="order:1">
+      <div class="software-glow-halo" style="background:radial-gradient(ellipse 60% 60% at 50% 50%, rgba(184,170,150,0.28) 0%, transparent 62%)"></div>
+      <img loading="lazy" src="blob-dark.jpg" alt="AI Consulting" class="consulting-img-dark" style="width:100%;display:block;mix-blend-mode:screen;filter:contrast(1.08) brightness(1.1) saturate(0.6);opacity:0.90;-webkit-mask-image:radial-gradient(ellipse 80% 82% at 50% 50%,black 20%,black 38%,transparent 68%);mask-image:radial-gradient(ellipse 80% 82% at 50% 50%,black 20%,black 38%,transparent 68%)"/>
+      <img loading="lazy" src="blob-light.jpg" alt="AI Consulting" class="consulting-img-light" style="width:100%;display:none;filter:contrast(1.05) saturate(0.8);opacity:0.95;-webkit-mask-image:radial-gradient(ellipse 80% 82% at 50% 50%,black 20%,black 38%,transparent 68%);mask-image:radial-gradient(ellipse 80% 82% at 50% 50%,black 20%,black 38%,transparent 68%)"/>
+    </div>
+    <div class="prod-text" data-reveal style="order:2">
+      <div class="prod-label">AI Consulting &amp; Staff Training</div>
+      <h2 class="prod-name" style="font-size:clamp(40px,5vw,68px)">Not Ready<br/>to Build?<br/><span style="color:var(--gold);font-style:italic">Start Talking.</span></h2>
+      <p class="prod-desc">
+        Our AI consulting is built for the corporate space.
+        <strong>We sit with your teams, audit your workflows, and show you exactly where automation delivers real ROI.</strong>
+        No hypotheticals. No projections pulled from thin air. We deal in what works.
+      </p>
+      <div class="prod-features">
+        <div class="prod-feat" data-feat>
+          <div class="feat-marker"></div>
+          <p class="feat-body"><strong>Workflow Audit.</strong> We map your operations and pinpoint where automation hits hardest — what to build first, what saves the most, and what your team actually needs.</p>
+        </div>
+        <div class="prod-feat" data-feat data-delay="80">
+          <div class="feat-marker"></div>
+          <p class="feat-body"><strong>Staff Training.</strong> Hands-on workshops, not slideshows. Your people leave with practical skills they can use the next morning. We train on the tools reshaping your industry.</p>
+        </div>
+        <div class="prod-feat" data-feat data-delay="160">
+          <div class="feat-marker"></div>
+          <p class="feat-body"><strong>Strategic Roadmap.</strong> A clear, prioritized plan for how AI and automation fit into your business — with timelines, costs, and expected returns. No jargon.</p>
+        </div>
+        <div class="prod-feat" data-feat data-delay="240">
+          <div class="feat-marker"></div>
+          <p class="feat-body"><strong>Built-in path to more.</strong> When you see the results and you're ready to commit, the full custom build is waiting. Consulting is the front door — by design.</p>
+        </div>
+      </div>
+      <a class="btn-primary" href="#contact" style="background:var(--gold);color:#080808">Book a Consulting Session</a>
+    </div>
+  </div>
+</section>
+
+<!-- NO HYPOTHETICALS BAND -->
+<div class="no-hypo">
+  <div class="no-hypo-inner">
+    <div class="no-hypo-left">
+      <div class="no-hypo-label">How We Sell</div>
+      <h3 class="no-hypo-title">We Don't Do Hypotheticals.</h3>
+      <p class="no-hypo-body">Before the first meeting, we build you a working demo — populated with your actual tools, your actual data, your actual workflows. You see exactly what you're getting before you sign anything.</p>
+    </div>
+    <div class="no-hypo-right">
+      <div class="no-hypo-item">
+        <div class="no-hypo-icon">◈</div>
+        <div>
+          <div class="no-hypo-item-head">We show up with a working demo.</div>
+          <div class="no-hypo-item-body">Not a mockup. Not slides. A fully functional version of what we're proposing — built before the first meeting so you can see exactly what you're getting.</div>
+        </div>
+      </div>
+      <div class="no-hypo-item">
+        <div class="no-hypo-icon">◈</div>
+        <div>
+          <div class="no-hypo-item-head">One subscription covers everything.</div>
+          <div class="no-hypo-item-body">Design, development, deployment, maintenance, support. No per-seat fees. No add-on charges. No surprise invoices. One flat subscription and we handle the rest.</div>
+        </div>
+      </div>
+      <div class="no-hypo-item">
+        <div class="no-hypo-icon">◈</div>
+        <div>
+          <div class="no-hypo-item-head">Start with consulting if you're not ready.</div>
+          <div class="no-hypo-item-body">We audit your workflows, train your staff, and map out exactly what automation looks like for your business. When you're ready, we build it. The upsell is built in — because the results speak for themselves.</div>
+        </div>
+      </div>
+      <div class="no-hypo-item">
+        <div class="no-hypo-icon">◈</div>
+        <div>
+          <div class="no-hypo-item-head">Premium product. Fraction of the price.</div>
+          <div class="no-hypo-item-body">What we build exceeds what you have now — and costs less. That's not a pitch. That's the math. We're asking very little for what we deliver.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MID-PAGE CTA BAND -->
+<div class="mid-cta">
+  <div class="mid-cta-text">
+    Custom software. AI consulting. Staff training. <span>One subscription.</span>
+  </div>
+  <a class="btn-dark" href="#contact">Get Started</a>
+</div>
+
+<!-- VAULT SECTION -->
+<section class="product-section vault-section" id="vault">
+  <div class="vault-ambient"></div>
+  <div class="product-inner vault-inner">
+    <div class="prod-text vault-text-col" data-reveal>
+      <div class="prod-label vault-label">High-Clearance Infrastructure</div>
+      <h2 class="prod-name">VAULT</h2>
+      <p class="prod-desc">
+        Some businesses can't risk sending their data to the cloud.
+        <strong>VAULT is built for them.</strong>
+        White-glove, locally-hosted software infrastructure for businesses where data sensitivity,
+        compliance, or competitive exposure makes a cloud subscription a liability.
+        If you need it locked down, we lock it down.
+      </p>
+      <div class="prod-features">
+        <div class="prod-feat" data-feat>
+          <div class="feat-marker vault-marker"></div>
+          <p class="feat-body"><strong>100% local deployment.</strong> Your data never leaves your building. No third-party servers, no cloud exposure, no breach surface.</p>
+        </div>
+        <div class="prod-feat" data-feat data-delay="80">
+          <div class="feat-marker vault-marker"></div>
+          <p class="feat-body"><strong>Built for high-stakes environments.</strong> Healthcare, legal, finance, energy — industries where a leak isn't an inconvenience, it's a crisis.</p>
+        </div>
+        <div class="prod-feat" data-feat data-delay="160">
+          <div class="feat-marker vault-marker"></div>
+          <p class="feat-body"><strong>Dedicated human support.</strong> One rep. Maximum 10 accounts. They know your system inside out. No ticketing queue, no AI chatbot.</p>
+        </div>
+        <div class="prod-feat" data-feat data-delay="240">
+          <div class="feat-marker vault-marker"></div>
+          <p class="feat-body"><strong>By invitation.</strong> VAULT isn't listed at a price point. If it's right for your organization, we'll know when we talk.</p>
+        </div>
+      </div>
+      <a class="btn-primary" style="background:var(--vault-purple);color:#080808" href="#contact">Inquire About VAULT</a>
+    </div>
+    <div class="vault-img-wrap vault-img-col" data-reveal-img-right>
+      <div class="vault-glow-halo"></div>
+      <img loading="lazy" src="vault-hero.jpg" alt="VAULT" class="vault-img"/>
+    </div>
+  </div>
+</section>
+
+<!-- AUTOMATION SECTION -->
+<section class="product-section automation-section" id="automation" style="background:var(--surface);border-top:1px solid var(--border)">
+  <div class="automation-ambient" style="position:absolute;inset:0;background:radial-gradient(ellipse 55% 60% at 20% 50%,rgba(180,20,10,0.09) 0%,transparent 65%),radial-gradient(ellipse 35% 35% at 15% 80%,rgba(150,15,5,0.05) 0%,transparent 60%);pointer-events:none"></div>
+  <div class="product-inner" style="grid-template-columns:1fr 1fr">
+    <!-- Image: left column -->
+    <div class="auto-img-wrap" style="position:relative">
+      <div style="position:absolute;inset:-20%;background:radial-gradient(ellipse 55% 55% at 50% 50%,rgba(180,20,10,0.22) 0%,transparent 65%);pointer-events:none;z-index:-1"></div>
+      <img loading="lazy" src="brain-dark.jpg" alt="Business Automation" class="automation-img-dark" style="width:100%;display:block;-webkit-mask-image:radial-gradient(ellipse 80% 82% at 50% 50%,black 20%,black 38%,transparent 68%);mask-image:radial-gradient(ellipse 80% 82% at 50% 50%,black 20%,black 38%,transparent 68%);mix-blend-mode:screen;filter:contrast(1.08) brightness(1.1) saturate(0.6);opacity:0.90"/>
+      <img loading="lazy" src="brain-light.jpg" alt="Business Automation" class="automation-img-light" style="width:100%;display:none;-webkit-mask-image:radial-gradient(ellipse 80% 82% at 50% 50%,black 20%,black 38%,transparent 68%);mask-image:radial-gradient(ellipse 80% 82% at 50% 50%,black 20%,black 38%,transparent 68%);filter:contrast(1.05) saturate(0.8);opacity:0.95"/>
+    </div>
+    <!-- Text: right column -->
+    <div class="prod-text" data-reveal>
+      <div class="prod-label">Business Automation</div>
+      <h2 class="prod-name" style="font-size:clamp(40px,5vw,68px)">Your Business.<br/><span style="color:var(--gold);font-style:italic">Running Itself.</span></h2>
+      <p class="prod-desc">
+        Beyond software consolidation, we identify and eliminate the manual work quietly draining your business every day.
+        <strong>If a human is doing it on a schedule, we can automate it.</strong>
+      </p>
+      <div class="prod-features">
+        <div class="prod-feat" data-feat>
+          <div class="feat-marker"></div>
+          <p class="feat-body"><strong>Invoicing.</strong> Field ticket submitted → invoice generated → client notified. Same day, every time.</p>
+        </div>
+        <div class="prod-feat" data-feat data-delay="80">
+          <div class="feat-marker"></div>
+          <p class="feat-body"><strong>Compliance.</strong> Certifications expiring, inspections due, audits scheduled — tracked and triggered automatically.</p>
+        </div>
+        <div class="prod-feat" data-feat data-delay="160">
+          <div class="feat-marker"></div>
+          <p class="feat-body"><strong>Reporting.</strong> Weekly summaries, KPI dashboards, and client-facing reports — built and delivered without anyone lifting a finger.</p>
+        </div>
+        <div class="prod-feat" data-feat data-delay="240">
+          <div class="feat-marker"></div>
+          <p class="feat-body"><strong>Follow-Up.</strong> Leads, quotes, overdue invoices, appointment reminders — chased automatically so your team doesn't have to.</p>
+        </div>
+      </div>
+      <div class="prod-integrations reveal" data-reveal style="margin-top:24px;padding:16px 0;border-top:1px solid var(--border)">
+        <div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">We connect with</div>
+        <div style="font-size:14px;line-height:1.8;color:var(--body)">QuickBooks &middot; Salesforce &middot; Google Workspace &middot; Microsoft 365 &middot; Slack &middot; HubSpot &middot; Zapier &middot; n8n &middot; custom APIs &middot; and more</div>
+      </div>
+      <a class="btn-primary" href="#contact" style="background:var(--gold);color:#080808">Talk to Us About Automation</a>
+    </div>
+  </div>
+</section>
+
+<style>
+/* Automation section light mode */
+html.light-mode .automation-section{background:var(--card)}
+html.light-mode .automation-img-dark{display:none!important}
+html.light-mode .automation-img-light{display:block!important;mix-blend-mode:multiply!important;filter:contrast(1.1) saturate(1)!important;opacity:0.9!important}
+html.light-mode .automation-ambient{opacity:0!important}
+html.light-mode .consulting-img-dark{display:none!important}
+html.light-mode .consulting-img-light{display:block!important;mix-blend-mode:normal!important;filter:invert(1) hue-rotate(180deg) contrast(1.1) saturate(1.2)!important;opacity:1!important}
+/* Mobile: stack columns, image below text */
+@media(max-width:960px){
+  .automation-section .product-inner{grid-template-columns:1fr!important;padding:64px 20px;gap:28px}
+  .auto-img-wrap{max-width:100%;margin:0 auto}
+  .automation-img-dark,.automation-img-light{
+    max-height:240px;object-fit:cover;width:100%;
+    mix-blend-mode:normal;
+    -webkit-mask-image:radial-gradient(ellipse 90% 85% at 50% 50%,black 40%,transparent 80%);
+    mask-image:radial-gradient(ellipse 90% 85% at 50% 50%,black 40%,transparent 80%);
+    filter:contrast(1.05) brightness(0.85) saturate(0.65);
+    opacity:0.92;
+  }
+}
+</style>
+
+<!-- PROMO -->
+<section class="promo">
+  <div class="promo-ghost">NDAI</div>
+  <div class="promo-inner">
+    <div class="promo-eyebrow reveal" data-reveal>The NDAI Difference</div>
+    <h2 class="promo-title reveal" data-reveal>
+      Built Here.<br/><em>Stays Here.</em><br/>Works Better.
+    </h2>
+    <p class="promo-body reveal" data-reveal>
+      We show up with a working demo. We build everything from scratch. And we charge one flat subscription that covers the full lifecycle. Most vendors won't do any of that.
+    </p>
+    <div class="stats-row reveal" data-reveal>
+      <div class="stat-box">
+        <div class="stat-num">100%</div>
+        <div class="stat-lbl">Custom<br/>Every Build</div>
+        <div class="stat-sub">No templates. No clones.</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">1</div>
+        <div class="stat-lbl">Subscription<br/>Everything Included</div>
+        <div class="stat-sub">Design through maintenance.</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">$0</div>
+        <div class="stat-lbl">Per-Seat Fees<br/>Now or Ever</div>
+        <div class="stat-sub">Now, or ever.</div>
+      </div>
+    </div>
+    <a class="btn-primary reveal" data-reveal href="#contact">Let's Build Something →</a>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section class="founder-section" id="founder" style="padding:80px 24px;border-top:1px solid var(--border);background:var(--surface)">
+  <div class="founder-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center">
+    <!-- BIO LEFT -->
+    <div style="display:flex;align-items:flex-start;gap:28px;flex-wrap:wrap">
+      <div class="founder-photo" style="width:120px;height:120px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid var(--border-strong);box-shadow:0 0 0 6px rgba(184,170,150,0.06)">
+        <img loading="lazy" src="founder-headshot.jpg" alt="Andrew — Founder, NDAI" style="width:100%;height:100%;object-fit:cover;display:block"/>
+      </div>
+      <div style="flex:1;min-width:200px;border-left:3px solid var(--gold);padding-left:24px">
+        <div style="font-size:0.68rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:10px">Who's Behind This</div>
+        <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(24px,2.5vw,32px);font-weight:900;text-transform:uppercase;letter-spacing:-0.01em;color:var(--white);margin-bottom:12px;line-height:1.05">Andrew</h3>
+        <p style="font-size:0.88rem;line-height:1.7;color:var(--muted);font-weight:400">
+          Founder of NDAI. Based in Minot, North Dakota. I build custom AI software and automation for businesses that are tired of paying too much for tools that don't fit. Every project starts with a real conversation — no sales team, no account managers. You talk to the person building it.
+        </p>
+        <a href="https://www.linkedin.com/company/ndai-pro" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:0.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;transition:color .2s">LinkedIn →</a>
+      </div>
+    </div>
+    <!-- CLIENT CAROUSEL RIGHT -->
+    <div class="client-carousel-wrap">
+      <div class="cc-label">Who We Work With</div>
+      <div class="cc-stage">
+        <div class="cc-slide"><img src="client-48n.jpg" alt="48° North Concrete" class="cl cl-invert"/></div>
+        <div class="cc-slide"><img src="client-mchl-duck.png" alt="Magic City Home Leisure" class="cl cl-color"/></div>
+        <div class="cc-slide"><img src="client-spas360.png" alt="Spas 360" class="cl cl-color"/></div>
+        <div class="cc-slide"><img src="client-prairie-pumping.png" alt="Prairie Pumping" class="cl"/></div>
+      </div>
+      <div class="cc-dots">
+        <span class="cc-dot" data-i="0"></span>
+        <span class="cc-dot active" data-i="1"></span>
+        <span class="cc-dot" data-i="2"></span>
+        <span class="cc-dot" data-i="3"></span>
+      </div>
+      <div class="cc-names">
+        <span class="cc-name active">48° North Concrete</span>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+html.light-mode .founder-section{background:var(--card)}
+html.light-mode .founder-section [style*="border-left"]{border-left-color:var(--gold)}
+/* Light mode: invert white-on-dark logos to dark, keep color logos as-is */
+html.light-mode .cl{filter:invert(1) brightness(0.2)!important}
+html.light-mode .cl.cl-invert{filter:none!important}
+html.light-mode .cl.cl-color{filter:none!important}
+
+.client-carousel-wrap{text-align:center}
+.cc-label{font-size:0.68rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:24px}
+.cc-stage{
+  position:relative;width:100%;max-width:460px;height:140px;margin:0 auto;
+  overflow:hidden;
+}
+.cc-slide{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform 0.6s cubic-bezier(.4,0,.2,1),opacity 0.6s ease;
+}
+.cc-slide.cc-prev{transform:translateX(-70%) scale(0.65);opacity:0.2;filter:blur(2px);z-index:1}
+.cc-slide.cc-active{transform:translateX(0) scale(1);opacity:1;filter:none;z-index:3}
+.cc-slide.cc-next{transform:translateX(70%) scale(0.65);opacity:0.2;filter:blur(2px);z-index:1}
+.cc-slide.cc-hidden{transform:translateX(0) scale(0.5);opacity:0;z-index:0}
+
+/* Normalize all logos to consistent sizing */
+.cl{
+  max-height:100px;max-width:200px;width:auto;height:auto;
+  object-fit:contain;
+  /* Default: white logos on dark bg - just show them */
+  filter:brightness(1);
+}
+/* 48N has black logo on white bg - invert it for dark mode */
+.cl.cl-invert{filter:invert(1) brightness(2)}
+/* Duck & Spas360 are full color - show as-is */
+.cl.cl-color{filter:none}
+
+.cc-dots{display:flex;gap:10px;justify-content:center;margin-top:20px}
+.cc-dot{
+  width:7px;height:7px;border-radius:50%;background:var(--muted);
+  opacity:0.25;cursor:pointer;transition:all 0.3s;
+}
+.cc-dot.active{opacity:1;background:var(--gold);transform:scale(1.2)}
+.cc-names{margin-top:10px;height:20px}
+.cc-name{font-size:0.72rem;letter-spacing:0.06em;color:var(--muted);opacity:0;transition:opacity 0.4s}
+.cc-name.active{opacity:1}
+
+@media(max-width:768px){
+  .founder-grid{grid-template-columns:1fr!important;gap:48px!important}
+  .founder-section .founder-photo{margin:0 auto}
+  .founder-section [style*="border-left"]{border-left:none;padding-left:0;border-top:3px solid var(--gold);padding-top:20px}
+  .founder-grid > div:first-child{text-align:center}
+}
+</style>
+<script>
+(function(){
+  var slides=document.querySelectorAll('.cc-slide');
+  var dots=document.querySelectorAll('.cc-dot');
+  var nameEl=document.querySelector('.cc-name');
+  var names=['','Magic City Home Leisure','',''];
+  var n=slides.length,cur=0;
+
+  function arrange(center){
+    cur=center;
+    slides.forEach(function(s){s.className='cc-slide cc-hidden'});
+    slides[(center-1+n)%n].className='cc-slide cc-prev';
+    slides[center].className='cc-slide cc-active';
+    slides[(center+1)%n].className='cc-slide cc-next';
+    dots.forEach(function(d,i){d.classList.toggle('active',i===center)});
+    if(nameEl){var nm=names[center];nameEl.classList.remove('active');nameEl.textContent=nm;
+      if(nm){setTimeout(function(){nameEl.classList.add('active')},50);}}
+  }
+  arrange(0);
+  dots.forEach(function(d){d.addEventListener('click',function(){arrange(+this.dataset.i)})});
+  setInterval(function(){arrange((cur+1)%n)},4000);
+})();
+</script>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div>
+      <div class="contact-label">Get Started</div>
+      <h2 class="contact-title">Let's Have<br/>a Real<br/>Conversation.</h2>
+      <p class="contact-body">
+        Tell us what you're running, what it costs, and what's frustrating you.
+        We'll tell you exactly what we can do about it. No pitch deck. No demo form. Just a conversation.
+      </p>
+      <div class="contact-lines">
+        <div class="contact-line">
+          <div class="c-icon">✉</div>
+          <div class="c-label"><strong>andrew@ndai.pro</strong></div>
+        </div>
+        <div class="contact-line">
+          <div class="c-icon">☎</div>
+          <div class="c-label"><a href="tel:+17013399802" style="color:inherit;text-decoration:none"><strong>(701) 339-9802</strong></a></div>
+        </div>
+        <div class="contact-line">
+          <div class="c-icon">◎</div>
+          <div class="c-label">Minot, North Dakota — serving clients nationwide</div>
+        </div>
+      </div>
+    </div>
+    <form class="form" name="solutions-contact" method="POST" action="https://formsubmit.co/andrew@ndai.pro">
+      <input type="hidden" name="_subject" value="New NDAI.pro Lead"/>
+      <input type="hidden" name="_captcha" value="false"/>
+      <input type="hidden" name="_next" value="https://ndai.pro/solutions.html#contact"/>
+      <input type="text" name="_honey" style="display:none"/>
+      <div class="form-row">
+        <div class="field">
+          <label for="f-name">Your Name</label>
+          <input type="text" id="f-name" name="name" placeholder="Full Name" required/>
+        </div>
+        <div class="field">
+          <label for="f-company">Company</label>
+          <input type="text" id="f-company" name="company" placeholder="Company Name"/>
+        </div>
+      </div>
+      <div class="field">
+        <label for="f-email">Email Address</label>
+        <input type="email" id="f-email" name="email" placeholder="you@company.com" required/>
+      </div>
+      <div class="field">
+        <label for="f-phone">Phone <span style="opacity:0.4">(optional)</span></label>
+        <input type="tel" id="f-phone" name="phone" placeholder="(000) 000-0000"/>
+      </div>
+      <div class="field">
+        <label for="f-interest">I'm Interested In</label>
+        <select id="f-interest" name="interest">
+          <option value="" disabled selected>Select a service...</option>
+          <option value="custom-software">Custom Software Build</option>
+          <option value="vault">VAULT — High-Security Infrastructure</option>
+          <option value="consulting">AI Consulting &amp; Strategy</option>
+          <option value="training">Staff Training</option>
+          <option value="automation">Business Automation</option>
+          <option value="not-sure">Not Sure Yet — Let's Talk</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-msg">What Are You Running Now?</label>
+        <textarea id="f-msg" name="message" placeholder="List the tools, the pain points, and the goal. We'll take it from there."></textarea>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+        <button type="submit" class="form-submit">Send It →</button>
+        <div style="font-size:0.7rem;letter-spacing:0.06em;color:var(--muted);display:flex;align-items:center;gap:6px">
+          <span style="color:var(--gold);font-size:0.6rem">◉</span>
+          Typically responds <strong style="color:var(--white)">within 24 hours</strong>
+        </div>
+      </div>
+      <p class="form-note">No sales pitch. No demo spam. We'll read it and respond <strong style="color:var(--gold)">within one business day</strong>.</p>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><img src="logo-mark.png" alt="NDAI"/></div>
+  <div class="footer-social" style="display:flex;gap:16px;margin-top:8px;align-items:center;justify-content:center">
+    <a href="https://www.linkedin.com/company/ndai-pro" target="_blank" rel="noopener" style="color:rgba(255,255,255,.35);text-decoration:none;font-size:12px;letter-spacing:.05em;transition:color .2s">LinkedIn</a>
+  </div>
+  <div class="footer-copy">© 2026 NDAI, LLC</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="solutions.html">Our Solutions</a>
+    <a href="#contact">Contact</a>
+    <a href="privacy.html" class="privacy-link">Privacy Policy</a>
+  </div>
+</footer>
+
+<script>
+// ── Light mode from query param ──
+if(new URLSearchParams(location.search).get('mode')==='light'){
+  document.documentElement.classList.add('light-mode');
+}
+
+// ── Floating CTA ──
+const floatCta = document.getElementById('floatCta');
+const heroTop = document.getElementById('hero-top');
+new IntersectionObserver(([e]) => {
+  floatCta.classList.toggle('visible', !e.isIntersecting);
+}, {threshold: 0.1}).observe(heroTop);
+
+// ── Hamburger ──
+const ham = document.getElementById('hamburger');
+const mNav = document.getElementById('mobileNav');
+ham.addEventListener('click', () => {
+  const open = mNav.classList.toggle('open');
+  ham.classList.toggle('open', open);
+  ham.setAttribute('aria-expanded', open);
+});
+// Close on nav link click
+mNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  mNav.classList.remove('open');
+  ham.classList.remove('open');
+  ham.setAttribute('aria-expanded', 'false');
+}));
+// Close on outside click
+document.addEventListener('click', e => {
+  if(!ham.contains(e.target) && !mNav.contains(e.target)){
+    mNav.classList.remove('open');
+    ham.classList.remove('open');
+    ham.setAttribute('aria-expanded', 'false');
+  }
+});
+// Close on ESC
+document.addEventListener('keydown', e => {
+  if(e.key==='Escape'){ mNav.classList.remove('open'); ham.classList.remove('open'); ham.setAttribute('aria-expanded','false'); }
+});
+
+// ── Privacy link mode passthrough ──
+document.querySelectorAll('.privacy-link').forEach(a => {
+  if(document.documentElement.classList.contains('light-mode')){
+    a.href = 'privacy.html?mode=light';
+  }
+});
+
+const solutionsForm = document.querySelector('form[name="solutions-contact"]');
+if (solutionsForm) {
+  solutionsForm.addEventListener('submit', () => {
+    const next = solutionsForm.querySelector('input[name="_next"]');
+    const mode = document.documentElement.classList.contains('light-mode') ? '?mode=light' : '';
+    if (next) next.value = 'https://ndai.pro/solutions.html' + mode + '#contact';
+    const submit = solutionsForm.querySelector('.form-submit');
+    if (submit) {
+      submit.disabled = true;
+      submit.textContent = 'Sending...';
+    }
+  });
+}
+
+// ── Smooth scroll ──
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if(t){ e.preventDefault(); window.scrollTo({top: t.getBoundingClientRect().top + scrollY - 72, behavior:'smooth'}); }
+  });
+});
+
+// ── IntersectionObserver reveals ──
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(!entry.isIntersecting) return;
+    const el = entry.target;
+    const delay = parseInt(el.dataset.delay || 0);
+    setTimeout(() => el.classList.add('revealed'), delay);
+    io.unobserve(el);
+  });
+}, {threshold: 0.12, rootMargin: '0px 0px -40px 0px'});
+
+// Pillars
+document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+
+// Product text
+document.querySelectorAll('.prod-text').forEach(el => {
+  el.setAttribute('data-reveal','');
+  io.observe(el);
+});
+
+// Image reveals
+document.querySelectorAll('[data-reveal-img]').forEach(el => {
+  const imgObs = new IntersectionObserver(([e]) => {
+    if(e.isIntersecting){ el.classList.add('revealed'); imgObs.unobserve(el); }
+  }, {threshold: 0.1});
+  imgObs.observe(el);
+});
+document.querySelectorAll('[data-reveal-img-right]').forEach(el => {
+  el.style.cssText += 'opacity:0;transform:translateX(30px);transition:opacity 0.8s,transform 0.8s;';
+  const imgObs = new IntersectionObserver(([e]) => {
+    if(e.isIntersecting){ el.style.opacity='1'; el.style.transform='translateX(0)'; imgObs.unobserve(el); }
+  }, {threshold: 0.1});
+  imgObs.observe(el);
+});
+
+// Feature bullet stagger
+document.querySelectorAll('[data-feat]').forEach(el => io.observe(el));
+
+// No-hypo items stagger
+document.querySelectorAll('.no-hypo-item').forEach((el, i) => {
+  el.style.transitionDelay = (i * 100) + 'ms';
+  io.observe(el);
+});
+</script>
+</body>
+</html>

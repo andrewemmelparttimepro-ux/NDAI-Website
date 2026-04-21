@@ -1,0 +1,3382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <title>ND.AI — AI Consulting for North Dakota Businesses</title>
+  <meta name="description" content="ND.AI delivers AI consulting and implementation for North Dakota businesses. Strategy, automation, custom AI tools, training, and managed services. Based in Minot, ND."/>
+  <meta name="theme-color" content="#050505"/>
+  <meta property="og:title" content="ND.AI — AI Consulting for North Dakota Businesses"/>
+  <meta property="og:description" content="We sit down with you, map your operation, and build AI that saves real time and real money. Strategy, automation, custom tools, and managed services."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://ndai.pro"/>
+  <meta property="og:image" content="https://ndai.pro/logo-main-web.png"/>
+  <meta property="og:image:width" content="600"/>
+  <meta property="og:image:height" content="400"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="ND.AI — AI Consulting for North Dakota Businesses"/>
+  <meta name="twitter:description" content="Strategy, automation, custom AI tools, training, and managed services for businesses in North Dakota and beyond."/>
+  <meta name="twitter:image" content="https://ndai.pro/logo-main-web.png"/>
+  <link rel="canonical" href="https://ndai.pro/"/>
+  <link rel="icon" type="image/png" href="logo-favicon.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Space Grotesk',sans-serif;cursor:none}
+    @media(pointer:coarse){html,body{cursor:auto}}
+    #cv{position:fixed;inset:0;z-index:1;transition:opacity .8s ease}
+    #dot{position:fixed;width:7px;height:7px;background:#fff;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference}
+
+    #entry{position:fixed;inset:0;z-index:10;pointer-events:auto;transition:opacity .7s ease}
+    #entry.gone{opacity:0;pointer-events:none}
+    /* Entry label groups — hover reveals sub-buttons */
+    .entry-group{position:absolute;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:auto;padding:40px 60px}
+    #sl-group{left:5vw}#sd-group{right:5vw}
+    .slabel{font-size:clamp(44px,8vw,96px);font-weight:700;letter-spacing:-.03em;color:#fff;opacity:.1;user-select:none;cursor:pointer;transition:opacity .3s}
+    .entry-sub{padding:12px 28px;text-align:center;cursor:pointer;pointer-events:none;
+      opacity:0;
+      border:1px solid rgba(255,255,255,.12);border-radius:6px;
+      background:rgba(0,0,0,.45);backdrop-filter:blur(12px);
+      min-width:150px;white-space:nowrap;
+      transition:opacity .28s cubic-bezier(.2,.9,.3,1),transform .28s cubic-bezier(.2,.9,.3,1)}
+    .entry-sub-above{transform:translateY(10px)}
+    .entry-sub-below{transform:translateY(-10px)}
+    .entry-group:hover .entry-sub{opacity:1;pointer-events:auto;transform:translateY(0)}
+    .entry-sub-label{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:3px;transition:color .2s}
+    .entry-sub-desc{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);transition:color .2s}
+    .entry-sub:hover .entry-sub-label{color:#fff}
+    .entry-sub:hover .entry-sub-desc{color:rgba(255,255,255,.55)}
+    #wm{position:absolute;top:28px;left:50%;transform:translateX(-50%);font-size:16px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,.38);pointer-events:none}
+    #hint{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);white-space:nowrap;pointer-events:none;transition:opacity .4s;font-weight:400}
+
+    /* Labels — absolutely positioned, tracked via JS */
+    #fm{position:fixed;inset:0;z-index:8;pointer-events:none;opacity:0;transition:opacity 1.4s ease .6s}
+    #fm.on{opacity:1}
+    .fml{position:absolute;text-align:center;cursor:pointer;pointer-events:auto;padding:14px 28px;transform:translate(-50%,0)}
+    .fml-n{font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:6px;transition:color .2s}
+    .fml-d{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.26);transition:color .2s}
+    .fml:hover .fml-n{color:#fff}.fml:hover .fml-d{color:rgba(255,255,255,.5)}
+
+    /* Sub-buttons (hover reveal) */
+    .fml-group{display:flex;flex-direction:column;align-items:center;gap:0;transform:translate(-50%,0)}
+    .fml-group .fml-main{padding:14px 28px;text-align:center}
+    .fml-sub{padding:10px 24px;text-align:center;cursor:pointer;pointer-events:auto;
+      opacity:0;transform:translateY(0);
+      transition:opacity .28s cubic-bezier(.2,.9,.3,1), transform .28s cubic-bezier(.2,.9,.3,1);
+      pointer-events:none;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:6px;
+      background:rgba(0,0,0,.45);
+      backdrop-filter:blur(12px);
+      min-width:160px;
+      white-space:nowrap;
+    }
+    .fml-above{transform:translateY(8px)}
+    .fml-below{transform:translateY(-8px)}
+    .fml-group:hover .fml-sub{opacity:1;pointer-events:auto;transform:translateY(0)}
+    .fml-sub .fml-n{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:4px;transition:color .2s}
+    .fml-sub .fml-d{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);transition:color .2s}
+    .fml-sub:hover .fml-n{color:#fff}
+    .fml-sub:hover .fml-d{color:rgba(255,255,255,.55)}
+
+    /* Light mode sub-button overrides (applied via JS adding .light-mode class to #fm) */
+    #fm.light-mode .fml-sub{background:rgba(244,241,236,.88);border-color:rgba(0,0,0,.1)}
+    #fm.light-mode .fml-sub .fml-n{color:rgba(0,0,0,.65)}
+    #fm.light-mode .fml-sub .fml-d{color:rgba(0,0,0,.3)}
+    #fm.light-mode .fml-sub:hover .fml-n{color:#1a1a1a}
+    #fm.light-mode .fml-sub:hover .fml-d{color:rgba(0,0,0,.5)}
+    #fm.light-mode .fml-main .fml-n{color:rgba(0,0,0,.6)}
+    #fm.light-mode .fml-main .fml-d{color:rgba(0,0,0,.28)}
+    #fm.light-mode .fml-group:hover .fml-main .fml-n{color:#1a1a1a}
+
+    /* Gallery overlay */
+    #gallery-ex{background:#080808;top:0;left:0;right:0;bottom:0;overflow-y:auto;border-radius:0!important}
+    #gallery-ex.on{border-radius:0!important}
+    #gallery-ex.light{background:#f4f1ec}
+    #gallery-ex.light .gal-nav{background:rgba(244,241,236,.96);border-bottom:1px solid rgba(0,0,0,.07)}
+    #gallery-ex.light .gal-logo{color:#1a1a1a}
+    #gallery-ex.light .gal-title{color:#1a1a1a}
+    #gallery-ex.light .gal-sub{color:rgba(40,35,28,.5)}
+    #gallery-ex.light .gal-card{border-color:rgba(0,0,0,.08);background:transparent}
+    #gallery-ex.light .gal-card{box-shadow:0 4px 24px rgba(0,0,0,.08)}
+    #gallery-ex.light .gal-card:hover{background:rgba(0,0,0,.015);border-color:rgba(0,0,0,.18)!important;box-shadow:0 24px 64px rgba(0,0,0,.14)}
+    #gallery-ex.light .gal-body{border-left-color:rgba(0,0,0,.07)}
+    #gallery-ex.light .gal-label{color:rgba(80,70,55,.45)}
+    #gallery-ex.light .gal-name{color:#1a1a1a}
+    #gallery-ex.light .gal-desc{color:rgba(20,18,14,.68)}
+    #gallery-ex.light .gal-tag{background:rgba(0,0,0,.05);color:rgba(80,70,55,.5)}
+    #gallery-ex.light .gal-link{border-color:rgba(0,0,0,.14);color:rgba(0,0,0,.6)}
+    #gallery-ex.light .gal-link:hover{background:#1a1a1a;color:#f4f1ec}
+    /* Software title + desc: dark mode white, light mode dark */
+    .software-title{color:#f0f0f0;}
+    #site-ex.light .software-title{color:#0a0a0a;}
+    .software-desc{color:rgba(255,255,255,0.55);}
+    #site-ex.light .software-desc{color:rgba(20,18,14,0.65);}
+    .sol-cta-label{color:rgba(184,170,150,0.7);}
+    #site-ex.light .sol-cta-label{color:rgba(80,70,55,0.65);}
+    #site-ex.light #solutions-cta-s [style*="rgba(184,170,150,0.18)"]{border-color:rgba(0,0,0,.09)!important;background:rgba(0,0,0,.02)!important}
+    #gallery-ex.light .gal-footer{border-top-color:rgba(0,0,0,.06);color:rgba(0,0,0,.25)}
+    #gallery-ex.light .ex-x{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.08);color:rgba(0,0,0,.5)}
+    #gallery-ex.light .ex-x:hover{background:rgba(0,0,0,.12);color:#1a1a1a}
+
+    .gal-nav{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;
+      padding:18px 40px;background:rgba(8,8,8,.92);backdrop-filter:blur(16px);
+      border-bottom:1px solid rgba(255,255,255,.06)}
+    .gal-logo{font-size:15px;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:8px}
+    .gal-logo svg{width:18px;height:21px}
+    .gal-hero{padding:80px 40px 56px;max-width:1100px;margin:0 auto;text-align:center}
+    .gal-title{font-size:clamp(32px,5vw,54px);font-weight:700;letter-spacing:-.03em;color:#f0f0f0;margin-bottom:16px}
+    .gal-sub{font-size:16px;line-height:1.7;color:rgba(255,255,255,.42);max-width:520px;margin:0 auto}
+    /* ── Logo mark — shared lift mechanic ────────────────────────────────── */
+    /* Large hero version (non-clickable) */
+    .nd-hero-mark{display:inline-flex;align-items:center;justify-content:center;transition:transform .35s cubic-bezier(.22,.68,0,1.2),filter .35s ease;cursor:default}
+    .nd-hero-mark:hover{transform:translateY(-6px);filter:drop-shadow(0 0 56px rgba(0,200,255,0.28)) drop-shadow(0 18px 48px rgba(0,0,0,0.55))}
+    /* Nav/footer version (clickable, proportionate glow) */
+    .nd-logo-lift{display:inline-flex;align-items:center;justify-content:center;transition:transform .3s cubic-bezier(.22,.68,0,1.2);cursor:pointer}
+    .nd-logo-lift:hover{transform:translateY(-4px)}
+    .nd-logo-mark{display:block;transition:filter .3s ease}
+    /* Dark mode: white mark, cyan bloom on hover */
+    .nd-logo-lift:hover .nd-logo-mark{filter:drop-shadow(0 0 18px rgba(0,200,255,0.38)) drop-shadow(0 6px 16px rgba(0,0,0,0.55))}
+    /* Light mode: use dark mark image — no filter needed; subtle shadow on hover */
+    #gallery-ex.light .nd-logo-lift:hover .nd-logo-mark,#site-ex.light .nd-logo-lift:hover .nd-logo-mark{filter:drop-shadow(0 6px 16px rgba(0,0,0,0.18))}
+    /* Hero mark — light mode: swap to dark mark */
+    #site-ex.light .nd-hero-mark .nd-logo-mark{opacity:1}
+    #site-ex.light .nd-hero-mark:hover{filter:drop-shadow(0 0 32px rgba(0,0,0,0.1)) drop-shadow(0 12px 32px rgba(0,0,0,0.1))}
+
+    /* Gallery — wide stacked landscape cards */
+    .gal-grid{display:flex;flex-direction:column;gap:32px;padding:0 40px 80px;max-width:100%}
+    .gal-card{
+      display:grid;grid-template-columns:62% 38%;
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:8px;
+      background:transparent;cursor:pointer;
+      transition:transform .3s cubic-bezier(.23,1,.32,1),box-shadow .3s cubic-bezier(.23,1,.32,1),border-color .25s,background .25s;
+      overflow:hidden;
+      box-shadow:0 4px 24px rgba(0,0,0,.3);
+    }
+    .gal-card:hover{
+      transform:translateY(-6px);
+      box-shadow:0 24px 64px rgba(0,0,0,.55);
+      border-color:rgba(255,255,255,.18)!important;
+      background:rgba(255,255,255,.02);
+    }
+    .gal-card:hover{background:rgba(255,255,255,.025)}
+    .gal-carousel{position:relative;overflow:hidden;height:100%;min-height:340px;}
+    .gal-img{
+      width:100%;height:100%;min-height:340px;
+      object-fit:cover;object-position:top center;display:block;
+      filter:brightness(.82) saturate(.88);
+      transition:filter .4s;
+    }
+    .gal-card:hover .gal-img{filter:brightness(.95) saturate(1)}
+    .gal-card:hover .gal-img{filter:brightness(.95) saturate(1)}
+    .gal-img-ph{width:100%;min-height:340px;background:rgba(255,255,255,.03);
+      display:flex;align-items:center;justify-content:center;font-size:48px;color:rgba(255,255,255,.06)}
+    .gal-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);
+      display:flex;gap:7px;z-index:2;pointer-events:none;}
+    .gal-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.28);
+      transition:background .35s,transform .35s;}
+    .gal-dot.active{background:rgba(255,255,255,.9);transform:scale(1.25);}
+    .gal-body{
+      padding:52px 56px;display:flex;flex-direction:column;justify-content:center;
+      border-left:1px solid rgba(255,255,255,.06);
+    }
+    .gal-label{font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+      color:rgba(255,255,255,.28);margin-bottom:12px}
+    .gal-name{font-size:28px;font-weight:700;letter-spacing:-.03em;color:#f0f0f0;margin-bottom:14px;line-height:1.15}
+    .gal-desc{font-size:14px;line-height:1.72;color:rgba(255,255,255,.42);margin-bottom:28px}
+    .gal-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px}
+    .gal-tag{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+      padding:4px 10px;border-radius:3px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.38)}
+    .gal-link{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;
+      letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55);
+      border:1px solid rgba(255,255,255,.16);border-radius:4px;padding:10px 20px;
+      text-decoration:none;transition:all .2s;cursor:pointer;align-self:flex-start}
+    .gal-link:hover{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.35)}
+    .gal-live-dot{width:6px;height:6px;background:#22dd66;border-radius:50%;display:inline-block;flex-shrink:0}
+    /* Speed badge — Who We Are hero */
+    .site-speed-badge{display:inline-flex;align-items:center;gap:9px;font-size:13px;color:rgba(255,255,255,.42);letter-spacing:.01em;margin-bottom:48px}
+    .site-speed-badge strong{color:rgba(255,255,255,.72);font-weight:600}
+    .ssb-dot{width:7px;height:7px;border-radius:50%;background:#22dd88;box-shadow:0 0 8px rgba(34,221,136,.7);flex-shrink:0;animation:ssbPulse 2s ease-in-out infinite}
+    @keyframes ssbPulse{0%,100%{opacity:1}50%{opacity:.45}}
+    #site-ex.light .site-speed-badge{color:rgba(0,0,0,.42)}
+    #site-ex.light .site-speed-badge strong{color:rgba(0,0,0,.68)}
+
+    /* Gallery CTA */
+    .gal-cta{padding:80px 40px 64px;border-top:1px solid rgba(255,255,255,.06)}
+    .gal-cta-inner{max-width:720px;margin:0 auto;text-align:center}
+    .gal-cta-speed{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:100px;background:rgba(34,221,136,.08);border:1px solid rgba(34,221,136,.2);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(34,221,136,.85);margin-bottom:22px}
+    #gallery-ex.light .gal-cta-speed{background:rgba(0,150,80,.07);border-color:rgba(0,150,80,.2);color:rgba(0,120,60,.8)}
+    .gal-cta-label{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:20px}
+    .gal-cta-head{font-size:clamp(30px,4.5vw,54px);font-weight:700;line-height:1.08;letter-spacing:-.04em;color:#f0f0f0;margin-bottom:18px}
+    .gal-cta-sub{font-size:16px;line-height:1.7;color:rgba(255,255,255,.42);max-width:520px;margin:0 auto 44px}
+    .gal-cta-btns{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+    .gal-cta-primary{display:inline-flex;align-items:center;gap:9px;padding:16px 32px;background:#fff;color:#000;font-size:14px;font-weight:700;letter-spacing:.02em;border-radius:6px;text-decoration:none;transition:transform .2s,box-shadow .2s}
+    .gal-cta-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,255,255,.14)}
+    .gal-cta-secondary{padding:16px 32px;background:transparent;border:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.62);font-size:14px;font-weight:600;letter-spacing:.02em;border-radius:6px;cursor:pointer;transition:all .2s}
+    .gal-cta-secondary:hover{border-color:rgba(255,255,255,.4);color:#fff}
+    /* Light mode overrides */
+    #gallery-ex.light .gal-cta{border-top-color:rgba(0,0,0,.07)}
+    #gallery-ex.light .gal-cta-label{color:rgba(0,0,0,.28)}
+    #gallery-ex.light .gal-cta-head{color:#111}
+    #gallery-ex.light .gal-cta-sub{color:rgba(0,0,0,.48)}
+    #gallery-ex.light .gal-cta-primary{background:#111;color:#fff}
+    #gallery-ex.light .gal-cta-primary:hover{box-shadow:0 8px 28px rgba(0,0,0,.18)}
+    #gallery-ex.light .gal-cta-secondary{border-color:rgba(0,0,0,.15);color:rgba(0,0,0,.55)}
+    #gallery-ex.light .gal-cta-secondary:hover{border-color:rgba(0,0,0,.4);color:#111}
+
+    .gal-footer{padding:32px 40px;border-top:1px solid rgba(255,255,255,.06);text-align:center;
+      font-size:12px;color:rgba(255,255,255,.18)}
+    @media(max-width:768px){
+      .gal-grid{gap:20px;padding:0 16px 60px}
+      .gal-card{grid-template-columns:1fr;grid-template-rows:auto auto}
+      .gal-carousel{min-height:220px;height:220px}
+      .gal-img,.gal-img-ph{min-height:220px;height:220px}
+      .gal-body{padding:28px 24px;border-left:none;border-top:1px solid rgba(255,255,255,.08)}
+      .gal-name{font-size:22px}
+      .gal-hero{padding:64px 20px 40px}
+      .gal-nav{padding:14px 20px}
+      /* Provoke card: first in HTML (desktop top), but move to just above CheerStretch on mobile */
+      .gal-grid .gal-card:nth-child(1){order:4}
+      .gal-grid .gal-card:nth-child(5){order:5}
+    }
+
+    /* Expand overlays — shared transition */
+    .ex{position:fixed;z-index:25;opacity:0;pointer-events:none;overflow:hidden;cursor:auto;
+      transition:opacity .4s cubic-bezier(.2,.9,.3,1),transform .4s cubic-bezier(.2,.9,.3,1);
+      transform:scale(.88);border-radius:12px}
+    .ex.on{opacity:1;pointer-events:auto;transform:scale(1);border-radius:8px}
+    /* Main overlays — classy vertical curtain reveal */
+    @keyframes curtainOpen{from{clip-path:inset(50% 0 50% 0)}to{clip-path:inset(0% 0 0% 0)}}
+    @keyframes curtainClose{from{clip-path:inset(0% 0 0% 0);opacity:1}to{clip-path:inset(50% 0 50% 0);opacity:0}}
+    #gallery-ex,#site-ex{clip-path:inset(50% 0 50% 0);transform:none!important}
+    #gallery-ex.on,#site-ex.on{animation:curtainOpen .58s cubic-bezier(.76,0,.24,1) forwards;opacity:1}
+    #gallery-ex.closing,#site-ex.closing{animation:curtainClose .36s cubic-bezier(.76,0,.24,1) forwards;pointer-events:none}
+    .ex-x{position:absolute;top:14px;right:18px;z-index:30;background:rgba(0,0,0,.55);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);width:38px;height:38px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;line-height:1;font-family:'Space Grotesk',sans-serif}
+    .ex-x:hover{background:rgba(255,255,255,.15);color:#fff}
+
+    #site-ex{background:#050505;top:0;left:0;right:0;bottom:0;overflow-y:auto;border-radius:0!important}
+    #site-ex.on{border-radius:0!important}
+
+    /* LIGHT MODE — Office Space watercooler vibes */
+    #site-ex.light{background:#f4f1ec}
+    #site-ex.light .snav{background:rgba(244,241,236,.96);border-bottom:1px solid rgba(0,0,0,.07)}
+    #site-ex.light .nlogo{color:#1a1a1a}
+    /* Logo swap: dark logo hides in light mode, light logo shows */
+    #site-ex.light .logo-dark-ver,#gallery-ex.light .logo-dark-ver{display:none!important}
+    #site-ex.light .logo-light-ver,#gallery-ex.light .logo-light-ver{display:block!important}
+    #site-ex.light .snav a{color:rgba(0,0,0,.7)!important}
+    #site-ex.light .ncta{background:#1a1a1a;color:#f4f1ec}
+    #site-ex.light .s-label{color:rgba(80,70,55,.7)}
+    #site-ex.light .s-title{color:#0a0a0a}
+    #site-ex.light .s-sub{color:rgba(20,18,14,.7)}
+    #site-ex.light .divider{background:rgba(0,0,0,.06)}
+    #site-ex.light .svc-card{border-color:rgba(0,0,0,.07)}
+    #site-ex.light .svc-num{color:rgba(80,70,55,.55)}
+    #site-ex.light .svc-card h3{color:#0a0a0a}
+    #site-ex.light .svc-card p{color:rgba(20,18,14,.72)}
+    #site-ex.light .proc-step{border-color:rgba(0,0,0,.07)}
+    #site-ex.light .proc-num{color:rgba(80,70,55,.5)}
+    #site-ex.light .proc-step h3{color:#0a0a0a}
+    #site-ex.light .proc-step h3{color:#0a0a0a}
+    #site-ex.light .proc-step::before{color:rgba(80,70,55,.12)!important}
+    #site-ex.light .proc-step p{color:rgba(20,18,14,.72)}
+    #site-ex.light .proc-call-link{color:rgba(20,18,14,.7)}
+    #site-ex.light .proc-call-link:hover{color:#0a0a0a}
+    #site-ex.light .case{border-color:rgba(0,0,0,.07)}
+    #site-ex.light .case-tag{background:rgba(0,0,0,.05);color:rgba(80,70,55,.5)}
+    #site-ex.light .res-card{background:rgba(0,0,0,.025);border-top-color:rgba(0,0,0,.15);box-shadow:0 20px 60px rgba(0,0,0,.08)!important}
+    #site-ex.light .res-card:hover{box-shadow:0 36px 100px rgba(0,0,0,.14)!important}
+    #site-ex.light .rc-stamp{color:rgba(0,0,0,.45)}
+    #site-ex.light .rc-stamp::before{color:rgba(0,0,0,.18)}
+    #site-ex.light .res-card h3{color:#0a0a0a}
+    #site-ex.light .res-card p{color:rgba(20,18,14,.68)}
+    #site-ex.light .res-nums{border-top-color:rgba(0,0,0,.08)}
+    #site-ex.light .rn-item+.rn-item{border-left-color:rgba(0,0,0,.07)}
+    #site-ex.light .rs-num{color:#0a0a0a}
+    #site-ex.light .rs-label{color:rgba(0,0,0,.38)}
+    #site-ex.light .res-card::after{color:rgba(0,0,0,.018)}
+    #site-ex.light .case h3{color:#0a0a0a}
+    #site-ex.light .case p{color:rgba(20,18,14,.72)}
+    #site-ex.light .case-stat span{color:#0a0a0a}
+    #site-ex.light .case-stat small{color:rgba(20,18,14,.62)}
+    #site-ex.light .diff-card{border-color:rgba(0,0,0,.07)}
+    #site-ex.light .diff-card h3{color:#0a0a0a}
+    #site-ex.light .diff-card p{color:rgba(20,18,14,.72)}
+    #site-ex.light .price-card{border-color:rgba(0,0,0,.07);background:transparent}
+    #site-ex.light .price-card:hover{border-color:rgba(0,0,0,.16)}
+    #site-ex.light .price-card.featured{border-color:rgba(0,0,0,.18);background:rgba(0,0,0,.025)}
+    #site-ex.light .price-card.featured::before{background:#1a1a1a;color:#f4f1ec}
+    #site-ex.light .price-tier{color:rgba(80,70,55,.4)}
+    #site-ex.light .price-amt{color:#1a1a1a}
+    #site-ex.light .price-per{color:rgba(40,35,28,.4)}
+    #site-ex.light .price-desc{color:rgba(40,35,28,.5)}
+    #site-ex.light .price-list li{color:rgba(40,35,28,.55);border-bottom-color:rgba(0,0,0,.04)}
+    #site-ex.light .price-list li::before{color:rgba(80,70,55,.3)}
+    #site-ex.light .price-cta{border-color:rgba(0,0,0,.14);color:rgba(0,0,0,.6)}
+    #site-ex.light .price-cta:hover{background:rgba(0,0,0,.05);color:#1a1a1a;border-color:rgba(0,0,0,.24)}
+    #site-ex.light .price-card.featured .price-cta{background:#1a1a1a;color:#f4f1ec;border-color:#1a1a1a}
+    #site-ex.light .price-human{color:rgba(40,35,28,.3)}
+    #site-ex.light .pricing-note{color:rgba(40,35,28,.35)}
+    #site-ex.light .faq-q{color:rgba(0,0,0,.88)}
+    #site-ex.light .faq-q span{color:rgba(0,0,0,.45)}
+    #site-ex.light .faq-a{color:rgba(20,18,14,.72)}
+    #site-ex.light .faq-item{border-bottom-color:rgba(0,0,0,.06)}
+    #site-ex.light .trust{border-color:rgba(0,0,0,.06)}
+    #site-ex.light .trust-num{color:#1a1a1a}
+    #site-ex.light .trust-label{color:rgba(20,18,14,.62)}
+    #site-ex.light .cta-block{background:rgba(0,0,0,.025);border-color:rgba(0,0,0,.07)}
+    #site-ex.light .cta-block h2{color:#0a0a0a}
+    #site-ex.light .cta-block p{color:rgba(20,18,14,.72)}
+    #site-ex.light .cta-btn{background:#1a1a1a;color:#f4f1ec}
+    #site-ex.light .bp{background:#1a1a1a!important;color:#f4f1ec!important}
+    #site-ex.light .bs{border-color:rgba(0,0,0,.16)!important;color:rgba(0,0,0,.55)!important}
+    #site-ex.light .ft{border-top-color:rgba(0,0,0,.06)}
+    #site-ex.light .ft-brand{color:rgba(0,0,0,.5)}
+    #site-ex.light .quote-card{border-color:rgba(0,0,0,.1);background:rgba(0,0,0,.025)}
+    #site-ex.light .quote-open{color:rgba(0,0,0,.1)}
+    #site-ex.light .quote-text{color:rgba(0,0,0,.82)}
+    #site-ex.light .quote-name{color:#111}
+    #site-ex.light .quote-role{color:rgba(0,0,0,.5)}
+    #site-ex.light .ft-links a{color:rgba(0,0,0,.6)}
+    #site-ex.light .ft-copy{color:rgba(0,0,0,.45)}
+    #site-ex.light .ft div[style]{color:rgba(0,0,0,.55)!important}
+    #site-ex.light .ex-x{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.08);color:rgba(0,0,0,.5)}
+    #site-ex.light .ex-x:hover{background:rgba(0,0,0,.12);color:#1a1a1a}
+    #site-ex.light p[style]{color:rgba(20,18,14,.72)!important}
+    #site-ex.light h1[style]{color:#0a0a0a!important}
+    #site-ex.light .htag{background:rgba(0,0,0,.05)!important;color:rgba(80,70,55,.5)!important}
+
+    /* ═══ MOBILE RESPONSIVE ═══ */
+    @media(max-width:768px){
+      .pg{padding:0 20px}
+      .s{padding:56px 0}
+      .s-title{font-size:clamp(24px,6vw,36px)}
+      .s-sub{font-size:14px}
+      .slabel{font-size:clamp(28px,7vw,48px)}
+      #wm{font-size:13px;top:20px}
+      #hint{font-size:9px;bottom:24px}
+      .snav{padding:14px 20px;flex-wrap:wrap;gap:12px}
+      .snav div[style]{gap:16px!important;flex-wrap:wrap}
+      .snav a{font-size:12px!important}
+      .hero,.hero-like{padding:64px 20px 48px!important}
+      .hero h1,h1[style]{font-size:clamp(28px,7vw,48px)!important}
+      .hsub,p[style*="18px"]{font-size:15px!important}
+      .hbtns{flex-direction:column;gap:10px}
+      .hbtns .bp,.hbtns .bs{width:100%;text-align:center;padding:16px 20px!important}
+      .trust{flex-direction:column;gap:20px;padding:28px 0}
+      .trust-item{display:flex;align-items:center;gap:12px;text-align:left}
+      .trust-num{font-size:28px}
+      .svc-grid{grid-template-columns:1fr!important;gap:16px}
+      .svc-card{padding:22px}
+      .proc-grid{grid-template-columns:1fr!important}
+      .case-grid{grid-template-columns:1fr!important}
+      .case-stats{flex-wrap:wrap;gap:16px}
+      .diff-grid{grid-template-columns:1fr!important;gap:16px}
+      .pricing-grid{grid-template-columns:1fr!important;gap:20px}
+      .price-card{padding:28px 24px}
+      .price-card.featured::before{left:24px}
+      .faq-q{font-size:14px}
+      .faq-a{font-size:13px}
+      .cta-block{padding:48px 24px}
+      .cta-block h2{font-size:clamp(22px,5vw,32px)}
+      .cta-block p{font-size:14px}
+      .cta-btn,.price-cta,.bp,.bs,.ncta{min-height:48px;font-size:15px}
+      .ft-row{flex-direction:column;gap:24px}
+      .ft-links{gap:18px}
+      .ex-x{width:44px;height:44px;font-size:20px;top:10px;right:12px}
+      #term-ex{top:0;left:0;right:0;bottom:0;border-radius:0!important}
+      #te-bar{padding:14px 18px}
+      #te-msgs{padding:18px}
+      #te-foot{padding:14px 18px}
+      #te-input{padding:12px 14px;font-size:15px}
+      #te-send{padding:12px 18px;font-size:14px}
+      .fml{padding:16px 32px}
+      .fml-n{font-size:14px}
+      .fml-d{font-size:11px}
+      .divider{margin:0 20px}
+    }
+    @media(max-width:420px){
+      .pg{padding:0 16px}
+      .s{padding:40px 0}
+      .price-card{padding:24px 20px}
+      .snav{padding:12px 16px}
+      .divider{margin:0 16px}
+    }
+
+    /* ── Logo mark — mobile ────────────────────────────────────────────────── */
+    @media(max-width:768px){
+      /* Hero mark: hide on mobile — doesn't translate well */
+      .nd-hero-mark{display:none!important}
+      /* Hero section: tighten top padding (inline style, need !important) */
+      #site-ex section[style*="88px"]{padding:52px 0 36px!important}
+      /* Speed badge: bigger + remove the spacing that was holding place for the logo */
+      .site-speed-badge{font-size:16px!important;gap:11px;margin-bottom:0!important}
+      .ssb-dot{width:9px!important;height:9px!important}
+      /* Button row bottom margin — reduce since nothing below on mobile */
+      .hbtns[style]{margin-bottom:16px!important}
+      /* Site nav logo: tighter for mobile nav bar */
+      #site-nav-logo .nd-logo-mark{height:44px!important}
+      /* Gallery CTA buttons: stack on mobile */
+      .gal-cta-btns{flex-direction:column;align-items:stretch}
+      .gal-cta-primary,.gal-cta-secondary{text-align:center;justify-content:center}
+    }
+    /* Kill lift transition on touch — no hover means no lift, just looks twitchy on tap */
+    @media(pointer:coarse){
+      .nd-logo-lift,.nd-hero-mark{transition:none!important}
+      .nd-logo-lift:hover,.nd-hero-mark:hover{transform:none!important;filter:none!important}
+      .nd-logo-lift:hover .nd-logo-mark{filter:none!important}
+    }
+    /* Touch device: hide custom cursor, fix hover interactions, iOS fixes */
+    @media(pointer:coarse){
+      #dot{display:none!important}
+      #hint{display:none}
+      .fml-sub,.entry-sub{min-height:44px;display:flex;flex-direction:column;justify-content:center}
+      /* Make floating-mirror sub-buttons always visible (hover doesn't work on touch) */
+      .fml-group .fml-sub{opacity:1;pointer-events:auto;transform:translateY(0)}
+      /* Prevent iOS zoom on input focus (requires >=16px) */
+      #te-input{font-size:16px}
+      .cm-field input,.cm-field textarea{font-size:16px}
+      /* Scroll containment for overlays */
+      #site-ex,#gallery-ex,#contact-modal,#svc-detail,#case-detail,#term-ex{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+      /* Minimum tap targets */
+      .ham{min-width:44px;min-height:44px;align-items:center;justify-content:center}
+      .faq-q{min-height:48px;display:flex;align-items:center}
+      .mob-menu a{min-height:44px;display:flex;align-items:center}
+      .gal-link{min-height:44px;display:inline-flex;align-items:center}
+      .ft-links a{min-height:44px;display:inline-flex;align-items:center}
+      .snav-link{min-height:44px;display:inline-flex;align-items:center}
+    }
+
+    /* ═══ MOBILE ENTRY SCREEN — GHOST CARD DESIGN ═══ */
+    #mobile-entry{display:none;position:fixed;inset:0;z-index:12;flex-direction:column;align-items:center;justify-content:center;transition:opacity .7s ease;
+      padding:env(safe-area-inset-top,20px) env(safe-area-inset-right,16px) env(safe-area-inset-bottom,20px) env(safe-area-inset-left,16px)}
+    #mobile-entry .me-wm{position:absolute;top:calc(env(safe-area-inset-top,20px) + 16px);left:50%;transform:translateX(-50%);
+      font-size:14px;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,.38)}
+    .me-ghosts{display:flex;gap:16px;align-items:stretch;justify-content:center;width:100%;max-width:400px}
+    .me-ghost{flex:1;display:flex;flex-direction:column;align-items:center;padding:32px 12px 24px;border-radius:20px;cursor:pointer;
+      transition:transform .15s ease,box-shadow .3s ease;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden}
+    .me-ghost:active{transform:scale(.96)}
+    .me-ghost-light{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+      backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+    .me-ghost-dark{background:rgba(30,4,4,.55);border:1px solid rgba(204,0,17,.28);
+      backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+      box-shadow:inset 0 0 60px rgba(180,0,15,.12),0 0 30px rgba(180,0,15,.12)}
+    .me-ghost-figure{width:72px;height:96px;margin-bottom:16px;position:relative}
+    .me-ghost-svg{width:100%;height:100%;overflow:visible}
+    .me-fig-light .me-ghost-svg path{fill:rgba(255,255,255,.88)}
+    .me-fig-light .me-eye{fill:rgba(0,0,0,.65)}
+    .me-fig-dark .me-ghost-svg path{fill:rgba(155,22,22,.97)}
+    .me-fig-dark .me-eye{fill:rgba(255,55,45,1);filter:drop-shadow(0 0 6px rgba(255,40,30,.9))}
+    .me-ghost-label{font-size:18px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;margin-bottom:18px}
+    .me-ghost-light .me-ghost-label{color:rgba(255,255,255,.7)}
+    .me-ghost-dark .me-ghost-label{color:rgba(255,255,255,.28)}
+    .me-ghost-actions{display:flex;flex-direction:column;gap:8px;width:100%}
+    .me-action{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+      padding:12px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);
+      color:rgba(255,255,255,.4);cursor:pointer;min-height:44px;display:flex;align-items:center;justify-content:center;
+      transition:background .15s,color .15s;-webkit-tap-highlight-color:transparent}
+    .me-action:active{background:rgba(255,255,255,.12);color:rgba(255,255,255,.75)}
+    .me-hint{position:absolute;bottom:calc(env(safe-area-inset-bottom,20px) + 12px);left:50%;transform:translateX(-50%);
+      font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.14);white-space:nowrap}
+    /* Ghost float + glow animations */
+    @keyframes meFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    @keyframes meGlow{0%,100%{filter:drop-shadow(0 0 16px rgba(255,255,255,.15))}50%{filter:drop-shadow(0 0 30px rgba(255,255,255,.4))}}
+    @keyframes meSithAura{
+      0%,100%{filter:brightness(1.1) drop-shadow(0 0 10px rgba(204,0,17,.55)) drop-shadow(0 0 28px rgba(204,0,17,.28)) drop-shadow(0 6px 16px rgba(0,0,0,.6))}
+      50%{filter:brightness(1.35) drop-shadow(0 0 18px rgba(255,20,20,.8)) drop-shadow(0 0 48px rgba(204,0,17,.5)) drop-shadow(0 0 80px rgba(160,0,10,.25)) drop-shadow(0 8px 24px rgba(0,0,0,.7))}
+    }
+    .me-fig-light{animation:meFloat 3.2s ease-in-out infinite,meGlow 2.8s ease-in-out infinite}
+    .me-fig-dark{animation:meFloat 3.2s ease-in-out infinite .6s,meSithAura 2.6s ease-in-out infinite .4s}
+    @media(pointer:coarse){
+      #mobile-entry{display:flex}
+      #entry{display:none}
+    }
+    /* Landscape: compact ghost cards */
+    @media(pointer:coarse) and (orientation:landscape){
+      .me-ghosts{max-width:520px}
+      .me-ghost{padding:20px 16px 16px}
+      .me-ghost-figure{width:52px;height:68px;margin-bottom:10px}
+      .me-ghost-label{font-size:16px;margin-bottom:12px}
+      .me-action{padding:8px 8px;min-height:40px;font-size:11px}
+    }
+
+    .pg{max-width:1120px;margin:0 auto;padding:0 40px}
+    .s{padding:96px 0}
+    .s-label{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.32);margin-bottom:14px}
+    .s-title{font-size:clamp(28px,4vw,44px);font-weight:700;line-height:1.14;letter-spacing:-.03em;color:#f0f0f0;margin-bottom:18px}
+    .s-sub{font-size:16px;line-height:1.72;color:rgba(255,255,255,.46);max-width:580px}
+    .quote-card{border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:36px 32px;background:rgba(255,255,255,.02)}
+    .quote-open{font-size:48px;line-height:1;color:rgba(255,255,255,.1);font-family:Georgia,serif;margin-bottom:16px}
+    .quote-text{font-size:18px;line-height:1.62;color:rgba(255,255,255,.82);font-weight:500;margin-bottom:28px}
+    .quote-name{font-size:13px;font-weight:600;color:#fff;letter-spacing:.02em}
+    .quote-role{font-size:11px;color:rgba(255,255,255,.45);letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+    .divider{height:1px;background:rgba(255,255,255,.06);margin:0 40px}
+
+    /* Trust bar */
+    .trust{display:flex;flex-wrap:wrap;gap:48px;padding:36px 0;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
+    .trust-item{text-align:center;flex:1;min-width:120px}
+    .trust-num{font-size:38px;font-weight:700;letter-spacing:-.02em;color:#fff}
+    .trust-label{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.32);margin-top:6px}
+
+    /* Services grid */
+    .svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin-top:40px}
+    .svc-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:32px;transition:border-color .2s,background .2s}
+    .svc-card:hover{border-color:rgba(255,255,255,.14);background:rgba(255,255,255,.05)}
+    .svc-num{font-size:11px;font-weight:700;letter-spacing:.15em;color:rgba(255,255,255,.2);margin-bottom:14px}
+    .svc-card h3{font-size:18px;font-weight:700;color:#f0f0f0;margin-bottom:10px;letter-spacing:-.01em}
+    .svc-card p{font-size:14px;line-height:1.7;color:rgba(255,255,255,.42)}
+
+    /* Process steps */
+    .proc{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:32px;margin-top:40px;counter-reset:step}
+    .proc-step{position:relative;padding:28px 24px;border-left:2px solid rgba(255,255,255,.08);counter-increment:step}
+    .proc-step::before{content:counter(step,decimal-leading-zero);font-size:42px;font-weight:700;color:rgba(255,255,255,.06);letter-spacing:-.03em;display:block;margin-bottom:12px}
+    .proc-step h3{font-size:16px;font-weight:700;color:#f0f0f0;margin-bottom:8px}
+    .proc-step p{font-size:13px;line-height:1.7;color:rgba(255,255,255,.38)}
+    .proc-call-link{display:inline-flex;align-items:center;gap:7px;margin-top:14px;font-size:13px;font-weight:600;color:rgba(255,255,255,.72);text-decoration:none;letter-spacing:.01em;transition:color .2s}
+    .proc-call-link:hover{color:#fff}
+    #site-ex.light .proc-call-link{color:rgba(0,0,0,.55)}
+    #site-ex.light .proc-call-link:hover{color:#000}
+
+    /* Results */
+    /* Results — Collage/Scattered Style */
+    .res-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:0;
+      margin-top:64px;
+      padding:0 0 60px;
+      position:relative;
+    }
+    @media(max-width:860px){.res-grid{grid-template-columns:1fr;gap:32px;padding:0 0 24px}}
+    .res-card{
+      position:relative;
+      padding:36px 32px 48px;
+      background:rgba(255,255,255,.03);
+      border-top:1px solid rgba(255,255,255,.12);
+      display:flex;flex-direction:column;
+      transition:transform .4s cubic-bezier(.23,1,.32,1),box-shadow .4s;
+      will-change:transform;
+    }
+    .res-card:nth-child(1){
+      transform:rotate(-2.2deg) translateY(18px);
+      border-top-color:rgba(255,255,255,.18);
+      box-shadow:0 20px 60px rgba(0,0,0,.45);
+      z-index:2;margin-right:-12px;
+    }
+    .res-card:nth-child(2){
+      transform:rotate(1.4deg) translateY(-8px);
+      background:rgba(255,255,255,.045);
+      border-top-color:rgba(255,255,255,.25);
+      box-shadow:0 28px 80px rgba(0,0,0,.55);
+      z-index:3;
+    }
+    .res-card:nth-child(3){
+      transform:rotate(-0.8deg) translateY(28px);
+      border-top-color:rgba(255,255,255,.1);
+      box-shadow:0 16px 48px rgba(0,0,0,.35);
+      z-index:1;margin-left:-12px;
+    }
+    .res-card:hover{transform:rotate(0deg) translateY(0px)!important;box-shadow:0 36px 100px rgba(0,0,0,.65)!important;z-index:10!important}
+    .rc-stamp{
+      font-size:9px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;
+      color:rgba(255,255,255,.28);margin-bottom:28px;
+      display:flex;align-items:center;gap:8px;
+    }
+    .rc-stamp::before{content:'//';color:rgba(255,255,255,.15);font-weight:400}
+    .res-card h3{font-size:17px;font-weight:700;color:#efefef;margin-bottom:14px;line-height:1.4}
+    .res-card p{font-size:12.5px;line-height:1.78;color:rgba(255,255,255,.34);flex:1;margin-bottom:0}
+    .res-nums{
+      margin-top:28px;
+      display:flex;gap:0;
+      border-top:1px solid rgba(255,255,255,.07);
+      padding-top:20px;
+    }
+    .rn-item{flex:1;position:relative}
+    .rn-item+.rn-item{border-left:1px solid rgba(255,255,255,.06);padding-left:20px}
+    .rs-num{
+      font-size:38px;font-weight:800;letter-spacing:-.04em;
+      color:#fff;line-height:1;
+      display:block;
+    }
+    .rs-label{font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.24);margin-top:6px;display:block}
+    .res-card::after{
+      content:attr(data-n);
+      position:absolute;bottom:-24px;right:20px;
+      font-size:140px;font-weight:900;line-height:1;
+      color:rgba(255,255,255,.022);letter-spacing:-.06em;
+      pointer-events:none;user-select:none;
+    }
+
+    /* Diff */
+    .diff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:40px}
+    .diff-card{padding:28px;border:1px solid rgba(255,255,255,.06);border-radius:10px}
+    .diff-card h3{font-size:15px;font-weight:700;color:#f0f0f0;margin-bottom:8px}
+    .diff-card p{font-size:13px;line-height:1.7;color:rgba(255,255,255,.38)}
+
+    /* Pricing */
+    .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+    @media(max-width:860px){.pricing-grid{grid-template-columns:1fr}}
+    .price-card{padding:36px 32px;border:1px solid rgba(255,255,255,.06);border-radius:12px;display:flex;flex-direction:column;position:relative;transition:border-color .2s}
+    .price-card:hover{border-color:rgba(255,255,255,.14)}
+    .price-card.featured{border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.025)}
+    .price-card.featured::before{content:'MOST POPULAR';position:absolute;top:-11px;left:32px;font-size:10px;font-weight:700;letter-spacing:.18em;padding:4px 12px;background:#fff;color:#000;border-radius:4px}
+    .price-tier{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.32);margin-bottom:20px}
+    .price-amt{font-size:42px;font-weight:700;letter-spacing:-.03em;color:#f0f0f0;line-height:1}
+    .price-per{font-size:14px;font-weight:400;color:rgba(255,255,255,.28);margin-left:4px}
+    .price-desc{font-size:14px;line-height:1.7;color:rgba(255,255,255,.36);margin:18px 0 28px;flex:1}
+    .price-list{list-style:none;margin-bottom:32px}
+    .price-list li{font-size:13px;color:rgba(255,255,255,.48);padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;align-items:baseline;gap:10px}
+    .price-list li::before{content:'+';color:rgba(255,255,255,.2);font-weight:600;flex-shrink:0}
+    .price-cta{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;padding:14px 24px;border-radius:8px;cursor:pointer;border:1px solid rgba(255,255,255,.14);background:transparent;color:rgba(255,255,255,.64);transition:all .18s;width:100%;text-align:center}
+    .price-cta:hover{background:rgba(255,255,255,.06);color:#fff;border-color:rgba(255,255,255,.24)}
+    .price-card.featured .price-cta{background:#fff;color:#000;border-color:#fff}
+    .price-card.featured .price-cta:hover{opacity:.85}
+    .price-human{font-size:11px;color:rgba(255,255,255,.22);text-align:center;margin-top:12px;letter-spacing:.04em}
+    .pricing-note{text-align:center;margin-top:48px;font-size:13px;color:rgba(255,255,255,.26);line-height:1.7;max-width:560px;margin-left:auto;margin-right:auto}
+
+    /* FAQ */
+    .faq{margin-top:40px}
+    .faq-item{border-bottom:1px solid rgba(255,255,255,.06);padding:22px 0}
+    .faq-q{font-size:15px;font-weight:600;color:rgba(255,255,255,.72);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+    .faq-q span{transition:transform .2s;font-size:18px;color:rgba(255,255,255,.3)}
+    .faq-a{font-size:14px;line-height:1.74;color:rgba(255,255,255,.38);max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;padding-top:0}
+    .faq-item.open .faq-a{max-height:300px;padding-top:14px}
+    .faq-item.open .faq-q span{transform:rotate(45deg)}
+
+    /* Final CTA */
+    .cta-block{text-align:center;padding:80px 40px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;margin:64px 0}
+    .cta-block h2{font-size:clamp(28px,4vw,42px);font-weight:700;letter-spacing:-.03em;color:#f0f0f0;margin-bottom:14px}
+    .cta-block p{font-size:15px;color:rgba(255,255,255,.42);margin-bottom:32px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7}
+    .cta-btn{display:inline-block;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;padding:16px 36px;border-radius:8px;border:none;cursor:pointer;background:#fff;color:#000;transition:opacity .18s,transform .18s}
+    .cta-btn:hover{opacity:.85;transform:translateY(-1px)}
+
+    /* Footer */
+    .ft{padding:48px 0;border-top:1px solid rgba(255,255,255,.06)}
+    .ft-row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:32px}
+    .ft-brand{font-size:15px;font-weight:700;color:rgba(255,255,255,.5)}
+    .ft-links{display:flex;gap:28px;flex-wrap:wrap}
+    .ft-links a{font-size:12px;color:rgba(255,255,255,.28);text-decoration:none;letter-spacing:.06em;transition:color .2s}
+    .ft-links a:hover{color:rgba(255,255,255,.6)}
+    .ft-copy{font-size:11px;color:rgba(255,255,255,.16);margin-top:24px}
+    #term-ex{background:#010e05;top:3vh;left:3vw;right:3vw;bottom:3vh;display:flex;flex-direction:column}
+
+    #te-bar{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:1px solid rgba(68,238,136,.12);flex-shrink:0}
+    #te-bar span{font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(68,238,136,.55)}
+    #te-msgs{flex:1;overflow-y:auto;padding:32px;display:flex;flex-direction:column;gap:20px;max-width:800px;width:100%;margin:0 auto}
+    .tm{font-size:15px;line-height:1.74;font-family:monospace}
+    .tm.a{color:rgba(68,238,136,.8)}.tm.u{color:#5599ee;align-self:flex-end;text-align:right;max-width:74%}
+    .tm .lb{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;margin-bottom:6px;opacity:.4}
+    #te-foot{padding:18px 28px;border-top:1px solid rgba(68,238,136,.12);flex-shrink:0}
+    #te-row{display:flex;gap:12px;max-width:800px;margin:0 auto}
+    #te-input{flex:1;background:rgba(68,238,136,.05);border:1px solid rgba(68,238,136,.15);border-radius:8px;padding:14px 18px;color:#44ee88;font-family:monospace;font-size:14px;outline:none;transition:border-color .2s}
+    #te-input::placeholder{color:rgba(68,238,136,.25)}
+    #te-input:focus{border-color:rgba(68,238,136,.35)}
+    #te-send{background:#44ee88;color:#000;border:none;border-radius:8px;padding:14px 24px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .18s}
+    #te-send:hover{opacity:.8}
+
+    /* Site (hidden, unused for now — content lives in site-ex) */
+    .snav{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;z-index:20;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(5,5,5,.94);backdrop-filter:blur(14px)}
+    .nlogo{font-size:17px;font-weight:700;letter-spacing:-.02em;display:flex;align-items:center;gap:9px;color:#f0f0f0}
+    .gm{width:17px;height:19px}
+    .ncta{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;padding:9px 20px;border-radius:6px;border:none;cursor:pointer;background:#fff;color:#000;transition:opacity .2s}
+    .ncta:hover{opacity:.8}
+    .hero{padding:108px 48px 96px;max-width:1080px;margin:0 auto;color:#f0f0f0}
+    .htag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;padding:6px 14px;border-radius:99px;margin-bottom:28px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.42)}
+    .hero h1{font-size:clamp(40px,6vw,76px);font-weight:700;line-height:1.06;letter-spacing:-.04em;margin-bottom:24px;max-width:760px}
+    .hsub{font-size:17px;line-height:1.72;max-width:500px;margin-bottom:44px;color:rgba(255,255,255,.46)}
+    .hbtns{display:flex;gap:14px}
+    .bp{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;padding:14px 28px;border-radius:8px;cursor:pointer;border:none;background:#fff;color:#000;transition:opacity .18s,transform .18s}
+    .bp:hover{opacity:.82;transform:translateY(-1px)}
+    .bs{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;padding:14px 28px;border-radius:8px;cursor:pointer;background:transparent;border:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.62);transition:opacity .18s}
+    .bs:hover{opacity:.65}
+
+    /* Contact Modal */
+    #contact-modal{background:rgba(5,5,5,.97);top:0;left:0;right:0;bottom:0;overflow-y:auto;border-radius:0!important;z-index:30}
+    #contact-modal.on{border-radius:0!important}
+    .cm-inner{max-width:560px;margin:0 auto;padding:120px 40px 80px}
+    .cm-inner h2{font-size:clamp(28px,4vw,42px);font-weight:700;letter-spacing:-.03em;color:#f0f0f0;margin-bottom:12px}
+    .cm-inner .cm-sub{font-size:15px;color:rgba(255,255,255,.42);margin-bottom:40px;line-height:1.7}
+    .cm-field{display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
+    .cm-field label{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35)}
+    .cm-field input,.cm-field textarea{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:14px 16px;color:#f0f0f0;font-family:'Space Grotesk',sans-serif;font-size:15px;outline:none;transition:border-color .2s}
+    .cm-field input:focus,.cm-field textarea:focus{border-color:rgba(255,255,255,.3)}
+    .cm-field textarea{min-height:120px;resize:vertical}
+    .cm-submit{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;padding:16px 36px;border-radius:8px;border:none;cursor:pointer;background:#fff;color:#000;width:100%;margin-top:12px;transition:opacity .18s}
+    .cm-submit:hover{opacity:.85}
+    .cm-alt{text-align:center;margin-top:36px;padding-top:28px;border-top:1px solid rgba(255,255,255,.06)}
+    .cm-alt p{font-size:14px;color:rgba(255,255,255,.38);margin-bottom:8px;line-height:1.7}
+    .cm-alt a{color:rgba(255,255,255,.6);text-decoration:none}
+    .cm-alt a:hover{color:#fff}
+    /* Contact modal light */
+    #contact-modal.light{background:rgba(244,241,236,.97)}
+    #contact-modal.light h2{color:#1a1a1a}
+    #contact-modal.light .cm-sub{color:rgba(40,35,28,.5)}
+    #contact-modal.light label{color:rgba(80,70,55,.45)}
+    #contact-modal.light input,#contact-modal.light textarea{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.1);color:#1a1a1a}
+    #contact-modal.light input:focus,#contact-modal.light textarea:focus{border-color:rgba(0,0,0,.3)}
+    #contact-modal.light .cm-submit{background:#1a1a1a;color:#f4f1ec}
+    #contact-modal.light .cm-alt{border-top-color:rgba(0,0,0,.06)}
+    #contact-modal.light .cm-alt p{color:rgba(40,35,28,.4)}
+    #contact-modal.light .cm-alt a{color:rgba(0,0,0,.55)}
+    #contact-modal.light .ex-x{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.08);color:rgba(0,0,0,.5)}
+
+    /* Service Detail Overlay */
+    #svc-detail{background:rgba(5,5,5,.97);top:0;left:0;right:0;bottom:0;overflow-y:auto;border-radius:0!important;z-index:28}
+    #svc-detail.on{border-radius:0!important}
+    .sd-inner{max-width:700px;margin:0 auto;padding:100px 40px 80px}
+    .sd-inner .sd-num{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:14px}
+    .sd-inner h2{font-size:clamp(28px,4vw,40px);font-weight:700;letter-spacing:-.03em;color:#f0f0f0;margin-bottom:24px}
+    .sd-inner .sd-desc{font-size:15px;line-height:1.76;color:rgba(255,255,255,.46);margin-bottom:16px}
+    .sd-inner h3{font-size:16px;font-weight:700;color:#f0f0f0;margin:36px 0 16px;letter-spacing:-.01em}
+    .sd-inner ul{list-style:none;margin-bottom:24px}
+    .sd-inner ul li{font-size:14px;color:rgba(255,255,255,.46);padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;align-items:baseline;gap:10px}
+    .sd-inner ul li::before{content:'+';color:rgba(255,255,255,.2);font-weight:600;flex-shrink:0}
+    .sd-inner .sd-meta{display:flex;gap:40px;margin:32px 0;padding:24px 0;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
+    .sd-meta-item .sd-meta-label{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:4px}
+    .sd-meta-item .sd-meta-val{font-size:18px;font-weight:700;color:#f0f0f0}
+    .sd-back{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;background:none;border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.55);padding:10px 22px;border-radius:6px;cursor:pointer;margin-top:28px;transition:all .2s}
+    .sd-back:hover{border-color:rgba(255,255,255,.3);color:#fff}
+    /* Service detail light */
+    #svc-detail.light{background:rgba(244,241,236,.97)}
+    #svc-detail.light .sd-num{color:rgba(80,70,55,.4)}
+    #svc-detail.light h2{color:#1a1a1a}
+    #svc-detail.light .sd-desc{color:rgba(40,35,28,.5)}
+    #svc-detail.light h3{color:#1a1a1a}
+    #svc-detail.light ul li{color:rgba(40,35,28,.5);border-bottom-color:rgba(0,0,0,.04)}
+    #svc-detail.light ul li::before{color:rgba(80,70,55,.3)}
+    #svc-detail.light .sd-meta{border-color:rgba(0,0,0,.06)}
+    #svc-detail.light .sd-meta-label{color:rgba(80,70,55,.4)}
+    #svc-detail.light .sd-meta-val{color:#1a1a1a}
+    #svc-detail.light .sd-back{border-color:rgba(0,0,0,.14);color:rgba(0,0,0,.5)}
+    #svc-detail.light .cm-submit{background:#1a1a1a;color:#f4f1ec}
+    #svc-detail.light .ex-x{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.08);color:rgba(0,0,0,.5)}
+
+    /* Case Study Detail Overlay */
+    #case-detail{background:rgba(5,5,5,.97);top:0;left:0;right:0;bottom:0;overflow-y:auto;border-radius:0!important;z-index:28}
+    #case-detail.on{border-radius:0!important}
+    .cd-inner{max-width:700px;margin:0 auto;padding:100px 40px 80px}
+    .cd-inner .cd-tag{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:14px}
+    .cd-inner h2{font-size:clamp(24px,4vw,36px);font-weight:700;letter-spacing:-.03em;color:#f0f0f0;margin-bottom:32px}
+    .cd-inner h3{font-size:16px;font-weight:700;color:#f0f0f0;margin:32px 0 14px}
+    .cd-inner p{font-size:15px;line-height:1.76;color:rgba(255,255,255,.46);margin-bottom:14px}
+    .cd-stats{display:flex;gap:36px;padding:28px 0;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);margin:28px 0}
+    .cd-stat-num{font-size:28px;font-weight:700;color:#fff}
+    .cd-stat-label{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:4px}
+    .cd-quote{font-size:16px;font-style:italic;line-height:1.7;color:rgba(255,255,255,.5);padding:24px 28px;border-left:2px solid rgba(255,255,255,.12);margin:28px 0}
+    .cd-quote cite{display:block;font-size:12px;font-style:normal;color:rgba(255,255,255,.28);margin-top:10px;letter-spacing:.06em}
+    #case-detail.light{background:rgba(244,241,236,.97)}
+    #case-detail.light .cd-tag{color:rgba(80,70,55,.4)}
+    #case-detail.light h2,#case-detail.light h3{color:#1a1a1a}
+    #case-detail.light p{color:rgba(40,35,28,.5)}
+    #case-detail.light .cd-stats{border-color:rgba(0,0,0,.06)}
+    #case-detail.light .cd-stat-num{color:#1a1a1a}
+    #case-detail.light .cd-stat-label{color:rgba(80,70,55,.4)}
+    #case-detail.light .cd-quote{color:rgba(40,35,28,.5);border-left-color:rgba(0,0,0,.1)}
+    #case-detail.light .cd-quote cite{color:rgba(40,35,28,.3)}
+    #case-detail.light .sd-back{border-color:rgba(0,0,0,.14);color:rgba(0,0,0,.5)}
+    #case-detail.light .cm-submit{background:#1a1a1a;color:#f4f1ec}
+    #case-detail.light .ex-x{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.08);color:rgba(0,0,0,.5)}
+
+    /* Back to top */
+    #btt{position:fixed;bottom:28px;right:28px;z-index:29;width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);font-size:18px;cursor:pointer;display:none;align-items:center;justify-content:center;transition:all .2s;font-family:'Space Grotesk',sans-serif;backdrop-filter:blur(8px)}
+    #btt:hover{background:rgba(255,255,255,.16);color:#fff}
+    #btt.show{display:flex}
+    #site-ex.light #btt{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.08);color:rgba(0,0,0,.4)}
+    #site-ex.light #btt:hover{background:rgba(0,0,0,.12);color:#1a1a1a}
+
+    /* Hamburger */
+    .ham{display:none;background:none;border:none;cursor:pointer;padding:8px;flex-direction:column;gap:5px;z-index:22}
+    .ham span{display:block;width:22px;height:2px;background:rgba(255,255,255,.6);transition:all .2s}
+    .ham.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+    .ham.open span:nth-child(2){opacity:0}
+    .ham.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+    .mob-menu{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(5,5,5,.96);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.07);padding:16px 24px;flex-direction:column;gap:14px}
+    .mob-menu.open{display:flex}
+    .mob-menu a{font-size:14px;color:rgba(255,255,255,.5);text-decoration:none;padding:6px 0}
+    .mob-menu button{margin-top:4px}
+    #site-ex.light .ham span{background:rgba(0,0,0,.5)}
+    #site-ex.light .mob-menu{background:rgba(244,241,236,.96);border-bottom-color:rgba(0,0,0,.07)}
+    #site-ex.light .mob-menu a{color:rgba(0,0,0,.5)}
+    @media(max-width:768px){
+      .snav .desk-links{display:none!important}
+      .ham{display:flex}
+    }
+
+    /* Make service/result cards clickable */
+    .svc-card{cursor:pointer}
+    .res-card{cursor:pointer}
+
+    /* ═══ SAFE AREA INSETS (notched iPhones) ═══ */
+    @supports(padding-top:env(safe-area-inset-top)){
+      @media(max-width:768px){
+        .snav{padding-top:max(14px,env(safe-area-inset-top));padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
+        .gal-nav{padding-top:max(18px,env(safe-area-inset-top));padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
+        .ex-x{top:max(10px,env(safe-area-inset-top));right:max(12px,env(safe-area-inset-right))}
+        #btt{bottom:max(20px,calc(12px + env(safe-area-inset-bottom)));right:max(20px,calc(12px + env(safe-area-inset-right)))}
+        .cm-inner{padding-top:max(120px,calc(80px + env(safe-area-inset-top)))}
+        .sd-inner,.cd-inner{padding-top:max(100px,calc(60px + env(safe-area-inset-top)))}
+        .ft{padding-bottom:max(48px,calc(24px + env(safe-area-inset-bottom)))}
+        .mob-menu{padding-left:max(24px,env(safe-area-inset-left));padding-right:max(24px,env(safe-area-inset-right))}
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="cv"></div>
+<div id="dot"></div>
+
+<div id="gate" style="position:fixed;inset:0;z-index:10000;background:rgba(5,5,5,.82);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-direction:column;gap:22px;transition:opacity .6s">
+  <div style="font-size:clamp(28px,5vw,48px);font-weight:700;letter-spacing:.38em;text-transform:uppercase;color:rgba(255,255,255,.85)">NDAI.PRO</div>
+  <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.28);animation:gatePulse 2.4s ease-in-out infinite">click anywhere to enter</div>
+</div>
+<style>@keyframes gatePulse{0%,100%{opacity:.45}50%{opacity:1}}
+/* Shelf the floating mirror buttons and chat */
+#fm,#term-ex{display:none!important}
+</style>
+
+<div id="entry">
+  <!-- LIGHT group -->
+  <div class="entry-group" id="sl-group">
+    <div class="entry-sub entry-sub-above" id="sl-who">
+      <div class="entry-sub-label">Who We Are</div>
+      <div class="entry-sub-desc">Our story</div>
+    </div>
+    <span class="slabel" id="sl">LIGHT</span>
+    <div class="entry-sub entry-sub-below" id="sl-what">
+      <div class="entry-sub-label">Our Solutions</div>
+      <div class="entry-sub-desc">What we build</div>
+    </div>
+  </div>
+  <!-- DARK group -->
+  <div class="entry-group" id="sd-group">
+    <div class="entry-sub entry-sub-above" id="sd-who">
+      <div class="entry-sub-label">Who We Are</div>
+      <div class="entry-sub-desc">Our story</div>
+    </div>
+    <span class="slabel" id="sd">DARK</span>
+    <div class="entry-sub entry-sub-below" id="sd-what">
+      <div class="entry-sub-label">Our Solutions</div>
+      <div class="entry-sub-desc">What we build</div>
+    </div>
+  </div>
+  <div id="wm">NDAI.PRO</div>
+  <div id="entry-tagline" style="position:absolute;bottom:68px;left:50%;transform:translateX(-50%);font-size:15px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.28);white-space:nowrap;pointer-events:none;font-weight:500">AI software. Built for your business.</div>
+  <div id="hint">move cursor &mdash; choose your world</div>
+  <button id="skip-intro" style="position:absolute;bottom:28px;right:28px;background:none;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.25);font-family:'Space Grotesk',sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:8px 16px;cursor:pointer;opacity:0;transition:opacity .6s ease,color .2s,border-color .2s;pointer-events:none" onmouseover="this.style.color='rgba(255,255,255,.5)';this.style.borderColor='rgba(255,255,255,.25)'" onmouseout="this.style.color='rgba(255,255,255,.25)';this.style.borderColor='rgba(255,255,255,.12)'">Skip Intro</button>
+</div>
+
+<div id="mobile-entry">
+  <div class="me-wm">NDAI.PRO</div>
+  <div class="me-ghosts">
+    <div class="me-ghost me-ghost-light" id="me-light-card">
+      <div class="me-ghost-figure me-fig-light">
+        <svg viewBox="0 0 120 150" class="me-ghost-svg"><path d="M0,62 C0,29 27,2 60,2 C93,2 120,29 120,62 L120,128 Q100,147 80,128 Q60,147 40,128 Q20,147 0,128 Z"/><circle cx="39" cy="44" r="10" class="me-eye"/><circle cx="81" cy="44" r="10" class="me-eye"/></svg>
+      </div>
+      <div class="me-ghost-label">LIGHT</div>
+      <div class="me-ghost-actions">
+        <button class="me-action" id="me-light-who">Who We Are</button>
+        <button class="me-action" id="me-light-work">Our Solutions</button>
+      </div>
+    </div>
+    <div class="me-ghost me-ghost-dark" id="me-dark-card">
+      <div class="me-ghost-figure me-fig-dark">
+        <svg viewBox="0 0 120 150" class="me-ghost-svg"><path d="M0,62 C0,29 27,2 60,2 C93,2 120,29 120,62 L120,128 Q100,147 80,128 Q60,147 40,128 Q20,147 0,128 Z"/><circle cx="39" cy="44" r="10" class="me-eye"/><circle cx="81" cy="44" r="10" class="me-eye"/></svg>
+      </div>
+      <div class="me-ghost-label">DARK</div>
+      <div class="me-ghost-actions">
+        <button class="me-action" id="me-dark-who">Who We Are</button>
+        <button class="me-action" id="me-dark-work">Our Solutions</button>
+      </div>
+    </div>
+  </div>
+  <div class="me-hint">tap a ghost to enter</div>
+</div>
+
+<div id="fm">
+  <!-- Site button group -->
+  <div class="fml fml-group" id="fm-site">
+    <div class="fml-sub fml-above" id="fm-site-who">
+      <div class="fml-n">Who Are We</div>
+      <div class="fml-d">Our story</div>
+    </div>
+    <div class="fml-main">
+      <div class="fml-n">The Site</div>
+      <div class="fml-d">Browse what we do</div>
+    </div>
+    <div class="fml-sub fml-below" id="fm-site-work">
+      <div class="fml-n">Our Work</div>
+      <div class="fml-d">See what we've built</div>
+    </div>
+  </div>
+  <!-- Chat button group -->
+  <div class="fml fml-group" id="fm-chat">
+    <div class="fml-sub fml-above" id="fm-chat-who">
+      <div class="fml-n">Who Are We</div>
+      <div class="fml-d">Our story</div>
+    </div>
+    <div class="fml-main">
+      <div class="fml-n">Talk to Us</div>
+      <div class="fml-d">Start the conversation</div>
+    </div>
+    <div class="fml-sub fml-below" id="fm-chat-work">
+      <div class="fml-n">Our Work</div>
+      <div class="fml-d">See what we've built</div>
+    </div>
+  </div>
+</div>
+
+<!-- Gallery expand -->
+<div class="ex" id="gallery-ex">
+  <button class="ex-x" id="gallery-ex-x" aria-label="Close gallery">&#x2715;</button>
+  <nav class="gal-nav">
+    <div class="gal-logo nd-logo-lift" id="gallery-nav-logo">
+      <img class="nd-logo-mark logo-dark-ver" src="logo-mark.png" alt="NDAI" style="height:36px;width:auto">
+      <img class="nd-logo-mark logo-light-ver" src="logo-mark-dark.png" alt="NDAI" style="height:36px;width:auto;display:none">
+    </div>
+    <span style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.28)">Our Work</span>
+  </nav>
+  <div class="gal-hero">
+    <div class="gal-title">Built to Outperform</div>
+    <p class="gal-sub">Every site we've launched came with a clear goal: make the client look better than their competition. Here's the proof.</p>
+  </div>
+  <div class="gal-grid">
+    <!-- Poison Design — FEATURED FIRST -->
+    <div class="gal-card">
+      <div class="gal-carousel">
+        <img class="gal-img" src="good-design-real-thumb.jpg" alt="Poison Design" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="gal-img-ph" style="display:none">🏛️</div>
+        <div class="gal-dots"><span class="gal-dot active"></span><span class="gal-dot"></span><span class="gal-dot"></span></div>
+      </div>
+      <div class="gal-body">
+        <div class="gal-label">Creative Studio · Landing Page</div>
+        <div class="gal-name">Provoke.</div>
+        <p class="gal-desc">Fun. A bold landing page made as an example that art belongs on your website, too!</p>
+        <div class="gal-tags"><span class="gal-tag">Landing Page</span><span class="gal-tag">Concept</span><span class="gal-tag">Custom Cursor</span></div>
+        <a class="gal-link" href="https://poison-design-page.netlify.app" target="_blank" rel="noopener noreferrer"><span class="gal-live-dot"></span> View Live</a>
+      </div>
+    </div>
+    <!-- 48N Concrete -->
+    <div class="gal-card">
+      <div class="gal-carousel">
+        <img class="gal-img" src="48n-new.jpg" alt="48N Concrete" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="gal-img-ph" style="display:none">🏢</div>
+        <div class="gal-dots"><span class="gal-dot active"></span><span class="gal-dot"></span><span class="gal-dot"></span></div>
+      </div>
+      <div class="gal-body">
+        <div class="gal-label">Commercial Concrete · Minot, ND</div>
+        <div class="gal-name">48N Concrete</div>
+        <p class="gal-desc">Full rebuild for a commercial concrete contractor operating across the region. Professional, bold, service-first — with a custom domain, photo gallery from real job sites, and a contact flow built to convert.</p>
+        <div class="gal-tags"><span class="gal-tag">Web Design</span><span class="gal-tag">Custom Domain</span><span class="gal-tag">Live</span></div>
+        <a class="gal-link" href="https://48nconcrete.com" target="_blank" rel="noopener noreferrer"><span class="gal-live-dot"></span> View Live</a>
+      </div>
+    </div>
+    <!-- Prairie Pumping -->
+    <div class="gal-card">
+      <div class="gal-carousel">
+        <img class="gal-img" src="prairie-current.jpg" alt="Prairie Pumping" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="gal-img-ph" style="display:none">🏗️</div>
+        <div class="gal-dots"><span class="gal-dot active"></span><span class="gal-dot"></span><span class="gal-dot"></span></div>
+      </div>
+      <div class="gal-body">
+        <div class="gal-label">Concrete Line Pumping · Minot, ND</div>
+        <div class="gal-name">Prairie Pumping</div>
+        <p class="gal-desc">Brand-new identity for a concrete line pump operator. Dark, high-contrast design with chartreuse accents — built to stand apart from every other contractor site in North Dakota. Services section, contact form, and a hero built around their SP-500 line pump.</p>
+        <div class="gal-tags"><span class="gal-tag">Brand Identity</span><span class="gal-tag">Web Design</span><span class="gal-tag">Live</span></div>
+        <a class="gal-link" href="https://prairie-pumping-lightship.netlify.app" target="_blank" rel="noopener noreferrer"><span class="gal-live-dot"></span> View Live</a>
+      </div>
+    </div>
+    <!-- Good Design Experience -->
+    <div class="gal-card">
+      <div class="gal-carousel">
+        <img class="gal-img" src="good-design-thumb.jpg" alt="Design Experience" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="gal-img-ph" style="display:none">✦</div>
+        <div class="gal-dots"><span class="gal-dot active"></span><span class="gal-dot"></span><span class="gal-dot"></span></div>
+      </div>
+      <div class="gal-body">
+        <div class="gal-label">Interactive · Typography</div>
+        <div class="gal-name">Design Experience</div>
+        <p class="gal-desc">Unique websites — business doesn't have to be synonymous with boring. Text doesn't just have to sit there. Watch it warp, breathe, stretch, and fight back. Your brand has personality. Your website should too.</p>
+        <div class="gal-tags"><span class="gal-tag">Interactive</span><span class="gal-tag">Cursor-Driven</span><span class="gal-tag">Experimental</span></div>
+        <a class="gal-link" href="/design-experience.html" target="_blank" rel="noopener noreferrer"><span class="gal-live-dot"></span> Experience It</a>
+      </div>
+    </div>
+    <!-- CheerStretch -->
+    <div class="gal-card">
+      <div class="gal-carousel">
+        <img class="gal-img" src="cheerstretch.jpg" alt="CheerStretch" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="gal-img-ph" style="display:none">🤸</div>
+        <div class="gal-dots"><span class="gal-dot active"></span><span class="gal-dot"></span><span class="gal-dot"></span></div>
+      </div>
+      <div class="gal-body">
+        <div class="gal-label">Fitness · Athletics</div>
+        <div class="gal-name">CheerStretch</div>
+        <p class="gal-desc">Clean, energetic site for a cheer and flexibility training brand. Mobile-first layout with program highlights and a booking flow designed to turn visitors into clients.</p>
+        <div class="gal-tags"><span class="gal-tag">Web Design</span><span class="gal-tag">Mobile-First</span></div>
+        <span class="gal-link" style="cursor:default;opacity:.5">Client Preview</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="gal-cta">
+    <div class="gal-cta-inner">
+      <div class="gal-cta-speed">⚡ Websites in as little as 24 hours</div>
+      <div class="gal-cta-label">You're next.</div>
+      <h2 class="gal-cta-head">Your business deserves a site this good.</h2>
+      <p class="gal-cta-sub">Every project in this portfolio was built fast, clean, and built to convert. If you're still running on a template from 2018, let's fix that.</p>
+      <div class="gal-cta-btns">
+        <a href="tel:+17013399802" class="gal-cta-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.87 2 2 0 0 1 3.59 2.68h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.22a16 16 0 0 0 5.88 5.88l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.27 17.5l.65-.58Z"/></svg>
+          Call (701) 339-9802
+        </a>
+        <button class="gal-cta-secondary cta-open">Book a Free Consultation</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="gal-footer">© 2026 ND.AI · Minot, North Dakota · Every site built in-house, start to finish.</div>
+</div>
+
+<!-- Site expand -->
+<div class="ex" id="site-ex">
+  <button class="ex-x" id="site-ex-x" aria-label="Close site">&#x2715;</button>
+
+  <!-- NAV -->
+  <nav class="snav">
+    <div class="nlogo nd-logo-lift" id="site-nav-logo">
+      <img class="nd-logo-mark logo-dark-ver" src="logo-mark.png" alt="NDAI" style="height:72px;width:auto">
+      <img class="nd-logo-mark logo-light-ver" src="logo-mark-dark.png" alt="NDAI" style="height:72px;width:auto;display:none">
+    </div>
+    <div class="desk-links" style="display:flex;gap:32px;align-items:center">
+      <a href="#svc" class="snav-link" style="font-size:13px;color:rgba(255,255,255,.45);text-decoration:none;transition:color .2s">Services</a>
+      <a href="#process" class="snav-link" style="font-size:13px;color:rgba(255,255,255,.45);text-decoration:none">Process</a>
+      <a href="#faq-s" class="snav-link" style="font-size:13px;color:rgba(255,255,255,.45);text-decoration:none">FAQ</a>
+      <button class="ncta cta-open">Book a call</button>
+    </div>
+    <button class="ham" id="ham-btn"><span></span><span></span><span></span></button>
+    <div class="mob-menu" id="mob-menu">
+      <a href="#svc" class="snav-link">Services</a>
+      <a href="#process" class="snav-link">Process</a>
+      <a href="#faq-s" class="snav-link">FAQ</a>
+      <button class="ncta cta-open">Book a call</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section style="padding:88px 0 48px">
+    <div class="pg" style="display:flex;align-items:center;justify-content:space-between;gap:48px;flex-wrap:wrap">
+      <div style="flex:1;min-width:300px">
+        <div class="s-label">AI Consulting for North Dakota Businesses</div>
+        <h1 style="font-size:clamp(42px,6.5vw,78px);font-weight:700;line-height:1.04;letter-spacing:-.045em;color:#f0f0f0;margin-bottom:22px;max-width:780px">Stop getting ripped off by software companies that know they're your only choice.</h1>
+        <p style="font-size:18px;line-height:1.72;color:rgba(255,255,255,.46);max-width:540px;margin-bottom:40px">The game has changed. We sit down with you, figure out where the friction is, and remove it. It's that simple.</p>
+        <div class="hbtns" style="margin-bottom:20px">
+          <button class="bp cta-open" style="background:#fff;color:#000;font-size:15px;padding:16px 32px">Book a free consultation</button>
+          <button class="bs see-how" style="border:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.58);background:transparent;font-size:15px;padding:16px 32px">See how it works</button>
+        </div>
+        <div class="site-speed-badge">
+          <span class="ssb-dot"></span>
+          Websites delivered in as little as <strong>24 hours.</strong>
+        </div>
+<!-- trust stats removed -->
+      </div>
+      <div style="flex:0 0 auto;display:flex;align-items:center;justify-content:center">
+        <div class="nd-hero-mark">
+          <img class="logo-dark-ver" src="logo-mark.png" alt="NDAI — North Dakota AI" style="width:clamp(240px,30vw,420px);height:auto;opacity:0.92;filter:drop-shadow(0 0 40px rgba(0,200,255,0.22))">
+          <img class="logo-light-ver" src="logo-mark-dark.png" alt="NDAI — North Dakota AI" style="width:clamp(240px,30vw,420px);height:auto;display:none;opacity:0.82">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- QUOTES -->
+  <section style="padding:72px 0 64px">
+    <div class="pg">
+      <div style="text-align:center;margin-bottom:52px">
+        <div class="s-label">They said it. Not us.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:32px">
+
+        <div class="quote-card">
+          <div class="quote-open">&ldquo;</div>
+          <p class="quote-text">It's as if this tsunami is coming at us. It's so close, we can see it on the horizon, and yet people are coming up with explanations like, 'Oh, it's not actually a tsunami, it's just a trick of the light.'</p>
+          <div class="quote-name">Dario Amodei</div>
+          <div class="quote-role">CEO, Anthropic — People by WTF Podcast</div>
+        </div>
+
+        <div class="quote-card">
+          <div class="quote-open">&ldquo;</div>
+          <p class="quote-text">Projects that used to require big teams are now being pulled off by a single person armed with the right AI tools.</p>
+          <div class="quote-name">Mark Zuckerberg</div>
+          <div class="quote-role">CEO, Meta — Q4 2025 Earnings Call</div>
+        </div>
+
+        <div class="quote-card">
+          <div class="quote-open">&ldquo;</div>
+          <p class="quote-text">SaaS <span style="opacity:0.5;font-size:0.8em">(Software as a Service)</span> is dead.</p>
+          <div class="quote-name">Satya Nadella</div>
+          <div class="quote-role">CEO, Microsoft — BG2 Podcast</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PROBLEM -->
+  <section class="s">
+    <div class="pg">
+      <div class="s-label">The Problem</div>
+      <h2 class="s-title" style="max-width:680px">Most businesses know AI could help. Almost none know where to start.</h2>
+      <p class="s-sub">You've seen the silly photos and you've heard AI can "even code now," but we are building the very infrastructure that allows the next generation of business software to exist. The big guys have enjoyed their moat and held you hostage long enough. We design you a bespoke software system that serves your actual needs — without all the garbage you have to pay for and never use.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SERVICES -->
+  <section class="s" id="svc">
+    <div class="pg">
+      <div class="s-label">What We Do</div>
+      <h2 class="s-title">AI consulting and implementation, end to end.</h2>
+      <p class="s-sub">We handle strategy, build, deployment, and support. No handoffs, no contractors you've never met.</p>
+      <div class="svc-grid">
+        <div class="svc-card">
+          <div class="svc-num">01</div>
+          <h3>AI Strategy & Roadmap</h3>
+          <p>We audit your operation, identify where AI delivers the highest ROI, and build a phased implementation plan tied to real KPIs. Not a slide deck — a blueprint.</p>
+        </div>
+        <div class="svc-card">
+          <div class="svc-num">02</div>
+          <h3>Process Automation</h3>
+          <p>Repetitive tasks that eat your team's time — invoicing, scheduling, data entry, customer routing. We automate them with AI that actually integrates into your existing tools.</p>
+        </div>
+        <div class="svc-card">
+          <div class="svc-num">03</div>
+          <h3>Custom AI Tools</h3>
+          <p>Off-the-shelf doesn't fit your business. We build bespoke AI tools — chatbots, document processors, prediction engines — purpose-built for your workflow.</p>
+        </div>
+        <div class="svc-card">
+          <div class="svc-num">04</div>
+          <h3>AI Training & Adoption</h3>
+          <p>Your team won't use what they don't understand. We train your people on the tools we build, in person, in plain English. No jargon, no certification padding.</p>
+        </div>
+        <div class="svc-card">
+          <div class="svc-num">05</div>
+          <h3>Data & Analytics</h3>
+          <p>AI is only as good as the data behind it. We clean, structure, and connect your data so your AI actually has something useful to work with.</p>
+        </div>
+        <div class="svc-card">
+          <div class="svc-num">06</div>
+          <h3>Managed AI Services</h3>
+          <p>Don't want to hire an AI team? We run it for you. Ongoing monitoring, optimization, and support — you focus on your business, we handle the tech.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PROCESS -->
+  <section class="s" id="process">
+    <div class="pg">
+      <div class="s-label">How It Works</div>
+      <h2 class="s-title">Four steps. No mystery.</h2>
+      <p class="s-sub">Every engagement follows the same proven structure. You'll know exactly where you are and what's coming next.</p>
+      <div class="proc">
+        <div class="proc-step">
+          <h3>Discovery Call</h3>
+          <p>30-minute conversation. We learn your business, your pain points, and your goals. No pitch, no pressure. If AI isn't the right fit, we'll tell you.</p>
+          <a href="tel:+17013399802" class="proc-call-link">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.87 2 2 0 0 1 3.59 2.68h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.22a16 16 0 0 0 5.88 5.88l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.27 17.5l.65-.58Z"/></svg>
+            (701) 339-9802
+          </a>
+        </div>
+        <div class="proc-step">
+          <h3>Audit & Strategy</h3>
+          <p>We dig into your operation — processes, data, tools, team. You get a written strategy document with prioritized use cases, cost estimates, and expected ROI.</p>
+        </div>
+        <div class="proc-step">
+          <h3>Build & Test</h3>
+          <p>We build the solution, test it with real data, and iterate until it works the way your business needs it to. You see progress every week.</p>
+        </div>
+        <div class="proc-step">
+          <h3>Launch & Support</h3>
+          <p>Deployment, team training, and ongoing support. We don't disappear after launch. Your AI keeps working because we keep watching it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- WHY ND.AI -->
+  <section class="s">
+    <div class="pg">
+      <div class="s-label">Why Us</div>
+      <h2 class="s-title">We're not a tech company. We're a business that uses tech.</h2>
+      <p class="s-sub">That distinction matters when you're trusting someone to understand your operation.</p>
+      <div class="diff-grid">
+        <div class="diff-card">
+          <h3>Local. In Person.</h3>
+          <p>We're based in North Dakota. We'll drive to your shop, your office, your job site. AI consulting shouldn't happen over Zoom from a coast you've never been to.</p>
+        </div>
+        <div class="diff-card">
+          <h3>Blue Collar Work Ethic</h3>
+          <p>We didn't get this job from our dad. We bring a wide range of real business experience across many different industries — not just tech. We understand the problems you're dealing with, and we know we have the solutions to solve them.</p>
+        </div>
+        <div class="diff-card">
+          <h3>No BS Pricing</h3>
+          <p>You'll know the cost before we start. No discovery phase that turns into a six-figure invoice. No scope creep. No surprises. Flat-rate or milestone-based.</p>
+        </div>
+        <div class="diff-card">
+          <h3>Built for Small Business</h3>
+          <p>Enterprise firms charge enterprise prices. We build for companies with 5-200 employees — the backbone of North Dakota's economy. The people who actually need this.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <!-- SOLUTIONS CTA -->
+  <section class="s" id="solutions-cta-s">
+    <div class="pg">
+      <div style="
+        border:1px solid rgba(184,170,150,0.18);
+        padding:48px 40px;
+        display:flex;align-items:center;justify-content:space-between;
+        gap:32px;flex-wrap:wrap;
+        background:rgba(184,170,150,0.04);
+      ">
+        <div>
+          <div class="sol-cta-label" style="font-size:0.68rem;letter-spacing:0.24em;text-transform:uppercase;margin-bottom:12px;">Our Software</div>
+          <div class="software-title" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(20px,3vw,30px);line-height:1.1;margin-bottom:10px;">Custom What we build</div>
+          <div class="software-desc" style="font-size:0.9rem;line-height:1.6;max-width:440px;">Custom software that works the way your team already does — at a fraction of what you're paying now. See what we're building.</div>
+        </div>
+        <a href="solutions.html" style="
+          background:#B8AA96;color:#050505;
+          padding:14px 32px;text-decoration:none;
+          font-family:'Space Grotesk',sans-serif;font-weight:700;
+          font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;
+          white-space:nowrap;flex-shrink:0;
+          display:inline-block;
+          transition:background 0.2s;
+        " onmouseover="this.style.background='#D4C8B0'" onmouseout="this.style.background='#B8AA96'">View Our Solutions →</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- BUSINESS AUTOMATION -->
+  <section class="s" id="automation">
+    <div class="pg">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center">
+        <!-- Image column -->
+        <div style="position:relative;flex-shrink:0;background:#080006;border-radius:8px;overflow:hidden">
+          <img src="robot-new.png" alt="Business Automation" class="auto-img auto-img-dark" style="width:100%;display:block;border-radius:4px;filter:drop-shadow(0 0 50px rgba(180,0,15,0.45))">
+          <img src="automation-light-v2.jpg" alt="Business Automation" class="auto-img auto-img-light" style="width:100%;display:none;border-radius:4px;filter:drop-shadow(0 0 24px rgba(0,0,0,0.12))">
+        </div>
+        <!-- Text column -->
+        <div>
+          <div class="s-label">Business Automation</div>
+          <h2 style="font-size:clamp(28px,4vw,44px);font-weight:700;line-height:1.1;letter-spacing:-.03em;color:#f0f0f0;margin-bottom:18px">Your Business.<br><span style="color:#B8AA96">Running Itself.</span></h2>
+          <p class="s-sub" style="margin-bottom:36px">Beyond software consolidation, we identify and eliminate the manual work quietly draining your business every day. If a human is doing it on a schedule, we can automate it.</p>
+          <!-- 2x2 feature tiles -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div class="auto-tile" style="padding:20px;border:1px solid rgba(255,255,255,.07);border-radius:8px;background:rgba(255,255,255,.025)">
+              <div class="auto-tile-label" style="font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#B8AA96;margin-bottom:8px">Invoicing</div>
+              <p class="auto-tile-p" style="font-size:13px;line-height:1.68;color:rgba(255,255,255,.44)">Field ticket submitted → invoice generated → client notified. Same day, every time.</p>
+            </div>
+            <div class="auto-tile" style="padding:20px;border:1px solid rgba(255,255,255,.07);border-radius:8px;background:rgba(255,255,255,.025)">
+              <div class="auto-tile-label" style="font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#B8AA96;margin-bottom:8px">Compliance</div>
+              <p class="auto-tile-p" style="font-size:13px;line-height:1.68;color:rgba(255,255,255,.44)">Certifications expiring, inspections due, audits scheduled — tracked and triggered automatically.</p>
+            </div>
+            <div class="auto-tile" style="padding:20px;border:1px solid rgba(255,255,255,.07);border-radius:8px;background:rgba(255,255,255,.025)">
+              <div class="auto-tile-label" style="font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#B8AA96;margin-bottom:8px">Reporting</div>
+              <p class="auto-tile-p" style="font-size:13px;line-height:1.68;color:rgba(255,255,255,.44)">Weekly summaries, KPI dashboards, and client-facing reports — built and delivered without anyone lifting a finger.</p>
+            </div>
+            <div class="auto-tile" style="padding:20px;border:1px solid rgba(255,255,255,.07);border-radius:8px;background:rgba(255,255,255,.025)">
+              <div class="auto-tile-label" style="font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#B8AA96;margin-bottom:8px">Follow-Up</div>
+              <p class="auto-tile-p" style="font-size:13px;line-height:1.68;color:rgba(255,255,255,.44)">Leads, quotes, overdue invoices, appointment reminders — chased automatically so your team doesn't have to.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <style>
+    /* Automation section responsive */
+    @media(max-width:768px){
+      #automation .pg > div{grid-template-columns:1fr!important;gap:32px}
+      #automation .pg > div > div:first-child{order:2}
+      #automation .pg > div > div:last-child{order:1}
+    }
+    /* Light mode: swap robot image + text colors */
+    /* In light mode: use dark robot with multiply blend so dark bg becomes transparent */
+    #site-ex.light .auto-img-dark{display:block!important;mix-blend-mode:multiply;filter:none!important;opacity:0.88}
+    #site-ex.light .auto-img-light{display:none!important}
+    #site-ex.light #automation h2{color:#0a0a0a!important}
+    #site-ex.light #automation h2 span{color:#7a6448!important}
+    #site-ex.light #automation p.s-sub{color:rgba(20,18,14,.7)!important}
+    #site-ex.light .auto-tile{background:rgba(0,0,0,.025)!important;border-color:rgba(0,0,0,.07)!important}
+    #site-ex.light .auto-tile-label{color:#7a6448!important}
+    #site-ex.light .auto-tile-p{color:rgba(20,18,14,.65)!important}
+  </style>
+
+  <div class="divider"></div>
+
+    <!-- FAQ -->
+  <section class="s" id="faq-s">
+    <div class="pg">
+      <div class="s-label">FAQ</div>
+      <h2 class="s-title">Common questions.</h2>
+      <div class="faq">
+        <div class="faq-item"><div class="faq-q">How much does it cost?<span>+</span></div><div class="faq-a">Glad you asked. The consult is free — and we have yet to have a customer whose bill we didn't cut in half. Always different. Always fair. Always custom built to be exactly what you want, even if you don't quite know what that means yet. This is uncharted territory. That's what the consult is for.</div></div>
+        <div class="faq-item"><div class="faq-q">My business is too small for AI. Is it?<span>+</span></div><div class="faq-a">Probably not. If you have repeatable processes, customer interactions, or data you're not using — there's an AI application. We've built solutions for 3-person shops. Size doesn't matter. Process does.</div></div>
+        <div class="faq-item"><div class="faq-q">How long does a typical project take?<span>+</span></div><div class="faq-a">Strategy: 1-2 weeks. A simple automation: 2-4 weeks. Custom AI tool: 4-12 weeks. We work in sprints and you see progress weekly. Nothing disappears into a black box for months.</div></div>
+        <div class="faq-item"><div class="faq-q">Do I need to understand AI to work with you?<span>+</span></div><div class="faq-a">No. That's literally why we exist. You know your business — we know AI. You describe the problem, we figure out the solution and explain it in plain language. Every time.</div></div>
+        <div class="faq-item"><div class="faq-q">What industries do you work with?<span>+</span></div><div class="faq-a">Construction, agriculture, oil & gas, healthcare, legal, real estate, retail, professional services, manufacturing, logistics. If your business operates in North Dakota, we can probably help.</div></div>
+        <div class="faq-item"><div class="faq-q">What happens after launch?<span>+</span></div><div class="faq-a">We don't ghost you. Every project includes 30 days of post-launch support. After that, you can opt into managed services where we monitor, optimize, and maintain your AI systems ongoing.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BIO + CLIENTS -->
+  <div class="divider"></div>
+  <section class="s founder-hp" id="about" style="padding:72px 0">
+    <div class="pg">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center" class="founder-hp-grid">
+        <!-- BIO -->
+        <div style="display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap">
+          <div style="width:110px;height:110px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid var(--border);box-shadow:0 0 0 6px rgba(184,170,150,0.06)">
+            <img loading="lazy" src="founder-headshot.jpg" alt="Andrew — Founder, NDAI" style="width:100%;height:100%;object-fit:cover;display:block"/>
+          </div>
+          <div style="flex:1;min-width:200px;border-left:3px solid var(--gold);padding-left:22px">
+            <div class="s-label" style="margin-bottom:8px">Who's Behind This</div>
+            <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(22px,2.5vw,30px);font-weight:900;text-transform:uppercase;color:var(--white);margin-bottom:10px;line-height:1.05">Andrew</h3>
+            <p style="font-size:0.85rem;line-height:1.7;color:var(--muted)">
+              Founder of NDAI. Based in Minot, North Dakota. I build custom AI software and automation for businesses that are tired of paying too much for tools that don't fit. Every project starts with a real conversation — no sales team, no account managers. You talk to the person building it.
+            </p>
+            <a href="https://www.linkedin.com/company/ndai-pro" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;margin-top:12px;font-size:0.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);text-decoration:none">LinkedIn →</a>
+          </div>
+        </div>
+        <!-- CLIENTS -->
+        <div class="hp-cc-wrap" style="text-align:center">
+          <div class="s-label" style="margin-bottom:20px">Who We Work With</div>
+          <div class="hp-cc-stage">
+            <div class="hp-cc-slide"><img src="client-48n.jpg" alt="48° North Concrete" class="hp-cl hp-cl-inv"/></div>
+            <div class="hp-cc-slide"><img src="client-mchl-duck.png" alt="Magic City Home Leisure" class="hp-cl hp-cl-color"/></div>
+            <div class="hp-cc-slide"><img src="client-spas360.png" alt="Spas 360" class="hp-cl hp-cl-color"/></div>
+            <div class="hp-cc-slide"><img src="client-prairie-pumping.png" alt="Prairie Pumping" class="hp-cl"/></div>
+          </div>
+          <div class="hp-cc-dots">
+            <span class="hp-dot" data-i="0"></span>
+            <span class="hp-dot active" data-i="1"></span>
+            <span class="hp-dot" data-i="2"></span>
+            <span class="hp-dot" data-i="3"></span>
+          </div>
+          <div class="hp-cc-name active">48° North Concrete</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <style>
+    .hp-cc-stage{position:relative;width:100%;max-width:420px;height:130px;margin:0 auto;overflow:hidden}
+    .hp-cc-slide{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;transition:transform .6s cubic-bezier(.4,0,.2,1),opacity .6s}
+    .hp-cc-slide.hp-prev{transform:translateX(-70%) scale(.65);opacity:.2;filter:blur(2px);z-index:1}
+    .hp-cc-slide.hp-active{transform:translateX(0) scale(1);opacity:1;filter:none;z-index:3}
+    .hp-cc-slide.hp-next{transform:translateX(70%) scale(.65);opacity:.2;filter:blur(2px);z-index:1}
+    .hp-cc-slide.hp-hidden{transform:translateX(0) scale(.5);opacity:0;z-index:0}
+    .hp-cl{max-height:90px;max-width:180px;width:auto;height:auto;object-fit:contain}
+    .hp-cl.hp-cl-inv{filter:invert(1) brightness(2)}
+    .hp-cl.hp-cl-color{filter:none}
+    #site-ex.light .hp-cl{filter:invert(1) brightness(.2)!important}
+    #site-ex.light .hp-cl.hp-cl-inv{filter:none!important}
+    #site-ex.light .hp-cl.hp-cl-color{filter:none!important}
+    .hp-cc-dots{display:flex;gap:10px;justify-content:center;margin-top:18px}
+    .hp-dot{width:7px;height:7px;border-radius:50%;background:var(--muted);opacity:.25;cursor:pointer;transition:all .3s}
+    .hp-dot.active{opacity:1;background:var(--gold);transform:scale(1.2)}
+    .hp-cc-name{font-size:.7rem;letter-spacing:.06em;color:var(--muted);margin-top:8px;opacity:0;transition:opacity .4s}
+    .hp-cc-name.active{opacity:1}
+    @media(max-width:768px){
+      .founder-hp-grid{grid-template-columns:1fr!important;gap:40px!important}
+      .founder-hp-grid > div:first-child{text-align:center}
+      .founder-hp-grid [style*="border-left"]{border-left:none;padding-left:0;border-top:3px solid var(--gold);padding-top:16px}
+    }
+  </style>
+  <script>
+  (function(){
+    var sl=document.querySelectorAll('.hp-cc-slide'),dt=document.querySelectorAll('.hp-dot'),
+        nm=document.querySelector('.hp-cc-name'),ns=['','Magic City Home Leisure','',''],
+        n=sl.length,c=0;
+    function go(i){c=i;sl.forEach(function(s){s.className='hp-cc-slide hp-hidden'});
+      sl[(i-1+n)%n].className='hp-cc-slide hp-prev';sl[i].className='hp-cc-slide hp-active';
+      sl[(i+1)%n].className='hp-cc-slide hp-next';
+      dt.forEach(function(d,j){d.classList.toggle('active',j===i)});
+      if(nm){var t=ns[i];nm.classList.remove('active');nm.textContent=t;if(t)setTimeout(function(){nm.classList.add('active')},50)}}
+    go(0);dt.forEach(function(d){d.addEventListener('click',function(){go(+this.dataset.i)})});
+    setInterval(function(){go((c+1)%n)},4000);
+  })();
+  </script>
+
+  <!-- FINAL CTA -->
+  <section style="padding:32px 0 96px">
+    <div class="pg">
+      <div class="cta-block">
+        <h2>Ready to stop guessing?</h2>
+        <p>Book a free 30-minute discovery call. We'll tell you exactly where AI fits in your business — and where it doesn't. No pitch. No obligation.</p>
+        <button class="cta-btn cta-open">Book your free consultation</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="ft">
+    <div class="pg">
+      <div class="ft-row">
+        <div>
+          <div class="nd-logo-lift" style="display:inline-flex">
+            <img class="nd-logo-mark ft-brand logo-dark-ver" src="logo-mark.png" alt="ND.AI" style="height:48px;width:auto;display:block">
+            <img class="nd-logo-mark ft-brand logo-light-ver" src="logo-mark-dark.png" alt="ND.AI" style="height:48px;width:auto;display:none">
+          </div>
+          <div style="font-size:12px;color:rgba(255,255,255,.2);margin-top:8px">Minot, North Dakota</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.2);margin-top:4px">(701) 339-9802</div>
+        </div>
+        <div class="ft-links">
+          <a href="#svc" class="snav-link">Services</a>
+          <a href="#process" class="snav-link">Process</a>
+          <a href="#faq-s" class="snav-link">FAQ</a>
+        </div>
+      </div>
+      <div class="ft-social" style="display:flex;gap:16px;margin-top:12px;align-items:center">
+        <a href="https://www.linkedin.com/company/ndai-pro" target="_blank" rel="noopener" style="color:rgba(255,255,255,.35);text-decoration:none;font-size:12px;letter-spacing:.05em;transition:color .2s" onmouseover="this.style.color='rgba(255,255,255,.7)'" onmouseout="this.style.color='rgba(255,255,255,.35)'">LinkedIn</a>
+      </div>
+      <div class="ft-copy">© 2026 NDAI, LLC — ndai.pro — AI consulting and implementation for North Dakota businesses. <a href="privacy.html" style="color:inherit;opacity:.5;text-decoration:underline;margin-left:8px">Privacy Policy</a></div>
+    </div>
+  </footer>
+
+  <!-- Back to top -->
+  <button id="btt" title="Back to top">&#x2191;</button>
+
+  <!-- Schema Markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "ND.AI",
+    "description": "AI consulting and implementation for North Dakota businesses. Strategy, automation, custom AI tools, training, and managed services.",
+    "url": "https://ndai.pro",
+    "telephone": "+17013399802",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Minot",
+      "addressRegion": "ND",
+      "addressCountry": "US"
+    },
+    "areaServed": {
+      "@type": "State",
+      "name": "North Dakota"
+    },
+    "priceRange": "$$",
+    "serviceType": ["AI Consulting", "AI Implementation", "Process Automation", "Custom AI Development", "AI Training"]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type": "Question", "name": "How much does AI consulting cost?", "acceptedAnswer": {"@type": "Answer", "text": "A strategy audit starts at $2,500. Full implementation projects range from $5,000 to $50,000 depending on complexity."}},
+      {"@type": "Question", "name": "My business is too small for AI. Is it?", "acceptedAnswer": {"@type": "Answer", "text": "Probably not. If you have repeatable processes, customer interactions, or data you're not using, there's an AI application. We've built solutions for 3-person shops."}},
+      {"@type": "Question", "name": "How long does a typical AI project take?", "acceptedAnswer": {"@type": "Answer", "text": "Strategy: 1-2 weeks. Simple automation: 2-4 weeks. Custom AI tool: 4-12 weeks. We work in sprints and you see progress weekly."}},
+      {"@type": "Question", "name": "Do I need to understand AI to work with you?", "acceptedAnswer": {"@type": "Answer", "text": "No. You know your business, we know AI. You describe the problem, we figure out the solution and explain it in plain language."}},
+      {"@type": "Question", "name": "What industries does ND.AI work with?", "acceptedAnswer": {"@type": "Answer", "text": "Construction, agriculture, oil and gas, healthcare, legal, real estate, retail, professional services, manufacturing, and logistics across North Dakota."}},
+      {"@type": "Question", "name": "What happens after an AI project launches?", "acceptedAnswer": {"@type": "Answer", "text": "Every project includes 30 days of post-launch support. After that, you can opt into managed services for ongoing monitoring, optimization, and maintenance."}}
+    ]
+  }
+  </script>
+</div>
+
+<!-- Contact Modal -->
+<div class="ex" id="contact-modal">
+  <button class="ex-x" id="contact-modal-x" aria-label="Close contact form">&#x2715;</button>
+  <div class="cm-inner">
+    <h2>Let's talk about your business.</h2>
+    <p class="cm-sub">Fill out the form below and we'll get back to you within one business day. No pitch, no pressure — just a conversation about what AI can do for you.</p>
+    <form id="contact-form" name="home-contact" method="POST" action="https://formsubmit.co/andrew@ndai.pro">
+      <input type="hidden" name="_subject" value="New NDAI.pro Homepage Lead"/>
+      <input type="hidden" name="_captcha" value="false"/>
+      <input type="hidden" name="_next" value="https://ndai.pro/?sent=1"/>
+      <input type="text" name="_honey" autocomplete="off" tabindex="-1" style="display:none"/>
+      <div class="cm-field"><label for="home-name">Name</label><input id="home-name" name="name" type="text" placeholder="Your full name" required/></div>
+      <div class="cm-field"><label for="home-email">Email</label><input id="home-email" name="email" type="email" placeholder="you@company.com" required/></div>
+      <div class="cm-field"><label for="home-phone">Phone</label><input id="home-phone" name="phone" type="tel" placeholder="(701) 555-0000"/></div>
+      <div class="cm-field"><label for="home-company">Company</label><input id="home-company" name="company" type="text" placeholder="Your company name"/></div>
+      <div class="cm-field"><label for="home-message">Message</label><textarea id="home-message" name="message" placeholder="Tell us about your business and what you're looking to solve..."></textarea></div>
+      <button type="submit" class="cm-submit">Send Message</button>
+    </form>
+    <div class="cm-alt">
+      <p>Or call us directly: <a href="tel:+17013399802">(701) 339-9802</a></p>
+      <p>Or email: <a href="mailto:hello@ndai.pro">hello@ndai.pro</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- Service Detail Overlay -->
+<div class="ex" id="svc-detail">
+  <button class="ex-x" id="svc-detail-x" aria-label="Close service detail">&#x2715;</button>
+  <div class="sd-inner" id="sd-content"></div>
+</div>
+
+<!-- Case Study Detail Overlay -->
+<div class="ex" id="case-detail">
+  <button class="ex-x" id="case-detail-x" aria-label="Close case study">&#x2715;</button>
+  <div class="cd-inner" id="cd-content"></div>
+</div>
+
+<!-- Terminal expand -->
+<div class="ex" id="term-ex">
+  <button class="ex-x" id="term-ex-x" aria-label="Close terminal">&#x2715;</button>
+  <div id="te-bar"><span>ND.AI Terminal</span></div>
+  <div id="te-msgs">
+    <div class="tm a"><div class="lb">ND.AI</div>Tell me about your business — what do you do and how many people work there?</div>
+  </div>
+  <div id="te-foot"><div id="te-row">
+    <input id="te-input" placeholder="Tell me about your business..."/>
+    <button id="te-send">Send</button>
+  </div></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+// RENDERER
+// ══════════════════════════════════════════════════════════════════
+const scene = new THREE.Scene();
+const cam   = new THREE.PerspectiveCamera(50, innerWidth/innerHeight, 0.05, 400);
+cam.position.set(0, 0, 6);
+const rend = new THREE.WebGLRenderer({ antialias: true });
+rend.setSize(innerWidth, innerHeight);
+rend.setPixelRatio(Math.min(devicePixelRatio, matchMedia('(pointer:coarse)').matches ? 1.5 : 2));
+rend.setClearColor(0x000000, 1);
+document.getElementById('cv').appendChild(rend.domElement);
+window.addEventListener('resize', () => { cam.aspect = innerWidth/innerHeight; cam.updateProjectionMatrix(); rend.setSize(innerWidth, innerHeight); });
+
+const isTouch = matchMedia('(pointer:coarse)').matches;
+
+// ══════════════════════════════════════════════════════════════════
+// ENTRY LIGHTS
+// ══════════════════════════════════════════════════════════════════
+scene.add(new THREE.AmbientLight(0x151520, 10));
+const keyL = new THREE.PointLight(0xe8eeff, 22, 30); keyL.position.set(3, 6, 5); scene.add(keyL);
+const fillL = new THREE.PointLight(0xaabbcc, 9, 14); fillL.position.set(0, 1, 6); scene.add(fillL);
+const rimL = new THREE.PointLight(0x1144cc, 5, 16); rimL.position.set(-3.5, 1, -3); scene.add(rimL);
+const spot = new THREE.SpotLight(0xffffff, 0, 22, Math.PI*.07, .25, 1.2);
+const spotTgt = new THREE.Object3D(); scene.add(spot); scene.add(spotTgt); spot.target = spotTgt;
+const sith = new THREE.PointLight(0xcc0011, 0, 18); scene.add(sith);
+
+// Mirror lights
+const mirAmb = new THREE.AmbientLight(0x334455, 0); scene.add(mirAmb);
+const mirTop = new THREE.PointLight(0x8899bb, 0, 30); mirTop.position.set(0, 8, 4); scene.add(mirTop);
+const cardL = new THREE.PointLight(0x3366cc, 0, 14); cardL.position.set(-3.5, 1, 4); scene.add(cardL);
+const termL = new THREE.PointLight(0x22cc66, 0, 14); termL.position.set(3.5, 1, 4); scene.add(termL);
+
+// ══════════════════════════════════════════════════════════════════
+// GHOST
+// ══════════════════════════════════════════════════════════════════
+function buildGhost() {
+  const s = new THREE.Shape(), r=.78, bH=.86, bD=.24, bW=(2*r)/3, k=.5523;
+  s.moveTo(-r,0);
+  s.bezierCurveTo(-r,r*k,-r*k,r,0,r);
+  s.bezierCurveTo(r*k,r,r,r*k,r,0);
+  s.lineTo(r,-bH);
+  s.quadraticCurveTo(r-bW*.5,-bH-bD,r-bW,-bH);
+  s.quadraticCurveTo(r-bW*1.5,-bH-bD,r-bW*2,-bH);
+  s.quadraticCurveTo(-r+bW*.5,-bH-bD,-r,-bH);
+  s.lineTo(-r,0);
+  const geo = new THREE.ExtrudeGeometry(s, { depth:.54, bevelEnabled:true, bevelThickness:.11, bevelSize:.11, bevelSegments:8, curveSegments:24 });
+  geo.translate(0,0,-.27); geo.computeVertexNormals();
+  const mat = new THREE.MeshStandardMaterial({ color: new THREE.Color(.32,.32,.35), roughness:.45, metalness:.92, transparent:true, opacity:1 });
+  const mesh = new THREE.Mesh(geo, mat);
+  const eGeo = new THREE.SphereGeometry(.125,20,20);
+  const eMat = new THREE.MeshStandardMaterial({ color:0x080808, roughness:.75, metalness:.05, transparent:true, opacity:1 });
+  const lE = new THREE.Mesh(eGeo, eMat), rE = new THREE.Mesh(eGeo, eMat.clone());
+  lE.position.set(-.27,.24,.29); rE.position.set(.27,.24,.29);
+  const g = new THREE.Group(); g.add(mesh, lE, rE); scene.add(g);
+  return { group: g, mat, lE, rE };
+}
+const { group: ghost, mat: gMat, lE: lEye, rE: rEye } = buildGhost();
+
+// ══════════════════════════════════════════════════════════════════
+// WARP TUNNEL — Enclosed tube + 3D code particles inside
+// ══════════════════════════════════════════════════════════════════
+
+const WARP_DEPTH = 140;
+const TUBE_RADIUS = 3.2;
+
+// --- THE TUNNEL: physical tube you fly through ---
+// Wireframe grid on tunnel walls — glowing green lines rushing past
+// Subtle S-curve — not perfectly straight, creates dynamic perspective
+const tunPath = new THREE.CatmullRomCurve3([
+  new THREE.Vector3(0, 0, 10),
+  new THREE.Vector3(.15, .08, -20),
+  new THREE.Vector3(-.1, -.06, -50),
+  new THREE.Vector3(.08, .04, -90),
+  new THREE.Vector3(0, 0, -WARP_DEPTH)
+]);
+const tubeGeo = new THREE.TubeGeometry(tunPath, 300, TUBE_RADIUS, 32, false);
+
+// Solid dark interior — gives the tube mass
+const tubeMatSolid = new THREE.MeshBasicMaterial({
+  color: 0x010a04, side: THREE.BackSide, transparent: true, opacity: .92
+});
+const tubeMeshSolid = new THREE.Mesh(tubeGeo, tubeMatSolid);
+tubeMeshSolid.visible = false;
+scene.add(tubeMeshSolid);
+
+// Wireframe overlay — the visible green grid
+const tubeMatWire = new THREE.ShaderMaterial({
+  uniforms: {
+    uTime: { value: 0 },
+    uSpeed: { value: 0 },
+    uCamZ: { value: 6.0 }
+  },
+  vertexShader: `
+    varying vec3 vPos;
+    varying vec2 vUv;
+    void main(){
+      vPos = position;
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+  fragmentShader: `
+    uniform float uTime;
+    uniform float uSpeed;
+    uniform float uCamZ;
+    varying vec3 vPos;
+    varying vec2 vUv;
+    void main(){
+      // Grid lines along tube — longitudinal + circumferential
+      float longLines = abs(fract(vUv.x * 48.0) - 0.5);
+      float circLines = abs(fract(vUv.y * 200.0 + uTime * uSpeed * 2.0) - 0.5);
+      float grid = smoothstep(0.02, 0.0, longLines) + smoothstep(0.015, 0.0, circLines) * 0.6;
+      // Distance-based fade — nearer sections brighter
+      float dist = abs(vPos.z - uCamZ);
+      float distFade = smoothstep(80.0, 2.0, dist);
+      // Heartbeat pulse — double-tap rhythm
+      float heartbeat = pow(abs(sin(uTime * 3.8)), 12.0) + pow(abs(sin(uTime * 3.8 + 0.35)), 16.0) * 0.6;
+      float pulse = 0.35 + 0.45 * uSpeed + heartbeat * 0.25 * uSpeed;
+      float alpha = grid * distFade * pulse;
+      if(alpha < 0.01) discard;
+      // Color: green base, brighter near camera, white-hot at peak speed, pulses whiter on heartbeat
+      vec3 col = mix(vec3(0.0, 0.35, 0.12), vec3(0.2, 1.0, 0.5), distFade * 0.5);
+      col = mix(col, vec3(0.7, 1.0, 0.8), uSpeed * 0.4 + heartbeat * 0.15);
+      gl_FragColor = vec4(col, alpha * 0.7);
+    }
+  `,
+  transparent: true, side: THREE.BackSide, depthWrite: false,
+  blending: THREE.AdditiveBlending
+});
+const tubeMeshWire = new THREE.Mesh(tubeGeo, tubeMatWire);
+tubeMeshWire.visible = false;
+scene.add(tubeMeshWire);
+
+// --- CHARACTER SPRITE ATLAS ---
+const ATLAS_SIZE = 1024, GLYPH_COLS = 16, GLYPH_ROWS = 16;
+const atlasCanvas = document.createElement('canvas');
+atlasCanvas.width = ATLAS_SIZE; atlasCanvas.height = ATLAS_SIZE;
+const atlasCtx = atlasCanvas.getContext('2d');
+const glyphChars = '0123456789ABCDEFアイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン{};()=>01101001001100110100110110100101';
+const cellW = ATLAS_SIZE / GLYPH_COLS, cellH = ATLAS_SIZE / GLYPH_ROWS;
+atlasCtx.fillStyle = '#000'; atlasCtx.fillRect(0, 0, ATLAS_SIZE, ATLAS_SIZE);
+atlasCtx.textAlign = 'center'; atlasCtx.textBaseline = 'middle';
+for (let r = 0; r < GLYPH_ROWS; r++) {
+  for (let c = 0; c < GLYPH_COLS; c++) {
+    const idx = r * GLYPH_COLS + c;
+    const ch = glyphChars[idx % glyphChars.length];
+    const b = .5 + Math.random() * .5;
+    const cx = c * cellW + cellW / 2, cy = r * cellH + cellH / 2;
+    const fs = Math.floor(cellH * .72);
+    // Bloom halo — soft large glow behind each glyph
+    atlasCtx.font = `bold ${fs + 8}px monospace`;
+    atlasCtx.fillStyle = `rgba(0,${Math.floor(80*b)},${Math.floor(30*b)},0.12)`;
+    atlasCtx.fillText(ch, cx, cy);
+    atlasCtx.font = `bold ${fs + 3}px monospace`;
+    atlasCtx.fillStyle = `rgba(20,${Math.floor(160*b)},${Math.floor(60*b)},0.25)`;
+    atlasCtx.fillText(ch, cx, cy);
+    // Core glyph
+    atlasCtx.font = `bold ${fs}px monospace`;
+    atlasCtx.fillStyle = `rgba(${Math.floor(60+b*140)},${Math.floor(210+b*45)},${Math.floor(90+b*50)},1)`;
+    atlasCtx.fillText(ch, cx, cy);
+  }
+}
+const atlasTex = new THREE.CanvasTexture(atlasCanvas);
+atlasTex.magFilter = THREE.LinearFilter;
+atlasTex.minFilter = THREE.LinearMipmapLinearFilter;
+
+// --- 3D CODE PARTICLES INSIDE THE TUNNEL ---
+const CODE_COUNT = isTouch ? 1500 : 3000;
+const codeGeo = new THREE.BufferGeometry();
+const codePos = new Float32Array(CODE_COUNT * 3);
+const codeUV = new Float32Array(CODE_COUNT * 2);
+const codeSizes = new Float32Array(CODE_COUNT);
+const codeAlphas = new Float32Array(CODE_COUNT);
+const codeVelZ = new Float32Array(CODE_COUNT);
+const codeHot = new Float32Array(CODE_COUNT);  // 0 or 1 — hot particles are white/large
+
+// Pre-generate column positions for Matrix rain columns
+const COLUMN_COUNT = 24;
+const columnAnchors = [];
+for (let c = 0; c < COLUMN_COUNT; c++) {
+  const angle = (c / COLUMN_COUNT) * Math.PI * 2 + Math.random() * .2;
+  const rad = .5 + Math.random() * (TUBE_RADIUS * .7);
+  columnAnchors.push({ x: Math.cos(angle) * rad, y: Math.sin(angle) * rad });
+}
+
+function initCodeParticle(i) {
+  const isColumn = Math.random() < .18;  // 18% form vertical columns
+  let px, py;
+  if (isColumn) {
+    const col = columnAnchors[Math.floor(Math.random() * COLUMN_COUNT)];
+    px = col.x + (Math.random() - .5) * .06;  // Tight clustering
+    py = col.y + (Math.random() - .5) * .06;
+  } else {
+    const angle = Math.random() * Math.PI * 2;
+    const rad = Math.pow(Math.random(), .65) * (TUBE_RADIUS * .85);
+    px = Math.cos(angle) * rad;
+    py = Math.sin(angle) * rad;
+  }
+  codePos[i * 3] = px;
+  codePos[i * 3 + 1] = py;
+  codePos[i * 3 + 2] = -Math.random() * WARP_DEPTH;
+  codeUV[i * 2] = Math.floor(Math.random() * GLYPH_COLS) / GLYPH_COLS;
+  codeUV[i * 2 + 1] = Math.floor(Math.random() * GLYPH_ROWS) / GLYPH_ROWS;
+  const hot = Math.random() > .94;  // ~6% hot particles
+  codeHot[i] = hot ? 1.0 : 0.0;
+  codeSizes[i] = hot ? (30 + Math.random() * 50) : (14 + Math.random() * 36);
+  codeAlphas[i] = hot ? (.7 + Math.random() * .3) : (.2 + Math.random() * .7);
+  codeVelZ[i] = hot ? (25 + Math.random() * 55) : (15 + Math.random() * 45);
+}
+for (let i = 0; i < CODE_COUNT; i++) initCodeParticle(i);
+
+codeGeo.setAttribute('position', new THREE.BufferAttribute(codePos, 3));
+codeGeo.setAttribute('aUvOffset', new THREE.BufferAttribute(codeUV, 2));
+codeGeo.setAttribute('aSize', new THREE.BufferAttribute(codeSizes, 1));
+codeGeo.setAttribute('aAlpha', new THREE.BufferAttribute(codeAlphas, 1));
+codeGeo.setAttribute('aHot', new THREE.BufferAttribute(codeHot, 1));
+
+const codeMat = new THREE.ShaderMaterial({
+  uniforms: {
+    uAtlas: { value: atlasTex },
+    uGlyphScale: { value: 1.0 / GLYPH_COLS },
+    uTime: { value: 0 },
+    uSpeed: { value: 0 },
+    uFade: { value: 1.0 },
+    uPixelRatio: { value: rend.getPixelRatio() }
+  },
+  vertexShader: `
+    attribute vec2 aUvOffset;
+    attribute float aSize;
+    attribute float aAlpha;
+    attribute float aHot;
+    varying vec2 vUvOff;
+    varying float vAlpha;
+    varying float vDepth;
+    varying float vHot;
+    uniform float uSpeed;
+    uniform float uPixelRatio;
+    void main(){
+      vUvOff = aUvOffset;
+      vHot = aHot;
+      vec4 mv = modelViewMatrix * vec4(position, 1.0);
+      float d = -mv.z;
+      vDepth = d;
+      float depthFade = smoothstep(100.0, 1.0, d);
+      float warpBright = 1.0 + uSpeed * 2.2;
+      float hotBoost = 1.0 + aHot * 1.5;
+      vAlpha = aAlpha * depthFade * warpBright * hotBoost;
+      float sizeRamp = 1.0 + uSpeed * 3.5;
+      float hotSize = 1.0 + aHot * 0.8;
+      // Z-stretch: offset vertex forward slightly based on speed to create elongation
+      mv.z += uSpeed * 0.15 * aSize * 0.01;
+      gl_PointSize = max(1.0, aSize * sizeRamp * hotSize * uPixelRatio * (220.0 / max(d, 0.5)));
+      gl_Position = projectionMatrix * mv;
+    }
+  `,
+  fragmentShader: `
+    uniform sampler2D uAtlas;
+    uniform float uGlyphScale;
+    uniform float uSpeed;
+    uniform float uTime;
+    uniform float uFade;
+    varying vec2 vUvOff;
+    varying float vAlpha;
+    varying float vDepth;
+    varying float vHot;
+    void main(){
+      vec2 uv = vUvOff + gl_PointCoord * uGlyphScale;
+      vec4 tex = texture2D(uAtlas, uv);
+      float lum = max(tex.r, max(tex.g, tex.b));
+      if(lum < 0.06) discard;
+      vec3 deepGreen = vec3(0.0, 0.4, 0.15);
+      vec3 brightGreen = vec3(0.25, 1.0, 0.5);
+      vec3 white = vec3(0.95, 1.0, 0.97);
+      float nearness = smoothstep(30.0, 1.0, vDepth);
+      vec3 col = mix(deepGreen, brightGreen, nearness + uSpeed * 0.4);
+      col = mix(col, white, nearness * uSpeed * 0.8);
+      col = mix(col, vec3(0.85, 1.0, 0.9), vHot * 0.9);
+      float flicker = 0.85 + 0.15 * sin(uTime * 20.0 + vDepth * 3.0);
+      float hotFlicker = vHot > 0.5 ? (0.7 + 0.3 * sin(uTime * 40.0 + vDepth * 7.0)) : 1.0;
+      gl_FragColor = vec4(col * lum * flicker * hotFlicker, vAlpha * lum * uFade);
+    }
+  `,
+  transparent: true,
+  depthWrite: false,
+  blending: THREE.AdditiveBlending
+});
+
+const codePoints = new THREE.Points(codeGeo, codeMat);
+codePoints.visible = false;
+scene.add(codePoints);
+
+// --- LIGHT STREAKS: 3D cylinders along tunnel walls ---
+const STREAK_COUNT = isTouch ? 200 : 420;
+const streakGrp = new THREE.Group();
+const streakData = [];
+const streakCylGeo = new THREE.CylinderGeometry(.008, .003, 1, 4, 1);
+streakCylGeo.rotateX(Math.PI / 2);  // Orient along z
+
+for (let i = 0; i < STREAK_COUNT; i++) {
+  const angle = Math.random() * Math.PI * 2;
+  const wallRad = TUBE_RADIUS * (.7 + Math.random() * .25);
+  const x = Math.cos(angle) * wallRad;
+  const y = Math.sin(angle) * wallRad;
+  const z = -Math.random() * WARP_DEPTH;
+  const vel = 25 + Math.random() * 55;
+  const b = .2 + Math.random() * .8;
+  const isHot = Math.random() > .88;  // 12% are bright white
+  const col = isHot
+    ? new THREE.Color(.8 + b * .2, .95, .85 + b * .15)
+    : Math.random() > .3
+      ? new THREE.Color(0, .3 + b * .5, .1 + b * .2)
+      : new THREE.Color(.2 + b * .4, .7 + b * .3, .3 + b * .3);
+  const mat = new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0 });
+  const mesh = new THREE.Mesh(streakCylGeo, mat);
+  mesh.position.set(x, y, z);
+  streakData.push({ x, y, z, vel, angle, wallRad, isHot });
+  streakGrp.add(mesh);
+}
+streakGrp.visible = false;
+scene.add(streakGrp);
+
+// --- EXIT PORTAL: bright ring at the destination ---
+const portalGeo = new THREE.TorusGeometry(TUBE_RADIUS * .9, .08, 16, 64);
+const portalMat = new THREE.MeshBasicMaterial({
+  color: 0xaaffcc, transparent: true, opacity: 0, side: THREE.DoubleSide
+});
+const portalMesh = new THREE.Mesh(portalGeo, portalMat);
+portalMesh.position.z = -WARP_DEPTH + 10;
+portalMesh.visible = false;
+scene.add(portalMesh);
+
+// Inner glow disc
+const portalGlowGeo = new THREE.CircleGeometry(TUBE_RADIUS * .85, 48);
+const portalGlowMat = new THREE.MeshBasicMaterial({
+  color: 0x88ffbb, transparent: true, opacity: 0, side: THREE.DoubleSide
+});
+const portalGlow = new THREE.Mesh(portalGlowGeo, portalGlowMat);
+portalGlow.position.z = -WARP_DEPTH + 10;
+portalGlow.visible = false;
+scene.add(portalGlow);
+
+// Outer halo ring
+const portalHaloGeo = new THREE.TorusGeometry(TUBE_RADIUS * 1.05, .2, 8, 64);
+const portalHaloMat = new THREE.MeshBasicMaterial({
+  color: 0x44ff88, transparent: true, opacity: 0, side: THREE.DoubleSide
+});
+const portalHalo = new THREE.Mesh(portalHaloGeo, portalHaloMat);
+portalHalo.position.z = -WARP_DEPTH + 10;
+portalHalo.visible = false;
+scene.add(portalHalo);
+
+// --- ENTRANCE RING: visible tube mouth ---
+const entranceRingGeo = new THREE.TorusGeometry(TUBE_RADIUS * .95, .06, 12, 64);
+const entranceRingMat = new THREE.MeshBasicMaterial({
+  color: 0x44ff88, transparent: true, opacity: 0, side: THREE.DoubleSide
+});
+const entranceRing = new THREE.Mesh(entranceRingGeo, entranceRingMat);
+entranceRing.position.z = 8;  // Just in front of camera start
+entranceRing.visible = false;
+scene.add(entranceRing);
+
+// --- 2D POST-PROCESS OVERLAY: vignette + subtle scanlines ---
+const warpOverlay = document.createElement('canvas');
+warpOverlay.id = 'warp-overlay';
+warpOverlay.style.cssText = 'position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0';
+document.body.appendChild(warpOverlay);
+const woCtx = warpOverlay.getContext('2d');
+
+function resizeWarpOverlay() {
+  warpOverlay.width = innerWidth * Math.min(devicePixelRatio, 1.5);
+  warpOverlay.height = innerHeight * Math.min(devicePixelRatio, 1.5);
+  warpOverlay.style.width = innerWidth + 'px';
+  warpOverlay.style.height = innerHeight + 'px';
+}
+resizeWarpOverlay();
+window.addEventListener('resize', resizeWarpOverlay);
+
+function drawWarpOverlay(speed, time) {
+  const w = warpOverlay.width, h = warpOverlay.height;
+  const cx = w / 2, cy = h / 2;
+  woCtx.clearRect(0, 0, w, h);
+
+  // CHROMATIC ABERRATION — feathered RGB fringe at screen edges
+  if (speed > .12) {
+    const aberr = speed * speed * 12;
+    const edgeFade = Math.max(w, h) * .35;
+    // Red fringe — top-left bias
+    const rg = woCtx.createRadialGradient(cx - aberr, cy - aberr, edgeFade, cx, cy, Math.max(w,h) * .7);
+    rg.addColorStop(0, 'rgba(0,0,0,0)');
+    rg.addColorStop(.5, `rgba(255,20,0,${speed * .035})`);
+    rg.addColorStop(1, `rgba(255,40,0,${speed * .06})`);
+    woCtx.fillStyle = rg; woCtx.fillRect(0, 0, w, h);
+    // Blue fringe — bottom-right bias
+    const bg = woCtx.createRadialGradient(cx + aberr, cy + aberr, edgeFade, cx, cy, Math.max(w,h) * .7);
+    bg.addColorStop(0, 'rgba(0,0,0,0)');
+    bg.addColorStop(.5, `rgba(0,40,255,${speed * .03})`);
+    bg.addColorStop(1, `rgba(20,60,255,${speed * .055})`);
+    woCtx.fillStyle = bg; woCtx.fillRect(0, 0, w, h);
+  }
+
+  // Heavy vignette — tunnel vision effect
+  const vigOuter = Math.max(w, h) * (.58 - speed * .14);
+  const vig = woCtx.createRadialGradient(cx, cy, vigOuter * .12, cx, cy, vigOuter);
+  vig.addColorStop(0, 'rgba(0,0,0,0)');
+  vig.addColorStop(.35, `rgba(0,3,1,${speed * .2})`);
+  vig.addColorStop(.65, `rgba(0,2,1,${.15 + speed * .45})`);
+  vig.addColorStop(1, `rgba(0,1,0,${.5 + speed * .45})`);
+  woCtx.fillStyle = vig;
+  woCtx.fillRect(0, 0, w, h);
+
+  // Scanlines — subtle CRT
+  woCtx.fillStyle = `rgba(0,0,0,${.012 + speed * .022})`;
+  for (let y = 0; y < h; y += 2) woCtx.fillRect(0, y, w, 1);
+
+  // Center destination glow
+  const gr = w * (.03 + speed * .12);
+  const glow = woCtx.createRadialGradient(cx, cy, 0, cx, cy, gr);
+  glow.addColorStop(0, `rgba(200,255,230,${speed * .18})`);
+  glow.addColorStop(.3, `rgba(80,240,140,${speed * .08})`);
+  glow.addColorStop(1, 'rgba(0,0,0,0)');
+  woCtx.fillStyle = glow;
+  woCtx.fillRect(0, 0, w, h);
+
+  // Film grain at high speed (skip on mobile — expensive pixel manipulation)
+  if (speed > .4 && !isTouch) {
+    const imgData = woCtx.getImageData(0, 0, w, h);
+    const d = imgData.data;
+    const grainAmt = speed * 8;
+    for (let i = 0; i < d.length; i += 16) {  // Every 4th pixel for perf
+      const noise = (Math.random() - .5) * grainAmt;
+      d[i] += noise; d[i+1] += noise * .7; d[i+2] += noise * .3;
+    }
+    woCtx.putImageData(imgData, 0, 0);
+  }
+}
+
+// --- TUNNEL AMBIENT GLOW: green light that follows camera ---
+const tunnelGlow = new THREE.PointLight(0x22ff66, 0, 20);
+scene.add(tunnelGlow);
+
+// --- WARP FOG ---
+const warpFog = new THREE.FogExp2(0x001a08, 0.012);
+
+// --- WARP AUDIO: synthesized engine + arrival impact ---
+let warpAudioCtx = null, warpGain = null, warpOsc1 = null, warpOsc2 = null, warpNoise = null;
+
+function startWarpAudio() {
+  try {
+    // Reuse the shared retroAudioCtx if available, otherwise create new
+    if (retroAudioCtx && retroAudioCtx.state === 'running') {
+      warpAudioCtx = retroAudioCtx;
+    } else {
+      warpAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (warpAudioCtx.state === 'suspended') warpAudioCtx.resume();
+    }
+    const now = warpAudioCtx.currentTime;
+    const dur = 2.4;
+
+    // Master gain — ramps up then cuts
+    warpGain = warpAudioCtx.createGain();
+    warpGain.gain.setValueAtTime(0, now);
+    warpGain.gain.linearRampToValueAtTime(.18, now + .3);
+    warpGain.gain.linearRampToValueAtTime(.35, now + dur * .7);
+    warpGain.gain.linearRampToValueAtTime(.08, now + dur - .1);
+    warpGain.gain.linearRampToValueAtTime(0, now + dur);
+    warpGain.connect(warpAudioCtx.destination);
+
+    // Low rumble oscillator — bass foundation
+    warpOsc1 = warpAudioCtx.createOscillator();
+    warpOsc1.type = 'sawtooth';
+    warpOsc1.frequency.setValueAtTime(35, now);
+    warpOsc1.frequency.exponentialRampToValueAtTime(80, now + dur * .5);
+    warpOsc1.frequency.exponentialRampToValueAtTime(200, now + dur);
+    const lp1 = warpAudioCtx.createBiquadFilter();
+    lp1.type = 'lowpass'; lp1.frequency.value = 300;
+    const g1 = warpAudioCtx.createGain(); g1.gain.value = .5;
+    warpOsc1.connect(lp1).connect(g1).connect(warpGain);
+    warpOsc1.start(now); warpOsc1.stop(now + dur + .1);
+
+    // High whine — ramps up with speed
+    warpOsc2 = warpAudioCtx.createOscillator();
+    warpOsc2.type = 'sine';
+    warpOsc2.frequency.setValueAtTime(200, now);
+    warpOsc2.frequency.exponentialRampToValueAtTime(2400, now + dur);
+    const g2 = warpAudioCtx.createGain();
+    g2.gain.setValueAtTime(0, now);
+    g2.gain.linearRampToValueAtTime(.12, now + dur * .5);
+    g2.gain.linearRampToValueAtTime(.25, now + dur - .2);
+    g2.gain.linearRampToValueAtTime(0, now + dur);
+    warpOsc2.connect(g2).connect(warpGain);
+    warpOsc2.start(now); warpOsc2.stop(now + dur + .1);
+
+    // White noise layer — wind/data rush
+    const bufSize = warpAudioCtx.sampleRate * dur;
+    const buf = warpAudioCtx.createBuffer(1, bufSize, warpAudioCtx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1) * .3;
+    warpNoise = warpAudioCtx.createBufferSource();
+    warpNoise.buffer = buf;
+    const hp = warpAudioCtx.createBiquadFilter();
+    hp.type = 'highpass'; hp.frequency.value = 800;
+    hp.frequency.exponentialRampToValueAtTime(3000, now + dur);
+    const gn = warpAudioCtx.createGain();
+    gn.gain.setValueAtTime(0, now);
+    gn.gain.linearRampToValueAtTime(.15, now + dur * .4);
+    gn.gain.linearRampToValueAtTime(.3, now + dur - .2);
+    gn.gain.linearRampToValueAtTime(0, now + dur);
+    warpNoise.connect(hp).connect(gn).connect(warpGain);
+    warpNoise.start(now); warpNoise.stop(now + dur + .1);
+
+    // Arrival thump — low bass hit at end
+    setTimeout(() => {
+      if (!warpAudioCtx) return;
+      const t = warpAudioCtx.currentTime;
+      const thump = warpAudioCtx.createOscillator();
+      thump.type = 'sine';
+      thump.frequency.setValueAtTime(80, t);
+      thump.frequency.exponentialRampToValueAtTime(20, t + .4);
+      const tg = warpAudioCtx.createGain();
+      tg.gain.setValueAtTime(.45, t);
+      tg.gain.exponentialRampToValueAtTime(.001, t + .5);
+      thump.connect(tg).connect(warpAudioCtx.destination);
+      thump.start(t); thump.stop(t + .6);
+    }, dur * 1000 - 100);
+  } catch(e) {}
+}
+
+// --- ARRIVAL FLASH: white-out div ---
+const arrivalFlash = document.createElement('div');
+arrivalFlash.style.cssText = 'position:fixed;inset:0;z-index:3;background:rgba(180,255,220,0);pointer-events:none;transition:background .08s';
+document.body.appendChild(arrivalFlash);
+
+function triggerArrivalFlash() {
+  arrivalFlash.style.background = 'rgba(200,255,230,0.85)';
+  arrivalFlash.style.transition = 'background .08s';
+  setTimeout(() => {
+    arrivalFlash.style.transition = 'background .7s ease-out';
+    arrivalFlash.style.background = 'rgba(180,255,220,0)';
+  }, 80);
+}
+
+function smoothClamp(x, lo, hi) { return Math.max(lo, Math.min(hi, x)); }
+
+// --- RESIDUAL PARTICLES: drift through mirror scene after arrival ---
+const RESIDUAL_COUNT = 40;
+const residualGeo = new THREE.BufferGeometry();
+const residualPos = new Float32Array(RESIDUAL_COUNT * 3);
+const residualVel = new Float32Array(RESIDUAL_COUNT * 3);
+for (let i = 0; i < RESIDUAL_COUNT; i++) {
+  residualPos[i*3] = (Math.random()-.5) * 8;
+  residualPos[i*3+1] = (Math.random()-.5) * 5;
+  residualPos[i*3+2] = 4 + Math.random() * 6;
+  residualVel[i*3] = (Math.random()-.5) * .3;
+  residualVel[i*3+1] = (Math.random()-.5) * .2;
+  residualVel[i*3+2] = -.5 - Math.random() * 1.5;
+}
+residualGeo.setAttribute('position', new THREE.BufferAttribute(residualPos, 3));
+const residualMat = new THREE.PointsMaterial({
+  size: 3, color: 0x44ee88, transparent: true, opacity: .5,
+  blending: THREE.AdditiveBlending, depthWrite: false,
+  sizeAttenuation: true
+});
+const residualPoints = new THREE.Points(residualGeo, residualMat);
+residualPoints.visible = false;
+scene.add(residualPoints);
+let residualAge = 0;
+
+// --- MASTER UPDATE ---
+function updateWarp(progress, deltaTime, time) {
+  const speed = progress < .15
+    ? progress / .15 * .3   // Quick ramp to 30%
+    : .3 + (progress - .15) / .85 * .7;  // Then smooth to 100%
+  const e3 = speed * speed * speed;
+  const velMult = 1 + e3 * 12;
+
+  // Fog density ramps with speed
+  warpFog.density = .012 + e3 * .008;
+
+  // Tunnel ambient glow — follows camera, pulses with heartbeat
+  tunnelGlow.position.set(0, 0, cam.position.z - 2);
+  const heartbeat = Math.pow(Math.abs(Math.sin(time * 3.8)), 12) + Math.pow(Math.abs(Math.sin(time * 3.8 + .35)), 16) * .6;
+  tunnelGlow.intensity = (3 + e3 * 8) * (.8 + heartbeat * .3);
+
+  // Tunnel shader uniforms
+  tubeMatWire.uniforms.uSpeed.value = speed;
+  tubeMatWire.uniforms.uTime.value = time;
+  tubeMatWire.uniforms.uCamZ.value = cam.position.z;
+  tubeMatSolid.opacity = .88 + speed * .1;
+
+  // Code particles — fly toward camera
+  const posArr = codeGeo.attributes.position.array;
+  const uvArr = codeGeo.attributes.aUvOffset.array;
+  let uvDirty = false;
+  for (let i = 0; i < CODE_COUNT; i++) {
+    posArr[i * 3 + 2] += codeVelZ[i] * deltaTime * velMult;
+    if (posArr[i * 3 + 2] > cam.position.z + 5) {
+      posArr[i * 3 + 2] = cam.position.z - WARP_DEPTH - Math.random() * 30;
+      if (Math.random() < .18) {
+        const col = columnAnchors[Math.floor(Math.random() * COLUMN_COUNT)];
+        posArr[i * 3] = col.x + (Math.random() - .5) * .06;
+        posArr[i * 3 + 1] = col.y + (Math.random() - .5) * .06;
+      } else {
+        const angle = Math.random() * Math.PI * 2;
+        const rad = Math.pow(Math.random(), .65) * (TUBE_RADIUS * .85);
+        posArr[i * 3] = Math.cos(angle) * rad;
+        posArr[i * 3 + 1] = Math.sin(angle) * rad;
+      }
+      uvArr[i * 2] = Math.floor(Math.random() * GLYPH_COLS) / GLYPH_COLS;
+      uvArr[i * 2 + 1] = Math.floor(Math.random() * GLYPH_ROWS) / GLYPH_ROWS;
+      uvDirty = true;
+    }
+  }
+  codeGeo.attributes.position.needsUpdate = true;
+  if (uvDirty) codeGeo.attributes.aUvOffset.needsUpdate = true;
+  codeMat.uniforms.uSpeed.value = speed;
+  codeMat.uniforms.uTime.value = time;
+
+  // Streaks — 3D cylinders along tunnel walls
+  for (let i = 0; i < STREAK_COUNT; i++) {
+    const sd = streakData[i];
+    sd.z += sd.vel * deltaTime * velMult;
+    if (sd.z > cam.position.z + 5) {
+      sd.z = cam.position.z - WARP_DEPTH - Math.random() * 30;
+    }
+    const mesh = streakGrp.children[i];
+    mesh.position.set(sd.x, sd.y, sd.z);
+    // Stretch and thicken with speed
+    const stretch = 1 + e3 * 50;
+    const thickness = 1 + e3 * 3;
+    mesh.scale.set(thickness, thickness, stretch);
+    const baseOpacity = sd.isHot ? .6 : .2;
+    mesh.material.opacity = (baseOpacity + e3 * .55) * (.5 + Math.random() * .5);
+  }
+
+  // Exit portal — grows brighter and larger as camera approaches
+  const portalDist = Math.abs(cam.position.z - portalMesh.position.z);
+  const portalProx = smoothClamp(1 - portalDist / WARP_DEPTH, 0, 1);
+  portalMat.opacity = portalProx * .7 + Math.sin(time * 6) * .1;
+  portalGlowMat.opacity = portalProx * .15;
+  portalHaloMat.opacity = portalProx * .3;
+  // Pulse the ring
+  const portalScale = 1 + Math.sin(time * 4.5) * .04 * (1 + portalProx);
+  portalMesh.scale.set(portalScale, portalScale, 1);
+  portalHalo.scale.set(portalScale * 1.02, portalScale * 1.02, 1);
+  portalHalo.rotation.z = time * .3;
+
+  // Overlay
+  warpOverlay.style.opacity = String(Math.min(1, speed + .15));
+  drawWarpOverlay(speed, time);
+}
+
+// ══════════════════════════════════════════════════════════════════
+// SITE PREVIEW CARD
+// ══════════════════════════════════════════════════════════════════
+function makeSiteCanvas(mode) {
+  const c = document.createElement('canvas'); c.width = 420; c.height = 680;
+  const ctx = c.getContext('2d');
+  const light = mode === 'light';
+  const bg = light ? '#f4f1ec' : '#050505';
+  const navBg = light ? 'rgba(244,241,236,0.96)' : 'rgba(5,5,5,0.94)';
+  const txt = light ? '#1a1a1a' : '#f0f0f0';
+  const sub = light ? 'rgba(40,35,28,0.52)' : 'rgba(255,255,255,0.46)';
+  const line = light ? 'rgba(0,0,0,0.07)' : 'rgba(255,255,255,0.07)';
+  const labelTxt = light ? 'rgba(80,70,55,0.45)' : 'rgba(255,255,255,0.32)';
+  const btnBg = light ? '#1a1a1a' : '#fff';
+  const btnTxt = light ? '#f4f1ec' : '#000';
+  const secBorder = light ? 'rgba(0,0,0,0.16)' : 'rgba(255,255,255,0.18)';
+  const secTxt = light ? 'rgba(0,0,0,0.55)' : 'rgba(255,255,255,0.58)';
+  const cardBorder = light ? 'rgba(0,0,0,0.07)' : 'rgba(255,255,255,0.06)';
+  const cardBg = light ? 'rgba(0,0,0,0.02)' : 'rgba(255,255,255,0.03)';
+  const trustBorder = light ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.06)';
+  const trustNum = light ? '#1a1a1a' : '#fff';
+  const trustLabel = light ? 'rgba(40,35,28,0.4)' : 'rgba(255,255,255,0.32)';
+
+  // Background
+  ctx.fillStyle = bg; ctx.fillRect(0,0,420,680);
+
+  // Nav bar
+  ctx.fillStyle = navBg; ctx.fillRect(0,0,420,56);
+  ctx.strokeStyle = line; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0,56); ctx.lineTo(420,56); ctx.stroke();
+
+  // Ghost icon in nav (simplified)
+  const gx=24, gy=20;
+  ctx.fillStyle = light ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.8)';
+  ctx.beginPath();
+  ctx.ellipse(gx+10, gy+8, 10, 12, 0, Math.PI, 0);
+  ctx.lineTo(gx+20, gy+22);
+  ctx.quadraticCurveTo(gx+17, gy+18, gx+13, gy+22);
+  ctx.quadraticCurveTo(gx+10, gy+18, gx+7, gy+22);
+  ctx.quadraticCurveTo(gx+3, gy+18, gx, gy+22);
+  ctx.closePath(); ctx.fill();
+  // Ghost eyes
+  ctx.fillStyle = bg;
+  ctx.beginPath(); ctx.arc(gx+6, gy+8, 2.5, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(gx+14, gy+8, 2.5, 0, Math.PI*2); ctx.fill();
+
+  // Nav text
+  ctx.fillStyle = txt; ctx.font = 'bold 16px "Space Grotesk",sans-serif'; ctx.fillText('ND.AI',50,38);
+
+  // Book a call button
+  ctx.fillStyle = btnBg; ctx.beginPath(); ctx.roundRect(310,16,90,28,6); ctx.fill();
+  ctx.fillStyle = btnTxt; ctx.font = '600 11px "Space Grotesk",sans-serif'; ctx.fillText('Book a call',324,34);
+
+  // Section label
+  ctx.fillStyle = labelTxt; ctx.font = '600 10px "Space Grotesk",sans-serif'; ctx.letterSpacing = '2px';
+  ctx.fillText('AI CONSULTING FOR NORTH DAKOTA BUSINESSES',24,88);
+
+  // Hero heading
+  ctx.fillStyle = txt; ctx.font = 'bold 30px "Space Grotesk",sans-serif';
+  ['We make AI','actually work for','your business.'].forEach((l,i) => ctx.fillText(l,24,128+i*38));
+
+  // Hero subtext
+  ctx.fillStyle = sub; ctx.font = '400 12px "Space Grotesk",sans-serif';
+  ['No fluff. No conference keynotes. We sit','down with you, map your operation, and','build something that saves real time','and real money.'].forEach((l,i) => ctx.fillText(l,24,260+i*20));
+
+  // CTA buttons
+  ctx.fillStyle = btnBg; ctx.beginPath(); ctx.roundRect(24,350,176,40,8); ctx.fill();
+  ctx.fillStyle = btnTxt; ctx.font = '600 12px "Space Grotesk",sans-serif'; ctx.fillText('Book a free consultation',38,375);
+  ctx.strokeStyle = secBorder; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.roundRect(210,350,144,40,8); ctx.stroke();
+  ctx.fillStyle = secTxt; ctx.fillText('See how it works',226,375);
+
+  // Trust bar
+  ctx.strokeStyle = trustBorder; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(24,410); ctx.lineTo(396,410); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(24,458); ctx.lineTo(396,458); ctx.stroke();
+  const trustItems = [{n:'50+',l:'Served'},{n:'12',l:'Industries'},{n:'340%',l:'Avg ROI'},{n:'48hr',l:'Response'}];
+  trustItems.forEach((item, i) => {
+    const cx = 24 + i * 95 + 40;
+    ctx.fillStyle = trustNum; ctx.font = 'bold 18px "Space Grotesk",sans-serif';
+    ctx.textAlign = 'center'; ctx.fillText(item.n, cx, 434);
+    ctx.fillStyle = trustLabel; ctx.font = '500 8px "Space Grotesk",sans-serif';
+    ctx.fillText(item.l, cx, 448);
+  });
+  ctx.textAlign = 'left';
+
+  // Section divider
+  ctx.strokeStyle = line;
+  ctx.beginPath(); ctx.moveTo(24,478); ctx.lineTo(396,478); ctx.stroke();
+
+  // Services section preview
+  ctx.fillStyle = labelTxt; ctx.font = '600 9px "Space Grotesk",sans-serif';
+  ctx.fillText('OUR SOLUTIONS',24,502);
+  ctx.fillStyle = txt; ctx.font = 'bold 18px "Space Grotesk",sans-serif';
+  ctx.fillText('AI consulting and implementation,',24,526);
+  ctx.fillText('end to end.',24,548);
+
+  // Service cards preview (2 mini cards)
+  [['01','AI Strategy & Roadmap',560],['02','Process Automation',618]].forEach(([num,title,y]) => {
+    ctx.strokeStyle = cardBorder; ctx.lineWidth = 1;
+    ctx.fillStyle = cardBg;
+    ctx.beginPath(); ctx.roundRect(24, y, 372, 48, 6); ctx.fill();
+    ctx.beginPath(); ctx.roundRect(24, y, 372, 48, 6); ctx.stroke();
+    ctx.fillStyle = labelTxt; ctx.font = '600 9px "Space Grotesk",sans-serif'; ctx.fillText(num, 36, y+20);
+    ctx.fillStyle = txt; ctx.font = '600 13px "Space Grotesk",sans-serif'; ctx.fillText(title, 36, y+38);
+  });
+
+  return new THREE.CanvasTexture(c);
+}
+
+function buildSiteCard(mode) {
+  const g = new THREE.Group();
+  const light = mode === 'light';
+  const frameMat = new THREE.MeshStandardMaterial({ color: light ? 0xd8d2c8 : 0x1a1a1e, roughness: light ? .55 : .4, metalness: light ? .15 : .88 });
+  g.add(new THREE.Mesh(new THREE.BoxGeometry(1.98,3.22,0.08), frameMat));
+  const scrMat = new THREE.MeshStandardMaterial({ map:makeSiteCanvas(mode), emissive: light ? 0x1a1812 : 0x030308, emissiveIntensity: light ? .8 : .6, roughness:.08, metalness:0 });
+  const scr = new THREE.Mesh(new THREE.BoxGeometry(1.82,3.05,0.02), scrMat);
+  scr.position.z = 0.05; g.add(scr);
+  const edgeMat = new THREE.MeshStandardMaterial({ color: light ? 0xc8c0b4 : 0x2a2a32, roughness:.3, metalness: light ? .2 : .9 });
+  const topE = new THREE.Mesh(new THREE.BoxGeometry(1.98,.04,.1), edgeMat);
+  topE.position.set(0,1.63,0); g.add(topE);
+  g.position.set(-2.7, 0, 0);
+  return g;
+}
+
+// ══════════════════════════════════════════════════════════════════
+// TERMINAL
+// ══════════════════════════════════════════════════════════════════
+const TC = document.createElement('canvas'); TC.width = 700; TC.height = 560;
+const tTex = new THREE.CanvasTexture(TC);
+let curOn = true;
+
+function drawTerm() {
+  const ctx = TC.getContext('2d');
+  ctx.fillStyle = '#010e05'; ctx.fillRect(0,0,700,560);
+  const vg = ctx.createRadialGradient(350,280,100,350,280,380);
+  vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,0,0,0.4)');
+  ctx.fillStyle = vg; ctx.fillRect(0,0,700,560);
+  ctx.globalAlpha = .022;
+  for (let y=0;y<560;y+=3){ctx.fillStyle='#000';ctx.fillRect(0,y,700,1);}
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = 'rgba(0,30,15,0.7)'; ctx.fillRect(0,0,700,56);
+  ctx.fillStyle = '#44ee88'; ctx.font = 'bold 26px monospace'; ctx.textAlign = 'left';
+  ctx.fillText('ND.AI',32,38);
+  ctx.fillStyle = 'rgba(68,238,136,0.35)'; ctx.font = '14px monospace'; ctx.fillText('AI consulting terminal',120,38);
+  ctx.strokeStyle = 'rgba(68,238,136,0.2)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0,56); ctx.lineTo(700,56); ctx.stroke();
+  ctx.fillStyle = 'rgba(68,238,136,0.9)'; ctx.font = '22px monospace';
+  ctx.fillText('> Hello. What can we build for you?',32,110);
+  ctx.fillStyle = 'rgba(68,238,136,0.5)'; ctx.font = '18px monospace';
+  ctx.fillText('  We automate what slows your business',32,172);
+  ctx.fillText('  down. No pitch decks — just results.',32,198);
+  ctx.fillStyle = 'rgba(68,238,136,0.9)'; ctx.font = '22px monospace';
+  ctx.fillText('> ',32,280);
+  if (curOn) { ctx.fillStyle = '#44ee88'; ctx.fillRect(68,260,14,24); }
+  ctx.strokeStyle = 'rgba(68,238,136,0.15)';
+  ctx.beginPath(); ctx.moveTo(0,490); ctx.lineTo(700,490); ctx.stroke();
+  ctx.fillStyle = 'rgba(68,238,136,0.8)'; ctx.font = 'bold 20px monospace'; ctx.textAlign = 'center';
+  ctx.fillText('CLICK TO START CHATTING',350,530);
+  tTex.needsUpdate = true;
+}
+drawTerm();
+setInterval(() => { curOn = !curOn; drawTerm(); }, 530);
+
+function buildTerminal() {
+  const g = new THREE.Group();
+  const bodyMat = new THREE.MeshStandardMaterial({ color:0x0e0d0a, roughness:.68, metalness:.05 });
+  const faceMat = new THREE.MeshStandardMaterial({ color:0x161410, roughness:.62, metalness:.04 });
+  const steelMat = new THREE.MeshStandardMaterial({ color:0x1c1c20, roughness:.5, metalness:.82 });
+  const darkMat = new THREE.MeshStandardMaterial({ color:0x050403, roughness:.9, metalness:.02 });
+
+  g.add(new THREE.Mesh(new THREE.BoxGeometry(3.4,2.9,1.65), bodyMat));
+  const face = new THREE.Mesh(new THREE.BoxGeometry(3.4,2.9,.07), faceMat); face.position.z=.875; g.add(face);
+  const cavity = new THREE.Mesh(new THREE.BoxGeometry(3.0,2.48,.16), darkMat); cavity.position.set(0,.06,.9); g.add(cavity);
+  const scrMat = new THREE.MeshStandardMaterial({ map:tTex, emissive:0x001a08, emissiveIntensity:.85, roughness:.06 });
+  const scr = new THREE.Mesh(new THREE.BoxGeometry(2.85,2.32,.02), scrMat); scr.position.set(0,.06,.975); g.add(scr);
+
+  const bMat = new THREE.MeshStandardMaterial({ color:0x1a1813, roughness:.65 });
+  [[3.4,.08,.1,0,1.28,.93],[3.4,.08,.1,0,-1.16,.93],[.07,2.48,.1,-1.52,.06,.93],[.07,2.48,.1,1.52,.06,.93]].forEach(([w,h,d,x,y,z])=>{
+    const b=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),bMat); b.position.set(x,y,z); g.add(b);
+  });
+
+  const antGeo = new THREE.CylinderGeometry(.02,.02,1.1,7);
+  [-1,1].forEach(s=>{
+    const ant=new THREE.Mesh(antGeo,steelMat); ant.position.set(s*.55,1.72,.1); ant.rotation.z=s*.28; g.add(ant);
+    const tip=new THREE.Mesh(new THREE.SphereGeometry(.04,8,8),steelMat); tip.position.set(s*.55+s*.16,2.28,.1); g.add(tip);
+  });
+  [-1,1].forEach(s=>{
+    const gP=new THREE.Mesh(new THREE.BoxGeometry(.2,1,.07),faceMat); gP.position.set(s*1.52,-.14,.88); g.add(gP);
+    for(let j=0;j<7;j++){const sl=new THREE.Mesh(new THREE.BoxGeometry(.07,.06,.09),darkMat);sl.position.set(s*1.52,.2-j*.12,.88);g.add(sl);}
+  });
+  [-1,0,1].forEach(x=>{ const f=new THREE.Mesh(new THREE.BoxGeometry(.18,.28,.2),bodyMat);f.position.set(x*1.1,-1.6,.25);g.add(f);});
+  const led=new THREE.Mesh(new THREE.SphereGeometry(.048,10,10), new THREE.MeshStandardMaterial({color:0x00ff55,emissive:0x00dd44,emissiveIntensity:3}));
+  led.position.set(-1.5,-1.08,.95); g.add(led); g.userData.led=led;
+  g.position.set(3.1,-.1,0);
+  return g;
+}
+
+let siteCard = buildSiteCard('dark');
+const terminal = buildTerminal();
+const mirror = new THREE.Group(); mirror.add(siteCard, terminal);
+mirror.visible = false; scene.add(mirror);
+
+const ray = new THREE.Raycaster();
+const mp = new THREE.Vector2();
+
+// ══════════════════════════════════════════════════════════════════
+// STATE + INTERACTION
+// ══════════════════════════════════════════════════════════════════
+let STATE='entry', T0=0, siteMode='dark', mX=innerWidth/2, mY=innerHeight/2, gTX=0, cStartX=0;
+const clk = new THREE.Clock();
+const dot = document.getElementById('dot');
+// Gate click — unlocks AudioContext, reveals entry screen
+const gateEl = document.getElementById('gate');
+gateEl.addEventListener('click', () => {
+  ensureRetroAudio();
+  gateEl.style.opacity = '0';
+  setTimeout(() => { gateEl.style.display = 'none'; }, 500);
+});
+// Fix gate text for touch devices
+if (isTouch) {
+  const gateSub = gateEl.querySelector('div:last-child');
+  if (gateSub) gateSub.textContent = 'tap anywhere to enter';
+}
+
+const entryEl = document.getElementById('entry');
+const fmEl = document.getElementById('fm');
+
+document.addEventListener('mousemove', e => { mX=e.clientX; mY=e.clientY; dot.style.left=e.clientX+'px'; dot.style.top=e.clientY+'px'; });
+
+// Touch: track touches for ghost movement on entry
+document.addEventListener('touchmove', e => { if(e.touches[0]){mX=e.touches[0].clientX; mY=e.touches[0].clientY;} }, {passive:true});
+
+entryEl.addEventListener('click', e => {
+  if (STATE !== 'entry') return;
+  if (e.target.closest('.entry-sub')) return;
+  siteMode = mX < innerWidth/2 ? 'light' : 'dark';
+  playRetroSelect();
+  document.getElementById('hint').style.opacity = '0';
+  dot.style.display = 'none';
+  doFlashReveal(() => {
+    window.location.href = 'solutions.html' + (siteMode === 'light' ? '?mode=light' : '');
+    entryEl.classList.add('gone');
+    STATE = 'done';
+  });
+});
+
+// Sub-button clicks — bypass warp, open overlays directly
+function entrySubClick(mode, action, e) {
+  e.stopPropagation();
+  if (STATE !== 'entry') return;
+  siteMode = mode;
+  if (action === 'who') {
+    openSite();
+  } else {
+    window.location.href = 'solutions.html' + (siteMode === 'light' ? '?mode=light' : '');
+  }
+}
+document.getElementById('sl-who').addEventListener('click', e => entrySubClick('light', 'who', e));
+document.getElementById('sl-what').addEventListener('click', e => entrySubClick('light', 'what', e));
+document.getElementById('sd-who').addEventListener('click', e => entrySubClick('dark', 'who', e));
+document.getElementById('sd-what').addEventListener('click', e => entrySubClick('dark', 'what', e));
+
+// Skip intro — appears after 2s
+setTimeout(() => {
+  const skipBtn = document.getElementById('skip-intro');
+  if (skipBtn && STATE === 'entry') { skipBtn.style.opacity = '1'; skipBtn.style.pointerEvents = 'auto'; }
+}, 2000);
+document.getElementById('skip-intro').addEventListener('click', e => {
+  e.stopPropagation();
+  if (STATE !== 'entry') return;
+  siteMode = 'dark';
+  entryEl.classList.add('gone');
+  openSite();
+  STATE = 'done';
+});
+
+// Mobile entry — tap ghost card to enter via warp tunnel
+function mobileChoose(mode) {
+  if (STATE !== 'entry') return;
+  siteMode = mode;
+  playRetroSelect();
+  document.getElementById('mobile-entry').style.opacity = '0';
+  document.getElementById('mobile-entry').style.pointerEvents = 'none';
+  setTimeout(() => { document.getElementById('mobile-entry').style.display = 'none'; }, 700);
+  doFlashReveal(() => {
+    window.location.href = 'solutions.html' + (siteMode === 'light' ? '?mode=light' : '');
+    STATE = 'done';
+  });
+}
+// Ghost card taps (ignore if tap was on a sub-action button)
+document.getElementById('me-light-card').addEventListener('click', (e) => {
+  if (e.target.closest('.me-action')) return;
+  mobileChoose('light');
+});
+document.getElementById('me-dark-card').addEventListener('click', (e) => {
+  if (e.target.closest('.me-action')) return;
+  mobileChoose('dark');
+});
+// Mobile sub-action buttons — bypass warp, open overlay directly
+function mobileSubAction(mode, action) {
+  siteMode = mode;
+  if (action === 'who') openSite();
+  else window.location.href = 'solutions.html' + (siteMode === 'light' ? '?mode=light' : '');
+}
+document.getElementById('me-light-who').addEventListener('click', (e) => { e.stopPropagation(); mobileSubAction('light', 'who'); });
+document.getElementById('me-light-work').addEventListener('click', (e) => { e.stopPropagation(); mobileSubAction('light', 'work'); });
+document.getElementById('me-dark-who').addEventListener('click', (e) => { e.stopPropagation(); mobileSubAction('dark', 'who'); });
+document.getElementById('me-dark-work').addEventListener('click', (e) => { e.stopPropagation(); mobileSubAction('dark', 'work'); });
+
+// Portal/floating mirror removed — warp goes straight to gallery
+
+// Close buttons
+document.getElementById('site-ex-x').addEventListener('click', closeSite);
+document.getElementById('gallery-ex-x').addEventListener('click', closeGallery);
+document.getElementById('term-ex-x').addEventListener('click', closeTerm);
+
+// Logo clicks → close overlay and return to floating mirror
+document.getElementById('site-nav-logo').addEventListener('click', function(){
+  document.getElementById('svc-detail').classList.remove('on');
+  document.getElementById('case-detail').classList.remove('on');
+  document.getElementById('contact-modal').classList.remove('on');
+  if (_navPanel) {
+    _navPanel = null;
+    history.pushState({}, '', '/');
+    _closeSiteInner();
+  } else {
+    closeSite();
+  }
+});
+document.getElementById('gallery-nav-logo').addEventListener('click', function(){
+  if (_navPanel) {
+    _navPanel = null;
+    history.pushState({}, '', '/');
+    _closeGalleryInner();
+  } else {
+    closeGallery();
+  }
+});
+
+// ESC key → close topmost overlay
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (document.getElementById('contact-modal').classList.contains('on')) { closeContact(); return; }
+    if (document.getElementById('svc-detail').classList.contains('on')) { document.getElementById('svc-detail').classList.remove('on'); return; }
+    if (document.getElementById('case-detail').classList.contains('on')) { document.getElementById('case-detail').classList.remove('on'); return; }
+    if (document.getElementById('term-ex').classList.contains('on')) { closeTerm(); return; }
+    if (document.getElementById('site-ex').classList.contains('on')) { closeSite(); return; }
+    if (document.getElementById('gallery-ex').classList.contains('on')) { closeGallery(); return; }
+  }
+});
+
+// Chat in terminal
+document.getElementById('te-send').addEventListener('click', sendTMsg);
+document.getElementById('te-input').addEventListener('keydown', e => { if(e.key==='Enter') sendTMsg(); });
+
+function sendTMsg(){
+  const v=document.getElementById('te-input').value.trim(); if(!v) return;
+  const msgs=document.getElementById('te-msgs');
+  const u=document.createElement('div'); u.className='tm u'; u.innerHTML='<div class="lb">You</div>'+v;
+  msgs.appendChild(u); document.getElementById('te-input').value=''; msgs.scrollTop=msgs.scrollHeight;
+  const low=v.toLowerCase();
+  let reply;
+  if(/^(hi|hello|hey|howdy|sup|yo|good morning|good afternoon|good evening)\b/.test(low)){
+    reply="Hello! Welcome to ND.AI. We help North Dakota businesses implement AI that actually works -- automations, custom tools, strategy, the whole stack. What kind of business are you running?";
+  } else if(/pric|cost|how much|rate|budget|afford|invest/.test(low)){
+    reply="Here's our straightforward pricing:<br><br>-- Starter (AI Audit): $2,500 one-time. Full operation audit with prioritized roadmap.<br>-- Build (Custom AI): $8,500+ starting. Design, build, deploy, and train your team.<br>-- Managed Service: $2,000/month. Dedicated human operator running your AI systems ongoing.<br><br>All flat-rate or milestone-based. No hourly billing. Want to talk specifics?";
+  } else if(/service|what do you|offer|help|what can you/.test(low)){
+    reply="We offer six core services:<br><br>1. AI Strategy & Roadmap -- audit + implementation plan<br>2. Process Automation -- eliminate repetitive tasks<br>3. Custom AI Tools -- bespoke chatbots, processors, prediction engines<br>4. AI Training & Adoption -- hands-on team training<br>5. Data & Analytics -- clean, structure, connect your data<br>6. Managed AI Services -- we run your AI for you<br><br>Which one sounds most relevant to your situation?";
+  } else if(/contact|book|call|phone|email|reach|talk|meet|schedule/.test(low)){
+    reply="Let's connect. Here's how to reach us:<br><br>Phone: (701) 339-9802<br>Email: hello@ndai.pro<br><br>Or book a free 30-minute discovery call -- we'll tell you exactly where AI fits in your business and where it doesn't. No pitch, no obligation.";
+  } else if(/timeline|how long|when|turnaround|deadline|fast/.test(low)){
+    reply="Typical timelines:<br><br>-- Strategy audit: 1-2 weeks<br>-- Simple automation: 2-4 weeks<br>-- Custom AI tool: 4-12 weeks<br>-- Managed service: ongoing, starts within 1 week<br><br>We work in weekly sprints so you see progress every step of the way. Nothing disappears into a black box.";
+  } else if(/industr|who do you work|sector|vertical|client|type of business/.test(low)){
+    reply="We work across North Dakota's key industries:<br><br>Construction, Agriculture, Oil & Gas, Healthcare, Legal, Real Estate, Retail, Professional Services, Manufacturing, Logistics, Finance, and Hospitality.<br><br>If your business operates in ND, we can probably help. What's yours?";
+  } else {
+    reply="Interesting. I'd love to dig deeper into that. The best next step is a 30-minute discovery call where we can look at your specific situation.<br><br>Phone: (701) 339-9802<br>Email: hello@ndai.pro<br><br>What else can I help you with in the meantime?";
+  }
+  setTimeout(()=>{ const a=document.createElement('div'); a.className='tm a';
+    a.innerHTML='<div class="lb">ND.AI</div>'+reply;
+    msgs.appendChild(a); msgs.scrollTop=msgs.scrollHeight; },900);
+}
+
+// ── History-based panel navigation ──────────────────────────────
+var _navPanel = null;
+var _inPopstate = false;
+function _pushPanel(name) {
+  if (_inPopstate) return;
+  _navPanel = name;
+  history.pushState({ndaiPanel: name}, '', '/' + name);
+}
+
+function openGallery(){
+  _pushPanel('gallery');
+  const g=document.getElementById('gallery-ex');
+  if(siteMode==='light'){g.classList.add('light');}else{g.classList.remove('light');}
+  g.classList.add('on');
+  g.scrollTop=0;
+}
+// ── Flash-reveal: brief black blink then overlay opens ─────────────────────
+function doFlashReveal(callback) {
+  const fl = document.getElementById('entry-flash');
+  fl.style.pointerEvents = 'auto';
+  fl.style.transition = 'opacity 0.1s ease';
+  fl.style.opacity = '1';
+  setTimeout(() => {
+    callback();
+    fl.style.transition = 'opacity 0.5s ease';
+    fl.style.opacity = '0';
+    setTimeout(() => { fl.style.pointerEvents = 'none'; fl.style.transition = ''; }, 520);
+  }, 100);
+}
+
+function resetToEntry() {
+  // Hide all warp tunnel elements
+  tubeMeshSolid.visible = false; tubeMeshWire.visible = false;
+  codePoints.visible = false; streakGrp.visible = false;
+  portalMesh.visible = false; portalGlow.visible = false; portalHalo.visible = false;
+  entranceRing.visible = false;
+  tunnelGlow.intensity = 0;
+  scene.fog = null;
+  warpOverlay.style.opacity = '0';
+  arrivalFlash.dataset.fired = '';
+
+  // Reset camera to entry position
+  cam.position.set(0, 0, 6);
+  cam.rotation.set(0, 0, 0);
+  cam.fov = 50; cam.updateProjectionMatrix();
+
+  // Restore entry lights
+  keyL.intensity = 22;
+  fillL.intensity = 9;
+
+  // Restore ghost
+  ghost.visible = true;
+  ghost.position.set(0, 0, 0);
+  gMat.opacity = 1; gMat.transparent = true;
+  lEye.material.opacity = 1;
+  rEye.material.opacity = 1;
+
+  // Show entry screen again
+  entryEl.classList.remove('gone');
+  document.getElementById('hint').style.opacity = '1';
+  if (!isTouch) dot.style.display = '';
+
+  // Back to entry state — the animate loop takes it from here
+  STATE = 'entry';
+}
+function closeGallery(){
+  if (_navPanel) { history.back(); return; }
+  _closeGalleryInner();
+}
+function _closeGalleryInner(){
+  const g = document.getElementById('gallery-ex');
+  g.classList.add('closing');
+  setTimeout(() => {
+    g.classList.remove('on','closing');
+    if (STATE !== 'entry') resetToEntry();
+  }, 380);
+}
+
+// Gallery carousel dots — decorative only (single image per card)
+(function(){
+  document.querySelectorAll('.gal-carousel').forEach(function(carousel){
+    var dots = carousel.querySelectorAll('.gal-dot');
+    if (!dots.length) return;
+    var slide = 0;
+    setInterval(function(){
+      dots[slide].classList.remove('active');
+      slide = (slide + 1) % dots.length;
+      dots[slide].classList.add('active');
+    }, 3200);
+  });
+})();
+
+function openSite() {
+  _pushPanel('site');
+  const el = document.getElementById('site-ex');
+  el.classList.add('on');
+  if (siteMode === 'light') el.classList.add('light'); else el.classList.remove('light');
+  document.body.style.overflow = 'auto';
+  // Init FAQ toggles
+  document.querySelectorAll('.faq-q').forEach(q => {
+    if (!q.dataset.init) {
+      q.dataset.init = '1';
+      q.addEventListener('click', () => q.parentElement.classList.toggle('open'));
+    }
+  });
+}
+function closeSite(){
+  if (_navPanel) { history.back(); return; }
+  _closeSiteInner();
+}
+function _closeSiteInner(){
+  const el = document.getElementById('site-ex');
+  el.classList.add('closing');
+  setTimeout(() => {
+    el.classList.remove('on','closing');
+    document.body.style.overflow = 'hidden';
+    if (STATE !== 'entry') resetToEntry();
+  }, 380);
+}
+function openTerm() { _pushPanel('term'); document.getElementById('term-ex').classList.add('on'); setTimeout(()=>document.getElementById('te-input').focus(),120); }
+function closeTerm(){ if (_navPanel) { history.back(); return; } document.getElementById('term-ex').classList.remove('on'); }
+function closeContact(){ if (_navPanel === 'contact') { history.back(); return; } document.getElementById('contact-modal').classList.remove('on'); }
+
+// ══════════════════════════════════════════════════════════════════
+// 8-BIT RETRO HOVER SOUND
+// ══════════════════════════════════════════════════════════════════
+let hoveredSide = null;  // 'light' | 'dark' | null
+let retroAudioCtx = null;
+
+// Pre-init AudioContext on first user gesture so hover sounds work
+// (browsers require click/tap/keydown before AudioContext can play)
+function ensureRetroAudio() {
+  if (!retroAudioCtx) retroAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (retroAudioCtx.state === 'suspended') retroAudioCtx.resume();
+}
+['pointerdown','touchstart','keydown'].forEach(evt =>
+  document.addEventListener(evt, ensureRetroAudio, { once: false, passive: true })
+);
+
+function playRetroHover(side) {
+  try {
+    if (!retroAudioCtx) return;  // Not yet initialized by gate click
+    if (retroAudioCtx.state === 'suspended') retroAudioCtx.resume();
+    const now = retroAudioCtx.currentTime;
+    // Different pitch per side — bleep (light/high) vs blap (dark/low)
+    const freq = side === 'light' ? 880 : 440;  // A5 vs A4
+    const osc = retroAudioCtx.createOscillator();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(freq, now);
+    osc.frequency.exponentialRampToValueAtTime(freq * .7, now + .08);
+    const g = retroAudioCtx.createGain();
+    g.gain.setValueAtTime(.14, now);
+    g.gain.exponentialRampToValueAtTime(.001, now + .1);
+    osc.connect(g).connect(retroAudioCtx.destination);
+    osc.start(now);
+    osc.stop(now + .12);
+  } catch(e) {}
+}
+
+function playRetroSelect() {
+  try {
+    ensureRetroAudio();
+    const now = retroAudioCtx.currentTime;
+    // Power-up ascending arpeggio
+    const notes = [523, 659, 784, 1047];  // C5, E5, G5, C6
+    notes.forEach((freq, i) => {
+      const osc = retroAudioCtx.createOscillator();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(freq, now + i * .05);
+      const g = retroAudioCtx.createGain();
+      g.gain.setValueAtTime(.15, now + i * .05);
+      g.gain.exponentialRampToValueAtTime(.001, now + i * .05 + .12);
+      osc.connect(g).connect(retroAudioCtx.destination);
+      osc.start(now + i * .05);
+      osc.stop(now + i * .05 + .15);
+    });
+  } catch(e) {}
+}
+
+// ── SUB-BUTTON SOUNDS (distinct from main hover/select) ──
+function playSubHover() {
+  try {
+    if (!retroAudioCtx) return;
+    if (retroAudioCtx.state === 'suspended') retroAudioCtx.resume();
+    const now = retroAudioCtx.currentTime;
+    // Triangle wave soft chirp — two quick notes (like a coin pickup)
+    const osc = retroAudioCtx.createOscillator();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(1200, now);
+    osc.frequency.exponentialRampToValueAtTime(1600, now + .04);
+    osc.frequency.exponentialRampToValueAtTime(900, now + .09);
+    const g = retroAudioCtx.createGain();
+    g.gain.setValueAtTime(.1, now);
+    g.gain.linearRampToValueAtTime(.12, now + .03);
+    g.gain.exponentialRampToValueAtTime(.001, now + .11);
+    osc.connect(g).connect(retroAudioCtx.destination);
+    osc.start(now); osc.stop(now + .13);
+  } catch(e) {}
+}
+
+function playSubClick() {
+  try {
+    ensureRetroAudio();
+    const now = retroAudioCtx.currentTime;
+    // Sawtooth descending blip + noise burst — like a menu confirm
+    const osc1 = retroAudioCtx.createOscillator();
+    osc1.type = 'sawtooth';
+    osc1.frequency.setValueAtTime(1400, now);
+    osc1.frequency.exponentialRampToValueAtTime(600, now + .06);
+    osc1.frequency.exponentialRampToValueAtTime(1000, now + .1);
+    const lp = retroAudioCtx.createBiquadFilter();
+    lp.type = 'lowpass'; lp.frequency.value = 3000;
+    const g1 = retroAudioCtx.createGain();
+    g1.gain.setValueAtTime(.13, now);
+    g1.gain.exponentialRampToValueAtTime(.001, now + .14);
+    osc1.connect(lp).connect(g1).connect(retroAudioCtx.destination);
+    osc1.start(now); osc1.stop(now + .16);
+    // Short noise pop
+    const bufLen = Math.floor(retroAudioCtx.sampleRate * .04);
+    const buf = retroAudioCtx.createBuffer(1, bufLen, retroAudioCtx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < bufLen; i++) d[i] = (Math.random() * 2 - 1) * .5;
+    const noise = retroAudioCtx.createBufferSource(); noise.buffer = buf;
+    const hp = retroAudioCtx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 4000;
+    const gn = retroAudioCtx.createGain();
+    gn.gain.setValueAtTime(.08, now);
+    gn.gain.exponentialRampToValueAtTime(.001, now + .05);
+    noise.connect(hp).connect(gn).connect(retroAudioCtx.destination);
+    noise.start(now); noise.stop(now + .06);
+  } catch(e) {}
+}
+
+// Attach sub-button sounds to all .fml-sub and .entry-sub elements
+document.querySelectorAll('.fml-sub, .entry-sub').forEach(el => {
+  el.addEventListener('mouseenter', playSubHover);
+  el.addEventListener('click', playSubClick);
+});
+
+// ══════════════════════════════════════════════════════════════════
+// ANIMATE
+// ══════════════════════════════════════════════════════════════════
+function animate() {
+  requestAnimationFrame(animate);
+  const t = clk.getElapsedTime();
+
+  // ─── ENTRY ─────────────────────────────────────────────────────
+  if (STATE === 'entry') {
+    const bias = mX/innerWidth, lB = Math.max(0,(.5-bias))*2, rB = Math.max(0,(bias-.5))*2;
+    gTX = (bias-.5)*3.4;
+    ghost.position.x += (gTX-ghost.position.x)*.06;
+    ghost.position.y = Math.sin(t*1.95)*.15;
+    ghost.rotation.y += ((mX/innerWidth-.5)*.38-ghost.rotation.y)*.07;
+    ghost.rotation.x += ((mY/innerHeight-.5)*-.22-ghost.rotation.x)*.07;
+    const cwX = (bias-.5)*4.2;
+    spot.position.set(cwX,5.5,3.2); spotTgt.position.set(cwX,0,0); spotTgt.updateMatrixWorld();
+    spot.intensity = lB*lB*45;
+    sith.position.set((bias-.5)*5.5,.5,3.5); sith.intensity = rB*rB*16;
+    const c=gMat.color; c.r+=(.55-bias*.48+rB*.18-c.r)*.06; c.g+=(.55-bias*.52-c.g)*.06; c.b+=(.58-bias*.55-c.b)*.06;
+    gMat.roughness += (.22+bias*.52-gMat.roughness)*.06;
+    document.getElementById('sl').style.opacity = .08+lB*.78;
+    document.getElementById('sd').style.opacity = .08+rB*.78;
+
+    // 8-bit hover sound when cursor is over LIGHT or DARK text
+    const slRect = document.getElementById('sl').getBoundingClientRect();
+    const sdRect = document.getElementById('sd').getBoundingClientRect();
+    const pad = 30;  // generous hit zone around text
+    const overLight = mX >= slRect.left-pad && mX <= slRect.right+pad && mY >= slRect.top-pad && mY <= slRect.bottom+pad;
+    const overDark = mX >= sdRect.left-pad && mX <= sdRect.right+pad && mY >= sdRect.top-pad && mY <= sdRect.bottom+pad;
+    const newSide = overLight ? 'light' : overDark ? 'dark' : null;
+    if (newSide && newSide !== hoveredSide) playRetroHover(newSide);
+    hoveredSide = newSide;
+
+  // ─── CENTERING ─────────────────────────────────────────────────
+  } else if (STATE === 'centering') {
+    const p = Math.min((performance.now()-T0)/320,1);
+    const e = p<.5?2*p*p:-1+(4-2*p)*p;
+    ghost.position.x = cStartX*(1-e);
+    ghost.position.y = Math.sin(t*1.95)*.15*(1-p*.7);
+    spot.intensity *= (1-p*.95); sith.intensity *= (1-p*.95);
+    if (p >= 1) {
+      STATE='flying'; T0=performance.now();
+      tubeMeshSolid.visible=true; tubeMeshWire.visible=true;
+      codePoints.visible=true; streakGrp.visible=true;
+      portalMesh.visible=true; portalGlow.visible=true; portalHalo.visible=true;
+      entranceRing.visible=true;
+      scene.fog = warpFog;
+      warpOverlay.style.opacity='0.15';
+      startWarpAudio();
+      // Sub-bass entry hit — you feel the tunnel open
+      try {
+        const ac = warpAudioCtx || new (window.AudioContext || window.webkitAudioContext)();
+        const now = ac.currentTime;
+        const sub = ac.createOscillator(); sub.type='sine';
+        sub.frequency.setValueAtTime(55, now); sub.frequency.exponentialRampToValueAtTime(18, now+.3);
+        const sg = ac.createGain(); sg.gain.setValueAtTime(.3, now); sg.gain.exponentialRampToValueAtTime(.001, now+.4);
+        sub.connect(sg).connect(ac.destination); sub.start(now); sub.stop(now+.5);
+      } catch(e) {}
+    }
+
+  // ─── FLYING ────────────────────────────────────────────────────
+  } else if (STATE === 'flying') {
+    // Phase 1: acceleration (0-70%), Phase 2: cruise (70-90%), Phase 3: deceleration + arrival (90-100%)
+    const p = Math.min((performance.now()-T0)/2400,1);
+    let speed01;
+    if (p < .7) {
+      speed01 = (p / .7);  // 0 -> 1
+      speed01 = speed01 * speed01 * speed01;  // Cubic ease-in
+    } else if (p < .9) {
+      speed01 = 1.0;  // Full speed cruise
+    } else {
+      const decel = (p - .9) / .1;  // 0 -> 1
+      speed01 = 1.0 - decel * decel * .7;  // Decelerate to 30%
+    }
+
+    const dt = Math.min(1/30, 1/60 * (1 + speed01 * 2.5));
+
+    // Camera: through tube with deceleration overshoot
+    const camProgress = p < .9 ? (p / .9) : 1.0;
+    const camEase = camProgress * camProgress * camProgress;
+    cam.position.z = 6 - camEase * 62;
+    // FOV breathing during cruise — tied to heartbeat
+    const fovBreath = (speed01 > .8) ? Math.sin(t * 3.8) * 1.5 : 0;
+    cam.fov = 50 + speed01 * 42 + fovBreath; cam.updateProjectionMatrix();
+
+    // Camera shake — ramps then settles
+    const shk = speed01 * .06;
+    cam.position.x = Math.sin(t*47)*shk + Math.sin(t*19)*(shk*.5);
+    cam.position.y = Math.cos(t*41)*shk + Math.cos(t*29)*(shk*.4);
+    cam.rotation.z = Math.sin(t*13) * speed01 * .018;
+
+    // Ghost dissolves in first 12%
+    const gT = Math.max(0,Math.min((p-.03)/.12,1));
+    gMat.opacity = 1-gT; lEye.material.opacity = 1-gT; rEye.material.opacity = 1-gT;
+    if (gT >= 1) ghost.visible = false;
+
+    // Entry lights fade
+    spot.intensity *= .90; sith.intensity *= .90;
+    keyL.intensity *= .93; fillL.intensity *= .93;
+
+    // Fade code particles + streaks aggressively in last 15%
+    if (p > .85) {
+      const fadeP = (p - .85) / .15;  // 0 → 1 over last 15%
+      const fadeVal = 1.0 - fadeP * fadeP;  // Quadratic fade to 0
+      codeMat.uniforms.uFade.value = fadeVal;
+    } else {
+      codeMat.uniforms.uFade.value = 1.0;
+    }
+
+    // Update all warp systems with current speed
+    updateWarp(speed01, dt, t);
+
+    // Also fade streaks and tunnel wireframe in last 15%
+    if (p > .85) {
+      const fadeP = (p - .85) / .15;
+      const fadeVal = 1.0 - fadeP * fadeP;
+      streakGrp.children.forEach(m => { m.material.opacity *= fadeVal; });
+      tubeMatWire.uniforms.uSpeed.value *= fadeVal;
+      warpOverlay.style.opacity = String(parseFloat(warpOverlay.style.opacity) * fadeVal);
+    }
+
+    // Flash-frame glitch — random digital burst during cruise
+    if (speed01 > .7 && Math.random() < .008) {
+      arrivalFlash.style.transition = 'none';
+      arrivalFlash.style.background = `rgba(${140+Math.random()*80},255,${180+Math.random()*60},${.15+Math.random()*.2})`;
+      requestAnimationFrame(() => {
+        arrivalFlash.style.transition = 'background .06s';
+        arrivalFlash.style.background = 'rgba(180,255,220,0)';
+      });
+    }
+
+    // Entrance ring fades as we pass it
+    const entDist = Math.max(0, entranceRing.position.z - cam.position.z);
+    entranceRingMat.opacity = Math.min(.6, entDist * .15) * speed01;
+    entranceRing.rotation.z = t * .5;
+
+    // Arrival flash at 92%
+    if (p > .92 && !arrivalFlash.dataset.fired) {
+      arrivalFlash.dataset.fired = '1';
+      triggerArrivalFlash();
+    }
+
+    if (p >= 1) {
+      STATE='done'; T0=performance.now();
+      arrivalFlash.dataset.fired = '';
+      openGallery();
+    }
+
+  // ─── FLOATING MIRROR ───────────────────────────────────────────
+  } else if (STATE === 'floating-mirror') {
+    const mirrorAge = (performance.now() - T0) / 1000;  // seconds since arrival
+    const mobileZ = isTouch ? 12.5 : 8.2;
+    const mobileFov = isTouch ? 58 : 50;
+    // Spring overshoot: cam overshoots target then settles
+    const springDamp = Math.min(1, mirrorAge * 1.8);
+    const overshoot = mirrorAge < .6 ? Math.sin(mirrorAge * 8) * .4 * (1 - springDamp) : 0;
+    const targetZ = mobileZ + overshoot;
+    cam.position.z += (targetZ-cam.position.z) * (.04 + springDamp * .06);
+    cam.position.x += (0-cam.position.x) * (.08 + springDamp * .06);
+    cam.position.y += (.12-cam.position.y) * (.04 + springDamp * .04);
+    cam.rotation.z *= .9;  // Settle any residual roll
+    cam.fov += (mobileFov-cam.fov) * (.05 + springDamp * .05); cam.updateProjectionMatrix();
+
+    siteCard.position.y = Math.sin(t*.95)*.07;
+    terminal.position.y = Math.sin(t*.82+1.1)*.09-.1;
+    siteCard.rotation.y = Math.sin(t*.28)*.07;
+    terminal.rotation.y = Math.sin(t*.22+.7)*-.06;
+
+    cardL.intensity = 5.5+Math.sin(t*1.9)*1;
+    termL.intensity = 5+Math.sin(t*1.6+1.1)*.9;
+    const led = terminal.userData.led;
+    if (led) led.material.emissiveIntensity = 2.2+Math.sin(t*3.5)*.8;
+
+    // Residual particles — drift and fade
+    if (residualPoints.visible) {
+      residualAge += .016;
+      const rp = residualGeo.attributes.position.array;
+      for (let i = 0; i < RESIDUAL_COUNT; i++) {
+        rp[i*3] += residualVel[i*3] * .016;
+        rp[i*3+1] += residualVel[i*3+1] * .016;
+        rp[i*3+2] += residualVel[i*3+2] * .016;
+      }
+      residualGeo.attributes.position.needsUpdate = true;
+      residualMat.opacity = Math.max(0, .5 - residualAge * .25);
+      if (residualAge > 2.5) residualPoints.visible = false;
+    }
+
+    // Track labels below their objects
+    const v1=new THREE.Vector3(); siteCard.getWorldPosition(v1); v1.y-=2; v1.project(cam);
+    document.getElementById('fm-site').style.left = ((v1.x*.5+.5)*100)+'%';
+    document.getElementById('fm-site').style.top  = ((-v1.y*.5+.5)*100)+'%';
+    const v2=new THREE.Vector3(); terminal.getWorldPosition(v2); v2.y-=1.9; v2.project(cam);
+    document.getElementById('fm-chat').style.left = ((v2.x*.5+.5)*100)+'%';
+    document.getElementById('fm-chat').style.top  = ((-v2.y*.5+.5)*100)+'%';
+
+  }
+
+  rend.render(scene, cam);
+}
+
+function initMirror() {
+  tubeMeshSolid.visible = false; tubeMeshWire.visible = false;
+  codePoints.visible = false; streakGrp.visible = false;
+  portalMesh.visible = false; portalGlow.visible = false; portalHalo.visible = false;
+  entranceRing.visible = false;
+  tunnelGlow.intensity = 0;
+  // Activate residual particles
+  residualPoints.visible = true; residualAge = 0;
+  residualMat.opacity = .5;
+  ghost.visible = false;
+  cam.rotation.z = 0;
+  scene.fog = null;
+  warpOverlay.style.opacity = '0';
+  entryEl.classList.add('gone');
+
+  // Rebuild site card with chosen mode
+  mirror.remove(siteCard);
+  siteCard = buildSiteCard(siteMode);
+  mirror.add(siteCard);
+
+  mirror.visible = true;
+
+  if (siteMode === 'light') {
+    rend.setClearColor(0xd8d0c4, 1);
+    mirAmb.color.set(0xf0e8d8); mirAmb.intensity = 22;
+    mirTop.color.set(0xfff8ee); mirTop.intensity = 14;
+    cardL.color.set(0xddccaa); cardL.intensity = 0;
+    termL.color.set(0x22cc66); termL.intensity = 0;
+    if (!isTouch) {
+      dot.style.display = '';
+      dot.style.width = '10px'; dot.style.height = '10px';
+      dot.style.background = '#1a1a1a';
+      dot.style.boxShadow = '0 0 12px 3px rgba(0,0,0,0.15),0 0 4px 1px rgba(0,0,0,0.3)';
+    }
+    document.querySelectorAll('.fml-n').forEach(el => el.style.color = 'rgba(0,0,0,0.6)');
+    document.querySelectorAll('.fml-d').forEach(el => el.style.color = 'rgba(0,0,0,0.28)');
+  } else {
+    mirAmb.intensity = 16; mirTop.intensity = 10;
+    cardL.intensity = 0; termL.intensity = 0;
+    if (!isTouch) {
+      dot.style.display = '';
+      dot.style.width = '10px'; dot.style.height = '10px';
+      dot.style.boxShadow = '0 0 12px 3px rgba(255,255,255,0.5),0 0 4px 1px rgba(255,255,255,0.9)';
+    }
+  }
+
+  // Apply siteMode class to fm for sub-button styling
+  if(siteMode==='light'){
+    document.getElementById('fm').classList.add('light-mode');
+  } else {
+    document.getElementById('fm').classList.remove('light-mode');
+  }
+
+  fmEl.classList.add('on');
+}
+
+animate();
+
+// ══════════════════════════════════════════════════════════════════
+// NFC CHIME
+// ══════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════════
+// FEATURE-COMPLETE: Smooth scroll, modals, service/case details, etc
+// ══════════════════════════════════════════════════════════════════
+(function(){
+  const siteEx = document.getElementById('site-ex');
+
+  // --- Smooth scroll for nav/footer links within #site-ex ---
+  document.querySelectorAll('.snav-link').forEach(a => {
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      const id = this.getAttribute('href');
+      const target = siteEx.querySelector(id);
+      if(target) siteEx.scrollTo({top: target.offsetTop - 70, behavior:'smooth'});
+      // close mobile menu
+      const mm = document.getElementById('mob-menu');
+      if(mm) mm.classList.remove('open');
+      const hb = document.getElementById('ham-btn');
+      if(hb) hb.classList.remove('open');
+    });
+  });
+
+  // --- "See how it works" scrolls to #process ---
+  document.querySelector('.see-how')?.addEventListener('click', function(){
+    const target = siteEx.querySelector('#process');
+    if(target) siteEx.scrollTo({top: target.offsetTop - 70, behavior:'smooth'});
+  });
+
+  // --- Contact modal open/close ---
+  function openContact(){
+    _pushPanel('contact');
+    const cm = document.getElementById('contact-modal');
+    cm.classList.add('on');
+    if(siteEx.classList.contains('light')) cm.classList.add('light'); else cm.classList.remove('light');
+  }
+  document.querySelectorAll('.cta-open').forEach(btn => btn.addEventListener('click', openContact));
+  document.getElementById('contact-modal-x').addEventListener('click', closeContact);
+  document.getElementById('contact-form').addEventListener('submit', function(e){
+    const submit = this.querySelector('.cm-submit');
+    if (submit) {
+      submit.disabled = true;
+      submit.textContent = 'Sending...';
+    }
+  });
+
+  // --- Hamburger toggle ---
+  document.getElementById('ham-btn')?.addEventListener('click', function(){
+    this.classList.toggle('open');
+    document.getElementById('mob-menu').classList.toggle('open');
+  });
+
+  // --- Back to top ---
+  const btt = document.getElementById('btt');
+  siteEx.addEventListener('scroll', function(){
+    if(siteEx.scrollTop > 600) btt.classList.add('show'); else btt.classList.remove('show');
+  });
+  btt.addEventListener('click', ()=> siteEx.scrollTo({top:0, behavior:'smooth'}));
+
+  // --- Service detail data ---
+  const svcData = [
+    {num:'01',title:'AI Strategy & Roadmap',
+     desc:[
+       'Most businesses know AI could help somewhere. The problem is figuring out where, how much it will cost, and what the return looks like. That is exactly what this engagement delivers.',
+       'We spend 2-3 days on-site with your team -- walking your floor, sitting in on operations, reviewing your tools and data. We are not just looking at what is broken. We are looking at where AI creates the most leverage with the least disruption.',
+       'The output is not a slide deck that collects dust. It is a prioritized implementation roadmap with specific use cases, cost estimates, expected ROI, and a phased timeline. Every recommendation is tied to a real business outcome.',
+       'Whether you build with us or take it to another vendor, you walk away with a clear, actionable plan that any technical team can execute on.'
+     ],
+     includes:['On-site business audit (2-3 days)','Process mapping and bottleneck analysis','AI opportunity matrix with ROI estimates','Phased implementation roadmap','Technology stack recommendations','Executive summary for stakeholders','30-minute follow-up call'],
+     timeline:'1-2 weeks',price:'$2,500'},
+    {num:'02',title:'Process Automation',
+     desc:[
+       'Every business has processes that eat time -- manual data entry, invoice routing, scheduling, customer intake, report generation. These tasks are predictable, repetitive, and perfect for AI automation.',
+       'We identify the highest-impact automations in your operation and build them into your existing tools. No ripping out systems you already use. No six-month migration projects. We integrate directly with your CRM, ERP, email, scheduling software, and internal databases.',
+       'Our automations are not brittle scripts that break when something changes. They use AI to handle edge cases, learn from corrections, and adapt to variations in your data and workflows.',
+       'The result: your team spends less time on busywork and more time on the work that actually moves the business forward. Most clients see payback within 60 days.'
+     ],
+     includes:['Process audit and automation mapping','Custom workflow design','Integration with existing tools (CRM, ERP, email, etc.)','AI-powered exception handling','Testing with real production data','Staff training and documentation','30 days post-launch support'],
+     timeline:'2-6 weeks',price:'From $8,500'},
+    {num:'03',title:'Custom AI Tools',
+     desc:[
+       'Off-the-shelf AI tools work for generic problems. But your business is not generic. You have specific workflows, specific data, specific customers. That calls for purpose-built tools.',
+       'We build custom AI applications from scratch -- chatbots that know your product catalog, document processors that extract exactly the fields you need, prediction engines trained on your historical data, internal assistants that answer questions only your team would ask.',
+       'Every tool we build is designed for the people who will actually use it. That means clean interfaces, clear outputs, and graceful handling of edge cases. We iterate with your team weekly until it fits like a glove.',
+       'You own everything we build. No vendor lock-in, no recurring license fees for your own tools. We hand over the code, the documentation, and the knowledge to maintain it.'
+     ],
+     includes:['Custom AI application design and architecture','Full development and deployment','Integration with your data sources and systems','User interface design','Comprehensive testing with real data','Staff training and handoff documentation','60 days post-launch support','Source code ownership'],
+     timeline:'4-12 weeks',price:'From $12,000'},
+    {num:'04',title:'AI Training & Adoption',
+     desc:[
+       'The best AI tool in the world is worthless if your team does not use it. And they will not use what they do not understand. That is why we train every team in person, in plain language, with hands-on practice.',
+       'We do not run certification courses or send your people through generic online modules. We build custom training around the specific tools your team will use, the specific workflows they follow, and the specific questions they have.',
+       'Sessions are interactive and practical. Your team uses the actual tools on real scenarios from your business. By the end, they are not just aware of AI -- they are confident using it in their daily work.',
+       'We also work with leadership to build adoption frameworks -- helping you measure usage, identify resistance, and create accountability so the tools actually stick.'
+     ],
+     includes:['Custom training curriculum development','On-site hands-on training sessions','Role-specific workflow training','Leadership adoption framework','Quick-reference guides and documentation','30-day follow-up session','Ongoing Q&A support channel'],
+     timeline:'1-3 weeks',price:'From $3,500'},
+    {num:'05',title:'Data & Analytics',
+     desc:[
+       'AI is only as good as the data behind it. Most businesses have the data they need -- it is just scattered across spreadsheets, databases, email threads, and filing cabinets. We fix that.',
+       'We audit your data landscape, identify what you have, what you need, and where the gaps are. Then we clean, structure, and connect your data into pipelines that feed your AI systems and business intelligence tools.',
+       'Beyond cleanup, we build dashboards and analytics that give you real-time visibility into the metrics that matter. Not vanity metrics -- actionable insights that drive decisions about inventory, staffing, pricing, and growth.',
+       'Every data project is built with AI-readiness in mind. Whether you are building AI tools now or later, your data infrastructure will be ready to power them.'
+     ],
+     includes:['Data landscape audit','Data cleaning and structuring','Pipeline and integration architecture','Custom dashboards and reporting','AI-ready data infrastructure','Documentation and governance framework','Staff training on analytics tools'],
+     timeline:'2-6 weeks',price:'From $5,000'},
+    {num:'06',title:'Managed AI Services',
+     desc:[
+       'You do not need to hire an AI team. You need an AI team that already knows what they are doing. That is what managed services gives you -- a dedicated human operator managing your AI systems full-time.',
+       'Your operator monitors performance, handles optimization, troubleshoots issues, and builds new features as your needs evolve. They know your business, your tools, and your goals. They are not rotating between 50 clients -- they are focused on yours.',
+       'Every month you get a performance report showing what your AI systems did, what changed, and what is coming next. Every quarter we sit down for a strategy review to make sure your AI is still aligned with where your business is heading.',
+       'Month-to-month commitment. No long-term contracts. If we are not delivering value, you can walk. That keeps us honest and keeps your AI performing.'
+     ],
+     includes:['Dedicated human AI operator','24/7 system monitoring and uptime','Monthly performance reporting','Ongoing optimization and tuning','Priority support (same-day response)','Up to 20 hours/month new development','Quarterly strategy review','No long-term contract required'],
+     timeline:'Ongoing, starts within 1 week',price:'$2,000/month'}
+  ];
+
+  // --- Case study data ---
+  const caseData = [
+    {tag:'Construction',title:'Concrete pump scheduling automated for a regional operator',
+     challenge:['A regional concrete pumping company in central North Dakota was managing all job scheduling manually -- phone calls, whiteboards, and spreadsheets. The operations manager spent 12+ hours a week juggling crew assignments, equipment availability, and GPS logistics across a 200-mile service radius.','Mistakes were common. Double-bookings, missed jobs, and inefficient routing were costing the company real money -- not just in lost revenue, but in crew overtime, fuel waste, and customer frustration. They knew they needed a better system but had no idea where to start.'],
+     solution:['We embedded with their operations team for a week, mapping every step of their scheduling workflow from initial customer call to job completion. We identified that 80% of scheduling decisions followed predictable patterns based on location, equipment type, crew certification, and job duration.','We built an AI dispatcher that ingests new job requests, cross-references crew availability, equipment location, and certification requirements, then generates optimized daily schedules. The system accounts for drive time, preferred crews for repeat customers, and even weather-related delays.','The dispatcher integrates directly with their existing phone system and customer database. When a new job comes in, the AI proposes a schedule within seconds. The operations manager reviews and approves -- or overrides -- with a single click.'],
+     stats:[{num:'73%',label:'Scheduling time saved'},{num:'$38K',label:'Annual cost savings'},{num:'94%',label:'On-time job rate (up from 71%)'}],
+     timeline:'5 weeks from kickoff to deployment',
+     quote:'I went from spending my whole Sunday planning the week to reviewing a schedule the AI already built. It is not perfect every time, but it is better than I was 90% of the time. And I got my weekends back.',
+     cite:'Operations Manager, Regional Pumping Co.'},
+    {tag:'Agriculture',title:'Crop yield prediction for a family-owned farming operation',
+     challenge:['A third-generation family farming operation in the Red River Valley was making planting and fertilizer decisions based on experience and gut feel -- the same way they had for decades. But with input costs rising and weather patterns becoming less predictable, the margins for error were shrinking.','They had years of yield data, soil samples, and weather records, but it was all sitting in filing cabinets and old spreadsheets. Nothing was connected. Nothing was being used to inform forward-looking decisions. They were flying blind with million-dollar stakes.'],
+     solution:['We started by digitizing and structuring five years of their historical data -- yield records, soil analyses, satellite imagery, and local weather station data. This alone was revelatory; patterns emerged that nobody had seen when the data lived in separate silos.','We built a prediction model that combines soil composition, historical yields, weather forecasts, and satellite-derived vegetation indices to generate field-by-field yield predictions and input recommendations. The model updates weekly as new satellite imagery becomes available.','The interface is a simple map-based dashboard the family can pull up on a tablet in the field. Each field shows predicted yield, recommended fertilizer rates, and confidence scores. No jargon, no complexity -- just the numbers they need to make decisions.'],
+     stats:[{num:'18%',label:'Average yield increase'},{num:'$52K',label:'Input cost reduction'},{num:'3.2x',label:'ROI in first season'}],
+     timeline:'8 weeks from data collection to first predictions',
+     quote:'We have been farming this land for 60 years and we thought we knew every acre. The AI showed us things in our own data we never would have spotted. Last season was our best yield in a decade.',
+     cite:'Owner, Red River Valley Family Farm'},
+    {tag:'Professional Services',title:'AI receptionist for a regional law firm',
+     challenge:['A mid-size law firm in Bismarck with 14 attorneys was losing potential clients to voicemail. Their two-person front desk could not keep up with call volume -- especially during court hours when both receptionists were often managing in-person clients and filing simultaneously.','An internal audit revealed that 35% of incoming calls went to voicemail during business hours, and follow-up on those messages was inconsistent. They estimated they were losing 8-12 potential clients per month simply because nobody picked up the phone. At their average case value, that was significant revenue walking out the door.'],
+     solution:['We deployed an AI receptionist that handles incoming calls 24/7 with natural, conversational voice AI. The system is trained on the firm\'s practice areas, attorney specializations, and intake procedures. It does not sound like a robot -- callers regularly do not realize they are speaking with AI.','The AI handles three key functions: scheduling consultations (integrated with the firm\'s calendar system), basic intake (collecting case type, urgency, and contact information), and intelligent routing (flagging urgent matters for immediate attorney callback while queuing routine inquiries).','Every call is transcribed and summarized automatically. Attorneys get a morning briefing with overnight calls categorized by priority and practice area. The system learns from feedback -- if an attorney flags a call as mis-routed, it adjusts its routing logic going forward.'],
+     stats:[{num:'92%',label:'Calls handled without voicemail'},{num:'2.4x',label:'Client intake rate'},{num:'$180K',label:'Estimated annual revenue recovered'}],
+     timeline:'3 weeks from kickoff to live deployment',
+     quote:'The AI receptionist paid for itself in the first month. We went from missing a third of our calls to catching nearly all of them. Two clients in the first week alone told us they almost called another firm before our AI picked up.',
+     cite:'Managing Partner, Bismarck Law Firm'}
+  ];
+
+  // --- Render service detail ---
+  const svcCards = siteEx.querySelectorAll('.svc-card');
+  svcCards.forEach((card, i) => {
+    card.addEventListener('click', () => {
+      const d = svcData[i];
+      const el = document.getElementById('svc-detail');
+      const light = siteEx.classList.contains('light');
+      if(light) el.classList.add('light'); else el.classList.remove('light');
+      document.getElementById('sd-content').innerHTML =
+        '<div class="sd-num">SERVICE '+d.num+'</div>'+
+        '<h2>'+d.title+'</h2>'+
+        d.desc.map(p=>'<p class="sd-desc">'+p+'</p>').join('')+
+        '<h3>What\'s Included</h3><ul>'+d.includes.map(x=>'<li>'+x+'</li>').join('')+'</ul>'+
+        '<div class="sd-meta"><div class="sd-meta-item"><div class="sd-meta-label">Typical Timeline</div><div class="sd-meta-val">'+d.timeline+'</div></div>'+
+        '<div class="sd-meta-item"><div class="sd-meta-label">Starting At</div><div class="sd-meta-val">'+d.price+'</div></div></div>'+
+        '<button class="cm-submit cta-open" onclick="document.getElementById(\'contact-modal\').classList.add(\'on\');'+(light?'document.getElementById(\'contact-modal\').classList.add(\'light\')':'')+'">Book a Consultation</button>'+
+        '<br><button class="sd-back" onclick="document.getElementById(\'svc-detail\').classList.remove(\'on\')">Back to Services</button>';
+      el.classList.add('on');
+    });
+  });
+  document.getElementById('svc-detail-x').addEventListener('click', ()=> document.getElementById('svc-detail').classList.remove('on'));
+
+  // --- Render case study detail ---
+  const caseCards = siteEx.querySelectorAll('.res-card');
+  caseCards.forEach((card, i) => {
+    card.addEventListener('click', () => {
+      const d = caseData[i];
+      const el = document.getElementById('case-detail');
+      const light = siteEx.classList.contains('light');
+      if(light) el.classList.add('light'); else el.classList.remove('light');
+      document.getElementById('cd-content').innerHTML =
+        '<div class="cd-tag">'+d.tag+'</div>'+
+        '<h2>'+d.title+'</h2>'+
+        '<h3>The Challenge</h3>'+d.challenge.map(p=>'<p>'+p+'</p>').join('')+
+        '<h3>The Solution</h3>'+d.solution.map(p=>'<p>'+p+'</p>').join('')+
+        '<h3>The Results</h3>'+
+        '<div class="cd-stats">'+d.stats.map(s=>'<div><div class="cd-stat-num">'+s.num+'</div><div class="cd-stat-label">'+s.label+'</div></div>').join('')+'</div>'+
+        '<p><strong style="color:inherit;opacity:.7">Implementation timeline:</strong> '+d.timeline+'</p>'+
+        '<blockquote class="cd-quote">"'+d.quote+'"<cite>-- '+d.cite+'</cite></blockquote>'+
+        '<button class="cm-submit cta-open" onclick="document.getElementById(\'contact-modal\').classList.add(\'on\');'+(light?'document.getElementById(\'contact-modal\').classList.add(\'light\')':'')+'">Book a Consultation</button>'+
+        '<br><button class="sd-back" onclick="document.getElementById(\'case-detail\').classList.remove(\'on\')">Back to Results</button>';
+      el.classList.add('on');
+    });
+  });
+  document.getElementById('case-detail-x').addEventListener('click', ()=> document.getElementById('case-detail').classList.remove('on'));
+})();
+
+// ── popstate: browser back/forward closes panels ───────────────
+window.addEventListener('popstate', function(e) {
+  var target = (e.state && e.state.ndaiPanel) || null;
+
+  // Close contact modal if open and we're not navigating TO contact
+  var cm = document.getElementById('contact-modal');
+  if (cm.classList.contains('on') && target !== 'contact') {
+    cm.classList.remove('on');
+  }
+
+  // Always close sub-panels (no history entries)
+  document.getElementById('svc-detail').classList.remove('on');
+  document.getElementById('case-detail').classList.remove('on');
+
+  // Close term if open and not navigating TO term
+  if (target !== 'term') {
+    var termEx = document.getElementById('term-ex');
+    if (termEx.classList.contains('on')) termEx.classList.remove('on');
+  }
+
+  // Close gallery if open and not navigating TO gallery
+  if (target !== 'gallery') {
+    var g = document.getElementById('gallery-ex');
+    if (g.classList.contains('on')) {
+      g.classList.add('closing');
+      setTimeout(function() { g.classList.remove('on','closing'); if (STATE !== 'entry') resetToEntry(); }, 380);
+    }
+  }
+
+  // Close site if open and not navigating TO site or contact (contact sits on top of site)
+  if (target !== 'site' && target !== 'contact') {
+    var s = document.getElementById('site-ex');
+    if (s.classList.contains('on')) {
+      s.classList.add('closing');
+      setTimeout(function() { s.classList.remove('on','closing'); document.body.style.overflow='hidden'; if (STATE !== 'entry') resetToEntry(); }, 380);
+    }
+  }
+
+  // Forward nav: re-open panels if needed
+  _inPopstate = true;
+  if (target === 'gallery' && !document.getElementById('gallery-ex').classList.contains('on')) openGallery();
+  if (target === 'site' && !document.getElementById('site-ex').classList.contains('on')) openSite();
+  if (target === 'term' && !document.getElementById('term-ex').classList.contains('on')) openTerm();
+  if (target === 'contact') {
+    if (!document.getElementById('site-ex').classList.contains('on')) openSite();
+    if (!document.getElementById('contact-modal').classList.contains('on')) {
+      var cm2 = document.getElementById('contact-modal');
+      cm2.classList.add('on');
+      if (document.getElementById('site-ex').classList.contains('light')) cm2.classList.add('light');
+    }
+  }
+  _inPopstate = false;
+
+  _navPanel = target;
+});
+
+// ── Deep-link: open panel from URL path on page load ───────────
+(function(){
+  var path = location.pathname.replace(/^\//, '').replace(/\/$/, '').toLowerCase();
+  if (!path && location.hash) path = location.hash.replace(/^#/, '').toLowerCase();
+  if (!path) return;
+  var panel = (path === 'terminal') ? 'term' : path;
+  if (['gallery','site','contact','term'].indexOf(panel) < 0) return;
+
+  // Build history stack so back button works: root → panel
+  history.replaceState({}, '', '/');
+  if (panel === 'contact') {
+    history.pushState({ndaiPanel: 'site'}, '', '/site');
+    history.pushState({ndaiPanel: 'contact'}, '', '/contact');
+  } else {
+    history.pushState({ndaiPanel: panel}, '', '/' + panel);
+  }
+  _navPanel = panel;
+
+  // Open the panel(s) without triggering additional pushState
+  _inPopstate = true;
+  if (panel === 'gallery') openGallery();
+  else if (panel === 'site') openSite();
+  else if (panel === 'contact') {
+    openSite();
+    var cm = document.getElementById('contact-modal');
+    cm.classList.add('on');
+    if (document.getElementById('site-ex').classList.contains('light')) cm.classList.add('light');
+  }
+  else if (panel === 'term') openTerm();
+  _inPopstate = false;
+})();
+
+if (new URLSearchParams(location.search).get('src')==='nfc') {
+  try {
+    const ac=new(window.AudioContext||window.webkitAudioContext)();
+    const o=ac.createOscillator(),g=ac.createGain();
+    o.connect(g);g.connect(ac.destination); o.type='sine';
+    o.frequency.setValueAtTime(523,ac.currentTime);
+    o.frequency.exponentialRampToValueAtTime(196,ac.currentTime+1.6);
+    g.gain.setValueAtTime(0,ac.currentTime);
+    g.gain.linearRampToValueAtTime(.28,ac.currentTime+.08);
+    g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+2);
+    o.start(ac.currentTime);o.stop(ac.currentTime+2);
+  } catch(e){}
+}
+</script>
+<div id="entry-flash" style="position:fixed;inset:0;z-index:900;background:#000;opacity:0;pointer-events:none"></div>
+</body>
+</html>

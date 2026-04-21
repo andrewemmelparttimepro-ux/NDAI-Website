@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GOOD DESIGN — ND.AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      background: #f5f4f0;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    #svg-filters {
+      position: absolute; width: 0; height: 0; overflow: hidden;
+    }
+
+    #gd-hero {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 0 32px;
+      overflow: hidden;
+    }
+
+    /* Text block that gets the filter applied */
+    #gd-block {
+      width: 100%;
+      filter: url(#gd-distort);
+      will-change: filter;
+      line-height: 0.9;
+    }
+
+    .gd-word {
+      display: block;
+      font-family: 'Bebas Neue', 'Impact', 'Arial Black', sans-serif;
+      font-weight: 400;
+      color: #0d0d0d;
+      white-space: nowrap;
+      line-height: 0.82;
+      margin-bottom: -0.05em;
+      /* font-size set by JS */
+    }
+
+    #gd-sub {
+      margin-top: 32px;
+      font-family: 'Arial', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(10,10,10,0.25);
+      filter: none;
+      position: relative;
+      z-index: 2;
+      padding-left: 4px;
+    }
+
+    /* Cursor */
+    #gd-cursor {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background: #0d0d0d;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.28s cubic-bezier(.22,1,.36,1),
+                  height 0.28s cubic-bezier(.22,1,.36,1),
+                  background 0.28s,
+                  border 0.28s;
+    }
+    #gd-cursor.active {
+      width: 64px;
+      height: 64px;
+      background: transparent;
+      border: 1.5px solid rgba(13,13,13,0.4);
+    }
+
+    #scroll-hint {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Arial', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(10,10,10,0.18);
+      animation: pulse 3s ease-in-out infinite;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; }
+      55% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SVG filter -->
+<svg id="svg-filters" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="gd-distort" x="-12%" y="-20%" width="124%" height="140%" color-interpolation-filters="sRGB">
+      <feTurbulence
+        id="gd-turb"
+        type="fractalNoise"
+        baseFrequency="0.004 0.003"
+        numOctaves="2"
+        seed="7"
+        result="noise"
+      />
+      <feDisplacementMap
+        id="gd-disp"
+        in="SourceGraphic"
+        in2="noise"
+        scale="0"
+        xChannelSelector="R"
+        yChannelSelector="G"
+      />
+    </filter>
+  </defs>
+</svg>
+
+<div id="gd-cursor"></div>
+
+<section id="gd-hero">
+  <div id="gd-block">
+    <span class="gd-word" id="w-good">GOOD</span>
+    <span class="gd-word" id="w-design">DESIGN</span>
+  </div>
+  <div id="gd-sub">Web &nbsp;&bull;&nbsp; Brand &nbsp;&bull;&nbsp; Identity</div>
+  <div id="scroll-hint">move cursor to distort</div>
+</section>
+
+<script>
+(function () {
+  // ── Auto-fit each word to fill container width ─────────────────────
+  function fitWords() {
+    const container = document.getElementById('gd-hero');
+    const avail = container.clientWidth - 64; // 32px padding each side
+    const words = document.querySelectorAll('.gd-word');
+
+    words.forEach((el) => {
+      // Temporarily inline-block so width reflects content, not container
+      el.style.display = 'inline-block';
+      el.style.whiteSpace = 'nowrap';
+
+      let lo = 20, hi = 800, mid;
+      for (let i = 0; i < 26; i++) {
+        mid = (lo + hi) / 2;
+        el.style.fontSize = mid + 'px';
+        if (el.getBoundingClientRect().width < avail) { lo = mid; }
+        else                                          { hi = mid; }
+      }
+      el.style.fontSize = Math.floor(lo) + 'px';
+      el.style.display = 'block'; // restore
+    });
+  }
+
+  // Run after fonts loaded + on resize
+  document.fonts.ready.then(() => {
+    fitWords();
+    // Second pass to catch any last reflow
+    requestAnimationFrame(fitWords);
+  });
+  window.addEventListener('resize', fitWords);
+  // Fallback if fonts.ready never fires
+  window.addEventListener('load', fitWords);
+
+  // ── Filter state ───────────────────────────────────────────────────
+  const turb   = document.getElementById('gd-turb');
+  const disp   = document.getElementById('gd-disp');
+  const hero   = document.getElementById('gd-hero');
+  const cursor = document.getElementById('gd-cursor');
+
+  let scale  = 0, targetScale = 0;
+  let freqX  = 0.004, freqY = 0.003;
+  let tFreqX = 0.004, tFreqY = 0.003;
+  let vel    = 0, time = 0;
+  let mx     = 0.5, my = 0.5;
+  let px     = 0.5, py = 0.5;
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  // Mouse tracking
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top  = e.clientY + 'px';
+
+    const nx = e.clientX / window.innerWidth;
+    const ny = e.clientY / window.innerHeight;
+    const spd = Math.hypot(nx - px, ny - py);
+    vel = Math.min(spd * 95, 1);
+    px = mx; py = my;
+    mx = nx; my = ny;
+  });
+
+  document.addEventListener('mouseleave', () => { vel = 0; });
+  hero.addEventListener('mouseenter', () => cursor.classList.add('active'));
+  hero.addEventListener('mouseleave', () => cursor.classList.remove('active'));
+
+  // Scroll tracking
+  let lastSY = window.scrollY;
+  window.addEventListener('scroll', () => {
+    const d = Math.abs(window.scrollY - lastSY);
+    vel = Math.min(Math.max(vel, d * 0.35), 1);
+    lastSY = window.scrollY;
+  }, { passive: true });
+
+  // Animation loop
+  (function tick() {
+    requestAnimationFrame(tick);
+    time += 0.007;
+    vel  *= 0.88;
+
+    targetScale = vel * 120;
+    scale       = lerp(scale, targetScale, vel > 0.01 ? 0.13 : 0.04);
+
+    tFreqX = 0.003 + mx * 0.003 + Math.sin(time * 0.5) * 0.0012;
+    tFreqY = 0.002 + my * 0.002 + Math.cos(time * 0.38) * 0.0009;
+    freqX  = lerp(freqX, tFreqX, 0.02);
+    freqY  = lerp(freqY, tFreqY, 0.02);
+
+    disp.setAttribute('scale', scale.toFixed(3));
+    turb.setAttribute('baseFrequency', `${freqX.toFixed(6)} ${freqY.toFixed(6)}`);
+  })();
+})();
+</script>
+</body>
+</html>
