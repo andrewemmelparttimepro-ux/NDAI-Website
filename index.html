@@ -26,6 +26,7 @@
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     html,body{width:100%;height:100%;overflow:hidden;background:#000;font-family:'Space Grotesk',sans-serif;cursor:none}
+    html.no-webgl #cv{display:none}
     @media(pointer:coarse){html,body{cursor:auto}}
     #cv{position:fixed;inset:0;z-index:1;transition:opacity .8s ease}
     #dot{position:fixed;width:7px;height:7px;background:#fff;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference}
@@ -137,7 +138,7 @@
     /* Nav/footer version (clickable, proportionate glow) */
     .nd-logo-lift{display:inline-flex;align-items:center;justify-content:center;transition:transform .3s cubic-bezier(.22,.68,0,1.2);cursor:pointer}
     .nd-logo-lift:hover{transform:translateY(-4px)}
-    .nd-logo-mark{display:block;transition:filter .3s ease}
+    .nd-logo-mark{display:block;height:36px;width:auto;transition:filter .3s ease}
     /* Dark mode: white mark, cyan bloom on hover */
     .nd-logo-lift:hover .nd-logo-mark{filter:drop-shadow(0 0 18px rgba(0,200,255,0.38)) drop-shadow(0 6px 16px rgba(0,0,0,0.55))}
     /* Light mode: use dark mark image — no filter needed; subtle shadow on hover */
@@ -268,6 +269,7 @@
     /* Logo swap: dark logo hides in light mode, light logo shows */
     #site-ex.light .logo-dark-ver,#gallery-ex.light .logo-dark-ver{display:none!important}
     #site-ex.light .logo-light-ver,#gallery-ex.light .logo-light-ver{display:block!important}
+    #site-ex.light .nlogo .logo-light-ver,#gallery-ex.light .gal-logo .logo-light-ver{filter:contrast(1.18) brightness(.82);opacity:.9}
     #site-ex.light .snav a{color:rgba(0,0,0,.7)!important}
     #site-ex.light .ncta{background:#1a1a1a;color:#f4f1ec}
     #site-ex.light .s-label{color:rgba(80,70,55,.7)}
@@ -418,8 +420,8 @@
       .ssb-dot{width:9px!important;height:9px!important}
       /* Button row bottom margin — reduce since nothing below on mobile */
       .hbtns[style]{margin-bottom:16px!important}
-      /* Site nav logo: tighter for mobile nav bar */
-      #site-nav-logo .nd-logo-mark{height:44px!important}
+      /* Site nav logo: keep the same brand scale as the other pages */
+      #site-nav-logo .nd-logo-mark{height:36px!important}
       /* Gallery CTA buttons: stack on mobile */
       .gal-cta-btns{flex-direction:column;align-items:stretch}
       .gal-cta-primary,.gal-cta-secondary{text-align:center;justify-content:center}
@@ -1048,8 +1050,8 @@
   <!-- NAV -->
   <nav class="snav">
     <div class="nlogo nd-logo-lift" id="site-nav-logo">
-      <img class="nd-logo-mark logo-dark-ver" src="logo-mark.png" alt="NDAI" style="height:72px;width:auto">
-      <img class="nd-logo-mark logo-light-ver" src="logo-mark-dark.png" alt="NDAI" style="height:72px;width:auto;display:none">
+      <img class="nd-logo-mark logo-dark-ver" src="logo-mark.png" alt="NDAI" style="height:36px;width:auto">
+      <img class="nd-logo-mark logo-light-ver" src="logo-mark-dark.png" alt="NDAI" style="height:36px;width:auto;display:none">
     </div>
     <div class="desk-links" style="display:flex;gap:32px;align-items:center">
       <a href="#svc" class="snav-link" style="font-size:13px;color:rgba(255,255,255,.45);text-decoration:none;transition:color .2s">Services</a>
@@ -1258,7 +1260,7 @@
           <div class="software-title" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(20px,3vw,30px);line-height:1.1;margin-bottom:10px;">Custom What we build</div>
           <div class="software-desc" style="font-size:0.9rem;line-height:1.6;max-width:440px;">Custom software that works the way your team already does — at a fraction of what you're paying now. See what we're building.</div>
         </div>
-        <a href="solutions.html" style="
+        <a href="/solutions" data-mode-link="solutions" style="
           background:#B8AA96;color:#050505;
           padding:14px 32px;text-decoration:none;
           font-family:'Space Grotesk',sans-serif;font-weight:700;
@@ -1457,7 +1459,7 @@
       <div class="ft-social" style="display:flex;gap:16px;margin-top:12px;align-items:center">
         <a href="https://www.linkedin.com/company/ndai-pro" target="_blank" rel="noopener" style="color:rgba(255,255,255,.35);text-decoration:none;font-size:12px;letter-spacing:.05em;transition:color .2s" onmouseover="this.style.color='rgba(255,255,255,.7)'" onmouseout="this.style.color='rgba(255,255,255,.35)'">LinkedIn</a>
       </div>
-      <div class="ft-copy">© 2026 NDAI, LLC — ndai.pro — AI consulting and implementation for North Dakota businesses. <a href="privacy.html" style="color:inherit;opacity:.5;text-decoration:underline;margin-left:8px">Privacy Policy</a></div>
+      <div class="ft-copy">© 2026 NDAI, LLC — ndai.pro — AI consulting and implementation for North Dakota businesses. <a href="/privacy" data-mode-link="privacy" style="color:inherit;opacity:.5;text-decoration:underline;margin-left:8px">Privacy Policy</a></div>
     </div>
   </footer>
 
@@ -1560,11 +1562,25 @@
 const scene = new THREE.Scene();
 const cam   = new THREE.PerspectiveCamera(50, innerWidth/innerHeight, 0.05, 400);
 cam.position.set(0, 0, 6);
-const rend = new THREE.WebGLRenderer({ antialias: true });
-rend.setSize(innerWidth, innerHeight);
-rend.setPixelRatio(Math.min(devicePixelRatio, matchMedia('(pointer:coarse)').matches ? 1.5 : 2));
-rend.setClearColor(0x000000, 1);
-document.getElementById('cv').appendChild(rend.domElement);
+const cvEl = document.getElementById('cv');
+let rend;
+try {
+  rend = new THREE.WebGLRenderer({ antialias: true });
+  rend.setSize(innerWidth, innerHeight);
+  rend.setPixelRatio(Math.min(devicePixelRatio, matchMedia('(pointer:coarse)').matches ? 1.5 : 2));
+  rend.setClearColor(0x000000, 1);
+  cvEl.appendChild(rend.domElement);
+} catch (err) {
+  document.documentElement.classList.add('no-webgl');
+  cvEl.setAttribute('aria-hidden', 'true');
+  rend = {
+    setSize: function(){},
+    setPixelRatio: function(){},
+    setClearColor: function(){},
+    getPixelRatio: function(){ return 1; },
+    render: function(){}
+  };
+}
 window.addEventListener('resize', () => { cam.aspect = innerWidth/innerHeight; cam.updateProjectionMatrix(); rend.setSize(innerWidth, innerHeight); });
 
 const isTouch = matchMedia('(pointer:coarse)').matches;
@@ -2417,6 +2433,46 @@ const mp = new THREE.Vector2();
 let STATE='entry', T0=0, siteMode='dark', mX=innerWidth/2, mY=innerHeight/2, gTX=0, cStartX=0;
 const clk = new THREE.Clock();
 const dot = document.getElementById('dot');
+function applyModeFromUrl() {
+  const mode = new URLSearchParams(location.search).get('mode');
+  if (mode === 'light' || mode === 'dark') siteMode = mode;
+}
+function modeSuffix() {
+  return siteMode === 'light' ? '?mode=light' : '';
+}
+function modePath(path) {
+  return path + modeSuffix();
+}
+function solutionsPathForMode(mode) {
+  return '/solutions' + (mode === 'light' ? '?mode=light' : '');
+}
+function syncModeLinks() {
+  document.querySelectorAll('[data-mode-link="solutions"]').forEach(a => {
+    a.href = modePath('/solutions');
+  });
+  document.querySelectorAll('[data-mode-link="privacy"]').forEach(a => {
+    a.href = modePath('/privacy');
+  });
+}
+function dismissEntryForPanel() {
+  if (gateEl) {
+    gateEl.style.opacity = '0';
+    gateEl.style.pointerEvents = 'none';
+    gateEl.style.display = 'none';
+  }
+  entryEl.classList.add('gone');
+  const mobileEntry = document.getElementById('mobile-entry');
+  if (mobileEntry) {
+    mobileEntry.style.opacity = '0';
+    mobileEntry.style.pointerEvents = 'none';
+    mobileEntry.style.display = 'none';
+  }
+  const hint = document.getElementById('hint');
+  if (hint) hint.style.opacity = '0';
+  if (dot) dot.style.display = 'none';
+  STATE = 'done';
+}
+applyModeFromUrl();
 // Gate click — unlocks AudioContext, reveals entry screen
 const gateEl = document.getElementById('gate');
 gateEl.addEventListener('click', () => {
@@ -2446,7 +2502,7 @@ entryEl.addEventListener('click', e => {
   document.getElementById('hint').style.opacity = '0';
   dot.style.display = 'none';
   doFlashReveal(() => {
-    window.location.href = 'solutions.html' + (siteMode === 'light' ? '?mode=light' : '');
+    window.location.href = solutionsPathForMode(siteMode);
     entryEl.classList.add('gone');
     STATE = 'done';
   });
@@ -2460,7 +2516,7 @@ function entrySubClick(mode, action, e) {
   if (action === 'who') {
     openSite();
   } else {
-    window.location.href = 'solutions.html' + (siteMode === 'light' ? '?mode=light' : '');
+    window.location.href = solutionsPathForMode(siteMode);
   }
 }
 document.getElementById('sl-who').addEventListener('click', e => entrySubClick('light', 'who', e));
@@ -2491,7 +2547,7 @@ function mobileChoose(mode) {
   document.getElementById('mobile-entry').style.pointerEvents = 'none';
   setTimeout(() => { document.getElementById('mobile-entry').style.display = 'none'; }, 700);
   doFlashReveal(() => {
-    window.location.href = 'solutions.html' + (siteMode === 'light' ? '?mode=light' : '');
+    window.location.href = solutionsPathForMode(siteMode);
     STATE = 'done';
   });
 }
@@ -2508,7 +2564,7 @@ document.getElementById('me-dark-card').addEventListener('click', (e) => {
 function mobileSubAction(mode, action) {
   siteMode = mode;
   if (action === 'who') openSite();
-  else window.location.href = 'solutions.html' + (siteMode === 'light' ? '?mode=light' : '');
+  else window.location.href = solutionsPathForMode(siteMode);
 }
 document.getElementById('me-light-who').addEventListener('click', (e) => { e.stopPropagation(); mobileSubAction('light', 'who'); });
 document.getElementById('me-light-work').addEventListener('click', (e) => { e.stopPropagation(); mobileSubAction('light', 'work'); });
@@ -2529,7 +2585,7 @@ document.getElementById('site-nav-logo').addEventListener('click', function(){
   document.getElementById('contact-modal').classList.remove('on');
   if (_navPanel) {
     _navPanel = null;
-    history.pushState({}, '', '/');
+    history.pushState({ndaiMode: siteMode}, '', modePath('/'));
     _closeSiteInner();
   } else {
     closeSite();
@@ -2538,7 +2594,7 @@ document.getElementById('site-nav-logo').addEventListener('click', function(){
 document.getElementById('gallery-nav-logo').addEventListener('click', function(){
   if (_navPanel) {
     _navPanel = null;
-    history.pushState({}, '', '/');
+    history.pushState({ndaiMode: siteMode}, '', modePath('/'));
     _closeGalleryInner();
   } else {
     closeGallery();
@@ -2594,11 +2650,12 @@ var _inPopstate = false;
 function _pushPanel(name) {
   if (_inPopstate) return;
   _navPanel = name;
-  history.pushState({ndaiPanel: name}, '', '/' + name);
+  history.pushState({ndaiPanel: name, ndaiMode: siteMode}, '', modePath('/' + name));
 }
 
 function openGallery(){
   _pushPanel('gallery');
+  syncModeLinks();
   const g=document.getElementById('gallery-ex');
   if(siteMode==='light'){g.classList.add('light');}else{g.classList.remove('light');}
   g.classList.add('on');
@@ -2682,6 +2739,7 @@ function _closeGalleryInner(){
 
 function openSite() {
   _pushPanel('site');
+  syncModeLinks();
   const el = document.getElementById('site-ex');
   el.classList.add('on');
   if (siteMode === 'light') el.classList.add('light'); else el.classList.remove('light');
@@ -3278,11 +3336,17 @@ animate();
 // ── popstate: browser back/forward closes panels ───────────────
 window.addEventListener('popstate', function(e) {
   var target = (e.state && e.state.ndaiPanel) || null;
+  if (e.state && e.state.ndaiMode) {
+    siteMode = e.state.ndaiMode;
+  } else if (new URLSearchParams(location.search).get('mode') === 'light') {
+    siteMode = 'light';
+  }
+  syncModeLinks();
 
   // Close contact modal if open and we're not navigating TO contact
   var cm = document.getElementById('contact-modal');
   if (cm.classList.contains('on') && target !== 'contact') {
-    cm.classList.remove('on');
+    cm.classList.remove('on','light');
   }
 
   // Always close sub-panels (no history entries)
@@ -3333,19 +3397,22 @@ window.addEventListener('popstate', function(e) {
 
 // ── Deep-link: open panel from URL path on page load ───────────
 (function(){
+  applyModeFromUrl();
+  syncModeLinks();
   var path = location.pathname.replace(/^\//, '').replace(/\/$/, '').toLowerCase();
   if (!path && location.hash) path = location.hash.replace(/^#/, '').toLowerCase();
   if (!path) return;
   var panel = (path === 'terminal') ? 'term' : path;
   if (['gallery','site','contact','term'].indexOf(panel) < 0) return;
+  dismissEntryForPanel();
 
   // Build history stack so back button works: root → panel
-  history.replaceState({}, '', '/');
+  history.replaceState({ndaiMode: siteMode}, '', modePath('/'));
   if (panel === 'contact') {
-    history.pushState({ndaiPanel: 'site'}, '', '/site');
-    history.pushState({ndaiPanel: 'contact'}, '', '/contact');
+    history.pushState({ndaiPanel: 'site', ndaiMode: siteMode}, '', modePath('/site'));
+    history.pushState({ndaiPanel: 'contact', ndaiMode: siteMode}, '', modePath('/contact'));
   } else {
-    history.pushState({ndaiPanel: panel}, '', '/' + panel);
+    history.pushState({ndaiPanel: panel, ndaiMode: siteMode}, '', modePath('/' + panel));
   }
   _navPanel = panel;
 

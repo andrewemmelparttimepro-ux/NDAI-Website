@@ -1,7 +1,9 @@
 {
-  "cleanUrls": true,
+  "cleanUrls": false,
   "trailingSlash": false,
   "rewrites": [
+    { "source": "/solutions", "destination": "/solutions.html" },
+    { "source": "/privacy", "destination": "/privacy.html" },
     { "source": "/contact", "destination": "/index.html" },
     { "source": "/site", "destination": "/index.html" },
     { "source": "/gallery", "destination": "/index.html" },

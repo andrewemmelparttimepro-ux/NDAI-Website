@@ -5,8 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Privacy Policy — NDAI</title>
 <meta name="description" content="Privacy policy for NDAI, LLC, an AI consulting and software company based in Minot, North Dakota.">
-<link rel="canonical" href="https://ndai.pro/privacy.html">
+<link rel="canonical" href="https://ndai.pro/privacy">
 <link rel="icon" type="image/png" href="logo-favicon.png">
+<script>
+if(new URLSearchParams(location.search).get('mode')==='light'){
+  document.documentElement.classList.add('light-mode');
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -33,13 +38,13 @@ html.light-mode a:hover{color:rgba(0,0,0,.75)}
 html.light-mode .updated{color:rgba(0,0,0,.3)}
 html.light-mode .back{color:rgba(0,0,0,.3)}
 html.light-mode .back:hover{color:rgba(0,0,0,.6)}
-html.light-mode .logo-nav{content:url('logo-mark-dark.png')}
+html.light-mode .logo-nav{content:url('logo-mark-dark.png');filter:contrast(1.18) brightness(.82);opacity:.9}
 </style>
 </head>
 <body>
 <div class="wrap">
   <img class="logo-nav" src="logo-mark.png" alt="NDAI">
-  <a class="back" href="index.html">&larr; Back to Home</a>
+  <a class="back" href="/">&larr; Back to Home</a>
   <h1>Privacy Policy</h1>
   <p class="updated">Last updated: March 25, 2026</p>
 
@@ -84,10 +89,5 @@ html.light-mode .logo-nav{content:url('logo-mark-dark.png')}
   <p>NDAI, LLC<br>Minot, North Dakota<br><a href="mailto:hello@ndai.pro">hello@ndai.pro</a><br><a href="tel:+17013399802">(701) 339-9802</a></p>
 </div>
 
-<script>
-if(new URLSearchParams(location.search).get('mode')==='light'){
-  document.documentElement.classList.add('light-mode');
-}
-</script>
 </body>
 </html>

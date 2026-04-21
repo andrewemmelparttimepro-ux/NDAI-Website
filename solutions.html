@@ -9,7 +9,7 @@
 <meta property="og:title" content="Our Solutions — NDAI"/>
 <meta property="og:description" content="Custom software, AI consulting, staff training, and VAULT — all under one subscription. Built from scratch for your business."/>
 <meta property="og:type" content="website"/>
-<meta property="og:url" content="https://ndai.pro/solutions.html"/>
+<meta property="og:url" content="https://ndai.pro/solutions"/>
 <meta property="og:image" content="https://ndai.pro/logo-main-web.png"/>
 <meta property="og:image:width" content="600"/>
 <meta property="og:image:height" content="400"/>
@@ -17,7 +17,12 @@
 <meta name="twitter:title" content="Our Solutions — NDAI"/>
 <meta name="twitter:description" content="Custom software, AI consulting, staff training, and VAULT under one subscription."/>
 <meta name="twitter:image" content="https://ndai.pro/logo-main-web.png"/>
-<link rel="canonical" href="https://ndai.pro/solutions.html"/>
+<link rel="canonical" href="https://ndai.pro/solutions"/>
+<script>
+if(new URLSearchParams(location.search).get('mode')==='light'){
+  document.documentElement.classList.add('light-mode');
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
@@ -230,7 +235,7 @@ html.light-mode footer{border-top-color:var(--border);background:var(--surface)}
 html.light-mode .footer-copy{color:var(--muted-low)}
 html.light-mode .footer-links a{color:var(--muted)}
 html.light-mode .footer-links a:hover{color:var(--white)}
-html.light-mode .logo img{content:url('logo-mark-dark.png')}
+html.light-mode .logo img{content:url('logo-mark-dark.png');filter:contrast(1.18) brightness(.82);opacity:.9}
 html.light-mode .footer-logo img{content:url('logo-mark-dark.png');opacity:0.55}
 :root{
   --software-glow:rgba(140,30,30,0.22);
@@ -1003,10 +1008,10 @@ footer{
 
 <!-- HEADER -->
 <header>
-  <a class="logo" href="index.html"><img src="logo-mark.png" alt="NDAI"/></a>
+  <a class="logo" href="/"><img src="logo-mark.png" alt="NDAI"/></a>
   <nav>
-    <a href="index.html">Home</a>
-    <a href="solutions.html" class="active">Our Solutions</a>
+    <a href="/">Home</a>
+    <a href="/solutions" class="active">Our Solutions</a>
     <a href="#consulting">CONSULTING</a>
     <a href="#vault">VAULT</a>
     <a href="#contact">Contact</a>
@@ -1018,7 +1023,7 @@ footer{
 </header>
 <!-- MOBILE NAV -->
 <div class="mobile-nav" id="mobileNav">
-  <a href="index.html">Home</a>
+  <a href="/">Home</a>
   <a href="#consulting">CONSULTING</a>
   <a href="#vault">VAULT</a>
   <a href="#contact" class="mobile-nav-cta">Get Started</a>
@@ -1484,7 +1489,7 @@ html.light-mode .cl.cl-color{filter:none!important}
     <form class="form" name="solutions-contact" method="POST" action="https://formsubmit.co/andrew@ndai.pro">
       <input type="hidden" name="_subject" value="New NDAI.pro Lead"/>
       <input type="hidden" name="_captcha" value="false"/>
-      <input type="hidden" name="_next" value="https://ndai.pro/solutions.html#contact"/>
+      <input type="hidden" name="_next" value="https://ndai.pro/solutions#contact"/>
       <input type="text" name="_honey" style="display:none"/>
       <div class="form-row">
         <div class="field">
@@ -1540,19 +1545,14 @@ html.light-mode .cl.cl-color{filter:none!important}
   </div>
   <div class="footer-copy">© 2026 NDAI, LLC</div>
   <div class="footer-links">
-    <a href="index.html">Home</a>
-    <a href="solutions.html">Our Solutions</a>
+    <a href="/">Home</a>
+    <a href="/solutions">Our Solutions</a>
     <a href="#contact">Contact</a>
-    <a href="privacy.html" class="privacy-link">Privacy Policy</a>
+    <a href="/privacy" class="privacy-link">Privacy Policy</a>
   </div>
 </footer>
 
 <script>
-// ── Light mode from query param ──
-if(new URLSearchParams(location.search).get('mode')==='light'){
-  document.documentElement.classList.add('light-mode');
-}
-
 // ── Floating CTA ──
 const floatCta = document.getElementById('floatCta');
 const heroTop = document.getElementById('hero-top');
@@ -1590,7 +1590,7 @@ document.addEventListener('keydown', e => {
 // ── Privacy link mode passthrough ──
 document.querySelectorAll('.privacy-link').forEach(a => {
   if(document.documentElement.classList.contains('light-mode')){
-    a.href = 'privacy.html?mode=light';
+    a.href = '/privacy?mode=light';
   }
 });
 
@@ -1599,7 +1599,7 @@ if (solutionsForm) {
   solutionsForm.addEventListener('submit', () => {
     const next = solutionsForm.querySelector('input[name="_next"]');
     const mode = document.documentElement.classList.contains('light-mode') ? '?mode=light' : '';
-    if (next) next.value = 'https://ndai.pro/solutions.html' + mode + '#contact';
+    if (next) next.value = 'https://ndai.pro/solutions' + mode + '#contact';
     const submit = solutionsForm.querySelector('.form-submit');
     if (submit) {
       submit.disabled = true;
