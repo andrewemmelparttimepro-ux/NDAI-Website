@@ -1,0 +1,15 @@
+{
+  "name": "ndai-website",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "playwright test",
+    "dev": "npm run build && node scripts/serve.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.0",
+    "@axe-core/playwright": "^4.11.0",
+    "sharp": "^0.34.0"
+  }
+}

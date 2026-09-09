@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ndai.pro/sitemap.xml
+
+Disallow: /STORYBOARD.html
+Disallow: /ad.html
+Disallow: /AUDIT-REPORT.md
+Disallow: /BUILD_BRIEF.md
+Disallow: /.netlify/
+Disallow: /*.bak
