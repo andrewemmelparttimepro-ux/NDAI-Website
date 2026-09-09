@@ -1,0 +1,24 @@
+import { test, expect, webkit } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
+test('Safari engine supports mobile navigation, form context, and readable disclosure', async () => {
+  const browser = await webkit.launch();
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const page = await context.newPage();
+  const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:8934';
+  await page.goto(base);
+  await page.evaluate(() => document.fonts.ready);
+  await expect(page.getByRole('link', { name: 'Free consult', exact: true })).toBeInViewport();
+  await page.getByRole('button', { name: 'Open menu' }).click();
+  await page.locator('#mob-menu').getByRole('link', { name: 'FAQ', exact: true }).click();
+  await page.getByText('How much does it cost?', { exact: true }).click();
+  await expect(page.locator('.faq-item').first().locator('.faq-a')).toBeVisible();
+  await page.getByRole('link', { name: 'Ask about SandPro OMP' }).click();
+  await expect(page.locator('#f-project')).toHaveValue('SandPro OMP');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
+  const results = await new AxeBuilder({ page }).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
+  console.log(JSON.stringify(results.violations.map(v => ({id:v.id,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))})),null,2));
+  await page.screenshot({ path: 'artifacts/safari-mobile-contact.png' });
+  expect(results.violations.map(v => v.id)).toEqual([]);
+  await page.screenshot({ path: 'artifacts/safari-mobile-contact.png' });
+  await browser.close();
+});

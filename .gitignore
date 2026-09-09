@@ -45,3 +45,10 @@ logo-nd-ai-web.png
 logo-nd-n-web.png
 mindt-dark.jpg
 prairie-pumping-live.png
+
+# Audit and browser test output
+test-results/
+playwright-report/
+artifacts/
+
+dist/
